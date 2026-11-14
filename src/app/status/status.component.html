@@ -1,0 +1,17 @@
+<div class="app-page-container">
+  <mat-card class="app-card-medium">
+    <mat-card-title>
+      <h1>{{ 'status.lastBuildTime' | translate }}</h1>
+      <p>
+        @if (lastDeployTime()) {
+          <div [innerHTML]="lastDeployTime()" style="text-align: center;"></div>
+        }
+        @if (!lastDeployTime()) {
+          <div style="display: flex; justify-content: center;">
+            <app-skeleton width="250px" height="30px" borderRadius="8px"></app-skeleton>
+          </div>
+        }
+      </p>
+    </mat-card-title>
+  </mat-card>
+</div>
