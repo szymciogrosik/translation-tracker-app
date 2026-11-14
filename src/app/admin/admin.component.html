@@ -1,0 +1,26 @@
+<div class="app-page-container">
+  <mat-card class="app-card-wide">
+    <mat-card-title>
+      <h1>{{ 'admin.panel.header' | translate }}</h1>
+      <p>{{ 'admin.panel.helloMessage' | translate }}{{ this.loggedUserName() }}!</p>
+    </mat-card-title>
+    <mat-card-content>
+      @if (!environment.production) {
+      <mat-card class="app-alert-warning" style="margin: 0;">
+        <mat-card-content>
+          <span>{{ 'nonProdMode.warning' | translate }}</span>
+        </mat-card-content>
+      </mat-card>
+      }
+      <mat-tab-group dynamicHeight>
+        @if (settingsTabVisible()) {
+          <mat-tab label="{{ 'admin.panel.tab.header.settings' | translate }}">
+            <div>
+              <app-settings></app-settings>
+            </div>
+          </mat-tab>
+        }
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>
