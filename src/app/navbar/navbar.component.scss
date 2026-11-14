@@ -1,0 +1,71 @@
+@use "src/styles.scss" as *;
+
+button:focus {
+  outline: none;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 760px) {
+  .full-menu {
+    display: none;
+  }
+}
+
+@media (min-width: 761px) {
+  .short-menu {
+    display: none;
+  }
+}
+
+.navbar-style {
+  color: $navbar-element-color;
+  font-size: $navbar-font-size;
+}
+
+.navbar-button-burger-menu {
+  font-size: $navbar-font-size;
+}
+
+.navbar-home-page {
+  background-color: $app-primary-color;
+}
+
+.navbar-shadow {
+  box-shadow: 0 3px 5px -1px #0003, 0 6px 10px #00000024, 0 1px 18px #0000001f;
+}
+
+.navbar-button {
+  margin-left: 5px;
+}
+
+.navbar-profile-btn-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar-avatar-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid $app-accent-color;
+  object-fit: cover;
+}
+
+.navbar-avatar-fallback {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 500;
+  color: #757575;
+  text-transform: uppercase;
+}
