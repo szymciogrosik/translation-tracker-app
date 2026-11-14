@@ -1,0 +1,29 @@
+<div class="dialog-container">
+  <h1 mat-dialog-title class="dialog-title">{{ 'profile.cropper.title' | translate }}</h1>
+
+  <mat-dialog-content class="mat-typography dialog-font">
+    <div style="margin-top: 10px;">
+      <image-cropper [imageChangedEvent]="data.imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1"
+                     [roundCropper]="true" format="webp" [resizeToWidth]="512" (imageCropped)="imageCropped($event)"
+                     (loadImageFailed)="loadImageFailed()">
+      </image-cropper>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <div class="app-popup-full-width-actions">
+      <button type="button" mat-raised-button color="warn" class="app-action-button" (click)="onCancel()"
+              [disabled]="isSaving">
+        {{ 'dialog.cancel' | translate }}
+      </button>
+      <button type="submit" mat-raised-button color="primary" class="app-action-button" (click)="onSave()"
+              [disabled]="isSaving || !croppedImageBlob">
+        @if (isSaving) {
+          <app-skeleton width="60px" height="14px" borderRadius="10px" style="margin: 0 auto;"></app-skeleton>
+        } @else {
+          {{ 'dialog.save' | translate }}
+        }
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>
