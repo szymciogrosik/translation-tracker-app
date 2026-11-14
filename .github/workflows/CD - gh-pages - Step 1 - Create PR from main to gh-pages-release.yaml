@@ -2,7 +2,8 @@ name: CD - gh-pages - Step 1 - Create PR from main to gh-pages-release
 
 on:
   push:
-    branches: [main]
+#    branches: [main]
+    branches: [DISABLED/DISABLED_DISABLED_DISABLED]
 
 jobs:
   crete-pr-main-to-gh-pages-release:
