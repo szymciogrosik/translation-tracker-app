@@ -221,10 +221,10 @@
 
   "terms.title": "Regulamin Serwisu",
   "terms.s1.title": "1. Postanowienia ogólne",
-  "terms.s1.p1": "Niniejszy Regulamin określa zasady korzystania z Serwisu dostępnego pod adresem <strong>angular-firebase-accelerator.web.app</strong> (dalej: „Serwis\"), którego operatorem jest <strong>PAGE_OWNER_NAME</strong> (dalej: „Administrator\"). Kontakt: <a href=\"mailto:PAGE_OWNER_EMAIL\">PAGE_OWNER_EMAIL</a>",
+  "terms.s1.p1": "Niniejszy Regulamin określa zasady korzystania z Serwisu dostępnego pod adresem <strong>translation-tracker-app.web.app</strong> (dalej: „Serwis\"), którego operatorem jest <strong>PAGE_OWNER_NAME</strong> (dalej: „Administrator\"). Kontakt: <a href=\"mailto:PAGE_OWNER_EMAIL\">PAGE_OWNER_EMAIL</a>",
   "terms.s1.p2": "Korzystanie z Serwisu oznacza akceptację niniejszego Regulaminu.",
   "terms.s2.title": "2. Definicje",
-  "terms.s2.item1": "<strong>Serwis</strong> – aplikacja internetowa dostępna pod adresem angular-firebase-accelerator.web.app",
+  "terms.s2.item1": "<strong>Serwis</strong> – aplikacja internetowa dostępna pod adresem translation-tracker-app.web.app",
   "terms.s2.item2": "<strong>Użytkownik</strong> – każda osoba fizyczna korzystająca z Serwisu lub posiadająca w nim konto",
   "terms.s2.item3": "<strong>Konto</strong> – indywidualny profil Użytkownika w Serwisie",
   "terms.s2.item4": "<strong>Administrator</strong> – PAGE_OWNER_NAME, kontakt: PAGE_OWNER_EMAIL",

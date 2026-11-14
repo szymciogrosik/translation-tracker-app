@@ -3,12 +3,12 @@
 Fast Angular app with Firebase Auth + Firestore, deployed to both GitHub Pages and Firebase Hosting.
 
 **Live:**
-- GitHub Pages: https://szymciogrosik.github.io/angular-firebase-accelerator/
-- Firebase Hosting: https://angular-firebase-accelerator.web.app/
+- GitHub Pages: https://szymciogrosik.github.io/translation-tracker-app/
+- Firebase Hosting: https://translation-tracker-app.web.app/
 
 Everytime when in the following README file occur 
-- APPLICATION_NAME it means "angular-firebase-accelerator"
-- REPO_NAME it means "angular-firebase-accelerator"
+- APPLICATION_NAME it means "translation-tracker-app"
+- REPO_NAME it means "translation-tracker-app"
 
 ---
 
@@ -316,7 +316,7 @@ The application uses **Cloudinary** (free tier) with an **Unsigned Upload Preset
 1. In the Cloudinary console, go to **Settings** (gear icon) → **Security**.
 2. Under **Allowed fetch domains**, enter your production domains (comma-separated, without `https://`):
    ```text
-   angular-firebase-accelerator.web.app
+   translation-tracker-app.web.app
    ```
    - *Why:* Leaving this empty allows anyone on the internet to use your Cloudinary account as an open proxy CDN (`/image/fetch/https://external-site.com/...`) and drain your free quota. Specifying your domain locks this down while keeping `http://localhost:4200` uploads and `<img>` delivery working normally.
 3. Click **Save** at the bottom of the Security page.

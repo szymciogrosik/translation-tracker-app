@@ -5,11 +5,12 @@ export const environment = {
   selected_language_key: 'Language',
   firebase: {
     apiKey: "FIREBASE_API_KEY",
-    authDomain: "angular-firebase-accelerator.firebaseapp.com",
-    projectId: "angular-firebase-accelerator",
-    messagingSenderId: "874906824655",
-    appId: "1:874906824655:web:c03eee1f08435734ffecba",
-    measurementId: "G-2XSMFF38ZS"
+    authDomain: "translation-tracker-app.firebaseapp.com",
+    projectId: "translation-tracker-app",
+    storageBucket: "translation-tracker-app.firebasestorage.app",
+    messagingSenderId: "917431209934",
+    appId: "1:917431209934:web:a7c67b54fdbc3d9716259f",
+    measurementId: "G-XVWXMJVEM0"
   },
   cloudinary: {
     cloudName: "CLOUDINARY_CLOUD_NAME",

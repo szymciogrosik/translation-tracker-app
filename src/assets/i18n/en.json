@@ -221,10 +221,10 @@
 
   "terms.title": "Terms of Service",
   "terms.s1.title": "1. General Provisions",
-  "terms.s1.p1": "These Terms of Service govern the use of the Service available at <strong>angular-firebase-accelerator.web.app</strong> (hereinafter: \"Service\"), operated by <strong>PAGE_OWNER_NAME</strong> (hereinafter: \"Administrator\"). Contact: <a href=\"mailto:PAGE_OWNER_EMAIL\">PAGE_OWNER_EMAIL</a>",
+  "terms.s1.p1": "These Terms of Service govern the use of the Service available at <strong>translation-tracker-app.web.app</strong> (hereinafter: \"Service\"), operated by <strong>PAGE_OWNER_NAME</strong> (hereinafter: \"Administrator\"). Contact: <a href=\"mailto:PAGE_OWNER_EMAIL\">PAGE_OWNER_EMAIL</a>",
   "terms.s1.p2": "Using the Service means acceptance of these Terms.",
   "terms.s2.title": "2. Definitions",
-  "terms.s2.item1": "<strong>Service</strong> – the web application available at angular-firebase-accelerator.web.app",
+  "terms.s2.item1": "<strong>Service</strong> – the web application available at translation-tracker-app.web.app",
   "terms.s2.item2": "<strong>User</strong> – any natural person who accesses the Service or creates an account",
   "terms.s2.item3": "<strong>Account</strong> – an individual user profile in the Service",
   "terms.s2.item4": "<strong>Administrator</strong> – PAGE_OWNER_NAME, contact: PAGE_OWNER_EMAIL",

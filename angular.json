@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-firebase-accelerator": {
+    "translation-tracker-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -118,16 +118,16 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "ftp": {
-              "buildTarget": "angular-firebase-accelerator:build:ftp"
+              "buildTarget": "translation-tracker-app:build:ftp"
             },
             "firebase": {
-              "buildTarget": "angular-firebase-accelerator:build:firebase"
+              "buildTarget": "translation-tracker-app:build:firebase"
             },
             "gh-pages": {
-              "buildTarget": "angular-firebase-accelerator:build:gh-pages"
+              "buildTarget": "translation-tracker-app:build:gh-pages"
             },
             "local": {
-              "buildTarget": "angular-firebase-accelerator:build:local"
+              "buildTarget": "translation-tracker-app:build:local"
             }
           },
           "defaultConfiguration": "local"
@@ -136,7 +136,7 @@
           "builder": "@angular/build:extract-i18n",
           "options": {
             "outputPath": "src/i18n",
-            "buildTarget": "angular-firebase-accelerator:build"
+            "buildTarget": "translation-tracker-app:build"
           }
         },
         "test": {
