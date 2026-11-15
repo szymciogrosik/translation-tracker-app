@@ -118,140 +118,140 @@ interface ShowcaseCopy {
 
 const SHOWCASE_DICTIONARY: Record<'pl' | 'en', ShowcaseCopy> = {
   pl: {
-    badge: 'Translation Tracker • Planowanie i kontrola tempa tłumaczeń',
-    heroTitlePrefix: 'Kontroluj dzienne tempo i bufor bezpieczeństwa',
-    heroTitleAccent: 'w każdym tłumaczeniu książki.',
+    badge: 'Translation Tracker • Planowanie i kontrola tempa tłumaczenia książek',
+    heroTitlePrefix: 'Pilnuj dziennego tempa, zapasu dni i terminu oddania',
+    heroTitleAccent: 'przy każdym tłumaczeniu książki.',
     heroSubtitle:
-      'Translation Tracker pomaga tłumaczom literatury planować harmonogram pracy nad książką, rejestrować ostatnią przetłumaczoną stronę każdego dnia (także z dokładnością do 0,5 strony) i na bieżąco obliczać wymagane tempo do bezpiecznego buforu oraz ostatecznego deadline’u.',
+      'Translation Tracker pomaga tłumaczom literatury rozplanować pracę nad książką, zapisywać numer ostatniej przetłumaczonej strony każdego dnia (także z dokładnością do pół strony, np. 142,5) i na bieżąco liczyć, ile stron dziennie trzeba przełożyć, żeby zdążyć przed buforem i ostatecznym deadline’em.',
     ctaLogin: 'Zaloguj się lub załóż konto',
     ctaWorkspace: 'Przejdź do swoich książek',
-    ctaProfile: 'Twój profil',
-    ctaExplore: 'Zobacz jak to działa',
+    ctaProfile: 'Mój profil',
+    ctaExplore: 'Zobacz, jak to działa',
     welcomeBack: 'Zalogowano jako:',
     guestMode: 'Tryb podglądu (Gość)',
-    pillar1Label: 'Kalkulator 4 wariantów dni',
-    pillar1Value: 'Bez weekendów, z sobotami lub pełny kalendarz',
-    pillar2Label: 'Bezpieczny bufor przed oddaniem',
-    pillar2Value: 'Osobne wyliczanie tempa do buforu i deadline’u',
-    pillar3Label: 'Szybki zapis z ułamkami stron',
-    pillar3Value: 'Wpisy dzienne np. 142,5 str. i wykres kroczący',
+    pillar1Label: '4 warianty liczenia dni',
+    pillar1Value: 'Dni robocze, z sobotami lub pełny kalendarz',
+    pillar2Label: 'Zapas czasu przed oddaniem',
+    pillar2Value: 'Osobne wyliczanie tempa do buforu i do deadline’u',
+    pillar3Label: 'Wygodny zapis i wykres postępu',
+    pillar3Value: 'Wpisujesz tylko końcową stronę dnia (np. 142,5)',
 
-    compareTag: '01 / DOSTĘP GOŚCIA VS KONTO TŁUMACZA',
-    compareTitle: 'Co przetestujesz teraz, a co odblokujesz po zalogowaniu',
+    compareTag: '01 / TRYB GOŚCIA A KONTO TŁUMACZA',
+    compareTitle: 'Co możesz sprawdzić od razu, a co zyskujesz po zalogowaniu',
     compareSubtitle:
-      'Sprawdź działanie kalkulatora tempa i dziennego wpisu bezpośrednio na tej stronie, a po zalogowaniu zapisuj własne projekty w chmurze.',
+      'Wypróbuj kalkulator tempa na przykładowej książce poniżej, a po zalogowaniu prowadź własne projekty zapisywane w chmurze.',
     guestBoxTag: 'BEZ LOGOWANIA (TRYB GOŚCIA)',
-    guestBoxTitle: 'Interaktywne demo na żywo',
+    guestBoxTitle: 'Interaktywne demo na tej stronie',
     guestBoxItems: [
-      'Przetestowanie kalkulatora dziennego tempa na przykładowej książce (320 stron)',
-      'Przełączanie 4 wariantów dni roboczych (bez weekendów, z sobotami, z weekendami)',
-      'Symulacja dopisywania stron (+0,5 / +1 str.) z przeliczeniem buforu i postępu',
-      'Podgląd ostrzeżenia o skróceniu terminu oddania książki'
+      'Sprawdzenie kalkulatora dziennego tempa na przykładowej książce (320 stron)',
+      'Przełączanie 4 wariantów dni pracy (bez weekendów, z sobotami, z weekendami, wszystkie dni)',
+      'Symulacja dopisywania stron (+0,5 / +1 str.) z przeliczeniem postępu i tempa na żywo',
+      'Podgląd komunikatu ostrzegającego przed utratą wpisów przy skracaniu dat'
     ],
     memberBoxTag: 'PO ZALOGOWANIU (KONTO UŻYTKOWNIKA)',
-    memberBoxTitle: 'Pełny warsztat tłumacza w chmurze',
+    memberBoxTitle: 'Twoje książki i statystyki w chmurze',
     memberBoxItems: [
-      'Tworzenie nielimitowanej liczby książek z własnym kalendarzem dni wolnych (wakacji)',
-      'Główny Dashboard z szybkim wpisywaniem dzisiejszej strony i wykresem kroczącym',
+      'Dodawanie własnych książek z indywidualnym kalendarzem wakacji i dni wolnych',
+      'Główny Dashboard z szybkim wpisem dzisiejszej strony i wykresem: plan a wykonanie',
       'Tabela wszystkich dni z automatycznym zapisem i przyciskiem „Przewiń do dzisiaj”',
-      'Archiwum ukończonych książek ze statystykami średniego tempa i synchronizacją na żywo'
+      'Historia ukończonych książek z podsumowaniem średniego dziennego tempa'
     ],
     memberCtaBtn: 'Załóż konto lub zaloguj się',
 
     workflowTag: '02 / JAK DZIAŁA TRANSLATION TRACKER',
-    workflowTitle: 'Trzy kroki od umowy wydawniczej do oddania przekładu',
+    workflowTitle: 'Trzy kroki od podpisania umowy do oddania przekładu',
     workflowSubtitle:
-      'Kliknij poszczególne etapy, aby zobaczyć, jak aplikacja prowadzi Cię przez cały proces pracy nad książką.',
+      'Kliknij wybrany etap, aby zobaczyć, jak aplikacja pomaga utrzymać równe tempo pracy nad książką.',
     workflowSteps: {
       plan: {
-        step: 'ETAP 01',
-        navTitle: 'Konfiguracja książki i buforu',
-        navSub: 'Strony • Termin • Wakacje',
+        step: 'KROK 01',
+        navTitle: 'Terminy, bufor i wakacje',
+        navSub: 'Strony • Deadline • Urlop',
         icon: 'menu_book',
-        title: '1. Parametry kontraktu, bufor i dni wolne',
+        title: '1. Podajesz liczbę stron, termin oddania, dni buforu i wakacje',
         subtitle: 'StartDate • EndDate • BufforDayNumber • ExcludedDays',
         description:
-          'Podajesz tytuł książki, łączną liczbę stron, datę rozpoczęcia oraz termin oddania przekładu. Określasz liczbę dni buforu bezpieczeństwa (np. 4 dni na spokojną korektę przed deadline’em) i zaznaczasz w kalendarzu zaplanowane dni urlopu, których kalkulator nie wliczy do dni pracy.',
+          'Wpisujesz tytuł książki, łączną liczbę stron, datę rozpoczęcia oraz termin oddania przekładu. Możesz też ustawić kilka dni buforu (np. 4 dni zapasu przed ostatecznym deadline’em na spokojne sczytanie tekstu) oraz zaznaczyć w kalendarzu dni urlopu, które zostaną wyłączone z dni pracy.',
         specs: [
-          {label: 'Przykład książki', value: '„Cień Wiatru” • 320 stron'},
-          {label: 'Bufor bezpieczeństwa', value: '4 dni przed terminem wydawniczym'},
-          {label: 'Priorytet wakacji', value: 'Odliczane również gdy wypadają w weekend'}
+          {label: 'Przykładowa książka', value: '„Cień Wiatru” • 320 stron'},
+          {label: 'Dni buforu', value: '4 dni zapasu przed terminem wydawnictwa'},
+          {label: 'Dni wakacji', value: 'Pomijane również wtedy, gdy wypadają w weekend'}
         ]
       },
       daily: {
-        step: 'ETAP 02',
-        navTitle: 'Codzienny zapis postępu',
+        step: 'KROK 02',
+        navTitle: 'Codzienny wpis strony',
         navSub: 'Numer ostatniej strony',
         icon: 'edit_note',
-        title: '2. Wpisujesz numer strony, na której skończyłeś dzień',
-        subtitle: 'Obsługa połówek stron (np. 128,5) • Auto-zapis w tabeli dni',
+        title: '2. Na koniec dnia wpisujesz numer strony, na której skończyłeś',
+        subtitle: 'Obsługa połówek stron (np. 128,5) • Automatyczny zapis zmian',
         description:
-          'Zamiast ręcznie liczyć różnice, wpisujesz po prostu numer ostatniej przetłumaczonej strony na koniec dnia. Aplikacja sama wylicza dzienny przyrost (+X str.), aktualizuje pasek postępu i przelicza, ile stron dziennie musisz tłumaczyć przez pozostałe dni robocze.',
+          'Nie musisz codziennie odejmować stron w pamięci — wpisujesz po prostu numer ostatniej przetłumaczonej strony. Aplikacja sama wylicza, ile stron przybyło danego dnia (+X str.), przesuwa pasek postępu i przelicza wymagane tempo na pozostałe dni.',
         specs: [
-          {label: 'Format wpisu', value: 'Liczby całkowite i dziesiętne (np. 11,5)'},
-          {label: 'Walidacja ciągłości', value: 'Blokada wartości mniejszej niż poprzedni dzień'},
-          {label: 'Edycja historii', value: 'Widok wszystkich dni z natychmiastowym zapisem'}
+          {label: 'Dokładność wpisu', value: 'Liczby całkowite i połówki (np. 11,5)'},
+          {label: 'Kontrola błędów', value: 'Pilnuje, by strona nie była mniejsza niż wczoraj'},
+          {label: 'Pełna tabela dni', value: 'Edycja dowolnego dnia z natychmiastowym zapisem'}
         ]
       },
       analytics: {
-        step: 'ETAP 03',
-        navTitle: 'Wykres kroczący i 4 warianty',
-        navSub: 'Plan vs Wykonanie',
+        step: 'KROK 03',
+        navTitle: 'Wykres i 4 warianty dni',
+        navSub: 'Plan a rzeczywisty postęp',
         icon: 'insights',
-        title: '3. Porównanie planu z rzeczywistym tempem na wykresie',
-        subtitle: 'Wykres kumulatywny • 4 warianty liczenia dni roboczych',
+        title: '3. Sprawdzasz na wykresie, czy idziesz zgodnie z planem',
+        subtitle: 'Wykres narastający • 4 warianty liczenia dni pracy',
         description:
-          'Wykres zestawia linię planu (z płaskimi odcinkami w weekendy, dni wakacji oraz w okresie buforu) z Twoim rzeczywistym postępem. Jednym kliknięciem sprawdzisz, jak zmieni się wymagane tempo, jeśli włączysz do pracy soboty lub pełne weekendy.',
+          'Wykres zestawia planowaną ścieżkę tłumaczenia (uwzględniającą wolne weekendy, wakacje oraz dni buforu) z Twoim faktycznym postępem. W każdej chwili możesz przełączyć wariant i sprawdzić, o ile spadnie dzienna norma, jeśli włączysz do pracy soboty.',
         specs: [
-          {label: 'Domyślny wariant', value: 'Bez weekendów i bez wakacji'},
-          {label: 'Warianty awaryjne', value: 'Z sobotami / Z weekendami / Wszystkie dni'},
-          {label: 'Historia projektów', value: 'Automatyczne przeniesienie po osiągnięciu 100%'}
+          {label: 'Wariant podstawowy', value: 'Bez weekendów i bez wakacji'},
+          {label: 'Pozostałe warianty', value: 'Z sobotami / Z weekendami / Wszystkie dni'},
+          {label: 'Ukończone książki', value: 'Automatycznie trafiają do historii po 100%'}
         ]
       }
     },
 
-    sandboxTag: '03 / INTERAKTYWNY SYMULATOR NA ŻYWO',
-    sandboxTitle: 'Sprawdź kalkulator dziennego tempa i buforu',
+    sandboxTag: '03 / INTERAKTYWNY KALKULATOR NA ŻYWO',
+    sandboxTitle: 'Wypróbuj wyliczanie dziennego tempa i buforu',
     sandboxSubtitle:
-      'Zmień dzisiejszą stronę przyciskami - / + lub przełącz wariant dni roboczych — obliczenia korzystają z prawdziwego silnika BookCalculationService.',
-    sandboxBookTitle: 'Przykładowy projekt: „Archipelag Czasu”',
-    sandboxBookMeta: '320 stron • Bufor: 3 dni • 2 dni urlopu w harmonogramie',
+      'Zmień dzisiejszy numer strony przyciskami - / + albo przełącz wariant dni pracy — wszystkie liczby przeliczają się na żywo.',
+    sandboxBookTitle: 'Przykładowa książka: „Archipelag Czasu”',
+    sandboxBookMeta: '320 stron • Bufor: 3 dni • 2 dni wakacji w kalendarzu',
     sandboxProgressLabel: 'Przetłumaczone strony',
-    sandboxTodayInputLabel: 'Ostatnia przetłumaczona strona dzisiaj:',
-    sandboxDeltaPrefix: 'Dzisiejszy przyrost:',
-    sandboxVariantLabel: 'Wariant liczenia pozostałych dni:',
+    sandboxTodayInputLabel: 'Numer ostatniej przetłumaczonej strony dzisiaj:',
+    sandboxDeltaPrefix: 'Dzisiaj przetłumaczono:',
+    sandboxVariantLabel: 'Jak liczyć pozostałe dni pracy:',
     sandboxVariantNames: {
-      noWeekendsNoExcluded: 'Bez weekendów (bez wakacji)',
+      noWeekendsNoExcluded: 'Bez weekendów i bez wakacji',
       withSaturdaysNoSundaysNoExcluded: 'Z sobotami (bez niedziel i wakacji)',
       withWeekendsNoExcluded: 'Z weekendami (bez wakacji)',
       allDaysWithExcluded: 'Wszystkie dni kalendarzowe'
     },
     sandboxPaceBufferLabel: 'Wymagane tempo do buforu',
     sandboxPaceDeadlineLabel: 'Wymagane tempo do deadline’u',
-    sandboxAvgPaceLabel: 'Średnie tempo z aktywnych dni',
+    sandboxAvgPaceLabel: 'Dotychczasowe średnie tempo',
     sandboxRemainingBufferPrefix: 'Pozostało do buforu:',
     sandboxRemainingDeadlinePrefix: 'Pozostało do deadline’u:',
     sandboxDaysUnit: 'dni',
     sandboxPagesUnit: 'str.',
     sandboxPagesPerDayUnit: 'str./dzień',
     sandboxSaveBtn: 'Zasymuluj zapis dnia',
-    sandboxResetBtn: 'Resetuj symulację',
-    sandboxShiftTestBtn: 'Podgląd ostrzeżenia o dacie',
+    sandboxResetBtn: 'Przywróć wartości',
+    sandboxShiftTestBtn: 'Zobacz ostrzeżenie przy skracaniu dat',
     sandboxSavedToast: 'Zapisano dzienny postęp w symulatorze! Wymagane tempo zostało przeliczone.',
-    sandboxShiftModalTitle: 'Zmiana dat spowoduje usunięcie wpisów',
+    sandboxShiftModalTitle: 'Skrócenie czasu tłumaczenia',
     sandboxShiftModalMsg:
-      'Tak wygląda w aplikacji okno ostrzegawcze, gdy skracasz termin książki, a poza nowym zakresem dat znajdują się już zapisane strony.',
+      'Tak wygląda okno ostrzegawcze w aplikacji, gdy skracasz termin oddania książki, a w wycinanych dniach znajdują się już wpisane strony.',
     sandboxModalConfirm: 'Rozumiem',
     sandboxModalCancel: 'Zamknij',
 
-    workspaceTag: '04 / PODGLĄD PANELU PO ZALOGOWANIU',
-    workspaceTitle: 'Twoja lista wszystkich książek i archiwum',
+    workspaceTag: '04 / PODGLĄD LISTY KSIĄŻEK PO ZALOGOWANIU',
+    workspaceTitle: 'Twoje aktualne przekłady i ukończone książki',
     workspaceSubtitle:
-      'Po zalogowaniu masz dostęp do uporządkowanej listy projektów — najpierw książki w trakcie tłumaczenia, a poniżej ukończone pozycje posortowane od najnowszych.',
+      'Po zalogowaniu wszystkie książki masz w jednym miejscu — na górze projekty w trakcie tłumaczenia, a niżej ukończone przekłady posortowane od najnowszych.',
     workspaceLedgerHeaderBook: 'Tytuł książki',
     workspaceLedgerHeaderBuffer: 'Dni do buforu',
-    workspaceLedgerHeaderProgress: 'Postęp stron',
-    workspaceStatusActive: 'W trakcie',
+    workspaceLedgerHeaderProgress: 'Postęp tłumaczenia',
+    workspaceStatusActive: 'W tłumaczeniu',
     workspaceStatusDone: 'Ukończona',
     workspaceSampleBooks: [
       {
@@ -286,9 +286,9 @@ const SHOWCASE_DICTIONARY: Record<'pl' | 'en', ShowcaseCopy> = {
       }
     ],
 
-    footerBarTitle: 'Prywatność danych i przejrzyste zasady korzystania',
+    footerBarTitle: 'Prywatność danych i zasady korzystania z serwisu',
     footerBarSubtitle:
-      'Każdy projekt tłumaczeniowy jest przypisany wyłącznie do Twojego konta. Zapoznaj się z dokumentami prawnymi serwisu.',
+      'Twoje książki i statystyki są widoczne wyłącznie na Twoim koncie. Poniżej znajdziesz dokumenty prawne aplikacji.',
     linkPrivacy: 'Polityka prywatności',
     linkTerms: 'Regulamin serwisu',
     linkCookies: 'Polityka cookies'

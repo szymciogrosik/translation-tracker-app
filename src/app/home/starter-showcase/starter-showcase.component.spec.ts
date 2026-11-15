@@ -76,12 +76,12 @@ describe('StarterShowcaseComponent', () => {
     component['selectStep']('daily');
     fixture.detectChanges();
     expect(component['activeStep']()).toBe('daily');
-    expect(component['currentStepDetails']().step).toBe('ETAP 02');
+    expect(component['currentStepDetails']().step).toBe('KROK 02');
 
     component['selectStep']('analytics');
     fixture.detectChanges();
     expect(component['activeStep']()).toBe('analytics');
-    expect(component['currentStepDetails']().step).toBe('ETAP 03');
+    expect(component['currentStepDetails']().step).toBe('KROK 03');
   });
 
   it('should adjust simulated pages with decimal support and recalculate BookCalculationService stats', () => {

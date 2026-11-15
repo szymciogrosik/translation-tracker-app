@@ -177,8 +177,8 @@
   "legal.backHome": "Wróć do strony głównej",
 
   "home.title": "Translation Tracker",
-  "home.subtitle": "Śledź dzienne tempo tłumaczenia, bufor bezpieczeństwa oraz wykres kroczący postępu.",
-  "home.content": "Zaloguj się, aby przejść do swoich projektów tłumaczeniowych.",
+  "home.subtitle": "Pilnuj dziennego tempa tłumaczenia, dni buforu oraz postępu prac na wykresie.",
+  "home.content": "Zaloguj się, aby przejść do swoich książek.",
 
   "footer.copyrights": "© Szymon Gross 2026",
 
@@ -367,12 +367,12 @@
   "books.stats.variantShort.withWeekendsNoExcluded": "Z weekendami (bez wakacji)",
   "books.stats.variantShort.allDaysWithExcluded": "Wszystkie dni (z wakacjami)",
 
-  "books.stats.chartSectionTitle": "Wykres kroczący postępu tłumaczenia (plan vs wykonanie)",
-  "books.stats.chartSectionSubtitle": "Porównanie planowanej liczby stron narastająco dzień po dniu z aktualnym stanem tłumaczenia.",
+  "books.stats.chartSectionTitle": "Wykres postępu tłumaczenia (plan a wykonanie)",
+  "books.stats.chartSectionSubtitle": "Porównanie planowanej liczby stron dzień po dniu z faktycznym postępem tłumaczenia.",
   "books.stats.chart.dailyTranslated": "Przetłumaczone strony danego dnia",
   "books.stats.chart.averageLine": "Średnia w wariancie",
-  "books.stats.chart.actualCumulative": "Aktualny postęp (strony)",
-  "books.stats.chart.plannedCumulative": "Plan kroczący (jak powinno być)",
+  "books.stats.chart.actualCumulative": "Przetłumaczone strony",
+  "books.stats.chart.plannedCumulative": "Planowany postęp",
   "books.stats.chartEmpty": "Brak dni w wybranym zakresie dla tego wariantu.",
 
   "books.list.title": "Książki",
@@ -399,15 +399,15 @@
   "books.details.notFoundSubtitle": "Książka o podanym identyfikatorze nie istnieje lub nie masz do niej uprawnień.",
   "books.details.backToDetails": "Wróć do szczegółów książki",
   "books.details.editDaysLink": "Edytuj wszystkie przetłumaczone strony",
-  "books.details.editSettingsLink": "Edytuj ustawienia ksiązki",
+  "books.details.editSettingsLink": "Edytuj ustawienia książki",
   "books.details.editDaysShort": "Dni",
   "books.details.editSettingsShort": "Ustawienia",
   "books.details.daysCardTitle": "Edycja wszystkich dni i stron",
-  "books.details.daysCardDesc": "Przejdź do pełnej tabeli każdego dnia od daty startu do daty końca, aby ręcznie wprowadzić lub skorygować numer ostatniej przetłumaczonej strony.",
+  "books.details.daysCardDesc": "Przejdź do pełnej tabeli wszystkich dni od startu do końca, aby ręcznie wpisać lub poprawić numer ostatniej przetłumaczonej strony.",
   "books.details.settingsCardTitle": "Ustawienia książki, terminy i wakacje",
-  "books.details.settingsCardDesc": "Zmień datę rozpoczęcia, definitywny koniec, bufor lub zaznacz wakacje.",
+  "books.details.settingsCardDesc": "Zmień datę rozpoczęcia, termin końcowy, dni buforu lub zaznacz wakacje.",
   "books.details.editVacations": "Edytuj wakacje",
-  "books.details.dangerZoneTitle": "Usuwanie projektu",
+  "books.details.dangerZoneTitle": "Usuwanie książki",
   "books.details.dangerZoneDesc": "Bezpowrotnie usuń tę książkę wraz z całą historią wpisanych stron.",
   "books.details.noExcludedDays": "Brak zaznaczonych wakacji.",
 
