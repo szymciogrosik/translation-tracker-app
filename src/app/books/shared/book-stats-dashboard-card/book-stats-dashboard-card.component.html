@@ -1,0 +1,199 @@
+<mat-card class="manuscript-workspace-card app-card-wide">
+  <!-- 1. Editorial Spine: Title + Inline Timeline + Single Progress Line -->
+  <div class="editorial-spine">
+    <div class="spine-top-row">
+      @if (isClickableHeader() && book().id) {
+        <a [routerLink]="['/books', book().id]" class="editorial-title-link">
+          <h2>{{ stats().bookName }}</h2>
+        </a>
+      } @else {
+        <h2>{{ stats().bookName }}</h2>
+      }
+
+      @if (isClickableHeader() && book().id) {
+        <div class="spine-header-actions">
+          <a [routerLink]="['/books', book().id, 'days']" class="subtle-details-link">
+            <mat-icon>edit_calendar</mat-icon>
+            <span>{{ 'books.details.editDaysLink' | translate }}</span>
+          </a>
+          <a [routerLink]="['/books', book().id]" class="subtle-details-link">
+            <span>{{ 'books.common.openDetails' | translate }}</span>
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        </div>
+      }
+    </div>
+
+    <div class="spine-meta-row tabular-nums">
+      <div class="timeline-inline">
+        <span>{{ formatDisplayDate(stats().startDate) }} &mdash; {{ formatDisplayDate(stats().endDate) }}</span>
+        <span class="meta-dot">&middot;</span>
+        <span class="today-translated-pill" [class.is-celebrating]="isCelebratingProgress()">
+          {{ 'books.stats.todayTranslated' | translate }}:
+          <strong>+{{ animatedTodayPages() }} {{ 'books.common.pagesShort' | translate }}</strong>
+        </span>
+      </div>
+
+      <div class="pages-summary-inline" [class.is-celebrating]="isCelebratingProgress()">
+        <strong>{{ animatedCurrentPages() }} / {{ stats().totalPages }} {{ 'books.common.pagesShort' | translate }}</strong>
+        <span class="remaining-muted">({{ 'books.stats.remainingPages' | translate }}: {{ animatedRemainingPages() }} &middot; {{ animatedProgressPercent() }}%)</span>
+      </div>
+    </div>
+
+    <div class="editorial-progress-track" [class.is-celebrating]="isCelebratingProgress()">
+      <div class="editorial-progress-fill" [style.width.%]="stats().progressPercent"></div>
+    </div>
+  </div>
+
+  <!-- 2. Daily Check-in Strip -->
+  @if (showDailyEntryBox()) {
+    <app-daily-entry-box
+      [book]="book()"
+      [pendingInfo]="stats().nextPendingDay"
+      (pagesAddedCelebration)="onPagesAddedCelebration()" />
+  }
+
+  <!-- 3. Unified 4-Variant Segmented Switcher + 3 Focused Pacing Columns -->
+  <div class="lens-section">
+    <div class="segmented-lens-bar" role="tablist" aria-label="Day counting variants">
+      @for (v of stats().variantsList; track v.variantId) {
+        <button
+          type="button"
+          role="tab"
+          class="lens-tab-btn"
+          [attr.aria-selected]="selectedVariant() === v.variantId"
+          [class.is-selected]="selectedVariant() === v.variantId"
+          (click)="selectVariant(v.variantId)">
+          <span>{{ ('books.stats.variantShort.' + v.variantId) | translate }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- 3 Calm Pacing Columns driven by the active variant lens -->
+    <div class="lens-metrics-row tabular-nums">
+      <div class="lens-metric-col" [class.is-celebrating]="isCelebratingProgress()">
+        <span class="col-label">{{ 'books.stats.table.paceToBuffer' | translate }}</span>
+        <div class="col-primary-line">
+          @if (animatedPaceToBuffer() !== null) {
+            <strong>{{ animatedPaceToBuffer() }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+          } @else {
+            <strong>{{ 'books.stats.noDaysLeft' | translate }}</strong>
+          }
+        </div>
+        <span class="col-pace-line">
+          {{ 'books.stats.table.remainingToBuffer' | translate }}:
+          <strong>{{ activeVariantStat().remainingDaysToBuffer }} {{ 'books.common.daysShort' | translate }}</strong>
+          <span class="col-sub-total">/ {{ activeVariantStat().totalDays }} {{ 'books.common.daysShort' | translate }}</span>
+        </span>
+      </div>
+
+      <div class="lens-metric-col" [class.is-celebrating]="isCelebratingProgress()">
+        <span class="col-label">{{ 'books.stats.table.paceToDeadline' | translate }}</span>
+        <div class="col-primary-line">
+          @if (animatedPaceToDeadline() !== null) {
+            <strong>{{ animatedPaceToDeadline() }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+          } @else {
+            <strong>{{ 'books.stats.noDaysLeft' | translate }}</strong>
+          }
+        </div>
+        <span class="col-pace-line">
+          {{ 'books.stats.table.remainingToDeadline' | translate }}:
+          <strong>{{ activeVariantStat().remainingDaysToDeadline }} {{ 'books.common.daysShort' | translate }}</strong>
+          <span class="col-sub-total">/ {{ activeVariantStat().totalDays }} {{ 'books.common.daysShort' | translate }}</span>
+        </span>
+      </div>
+
+      <div class="lens-metric-col" [class.is-celebrating]="isCelebratingProgress()">
+        <span class="col-label">{{ 'books.stats.table.avgTranslated' | translate }}</span>
+        <div class="col-primary-line">
+          <strong>{{ animatedAvgPace() }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+        </div>
+        <span class="col-pace-line">
+          {{ 'books.stats.avgTranslatedHint' | translate }} ({{ activeVariantStat().translatedDaysInVariantCount }} {{ 'books.common.daysShort' | translate }})
+        </span>
+      </div>
+    </div>
+
+    @if (showChartAndMatrix()) {
+      <!-- Progressive Disclosure: Optional full 4-variant comparison table -->
+      <div class="matrix-disclosure-row">
+        <button type="button" class="matrix-toggle-link" (click)="toggleFullMatrix()">
+          <span>{{ (showFullVariantsMatrix() ? 'books.stats.hideAllVariantsTable' : 'books.stats.showAllVariantsTable') | translate }}</span>
+          <mat-icon>{{ showFullVariantsMatrix() ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+      </div>
+
+      @if (showFullVariantsMatrix()) {
+        <div class="variants-table-wrapper tabular-nums">
+          <table class="variants-excel-table">
+            <thead>
+              <tr>
+                <th>{{ 'books.stats.table.variantName' | translate }}</th>
+                <th>{{ 'books.stats.table.totalDays' | translate }}</th>
+                <th>{{ 'books.stats.table.remainingToBuffer' | translate }}</th>
+                <th>{{ 'books.stats.table.paceToBuffer' | translate }}</th>
+                <th>{{ 'books.stats.table.remainingToDeadline' | translate }}</th>
+                <th>{{ 'books.stats.table.paceToDeadline' | translate }}</th>
+                <th>{{ 'books.stats.table.avgTranslated' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (v of stats().variantsList; track v.variantId) {
+                <tr [class.active-row]="selectedVariant() === v.variantId" (click)="selectVariant(v.variantId)">
+                  <td class="variant-name-cell">{{ ('books.stats.variant.' + v.variantId) | translate }}</td>
+                  <td>{{ v.totalDays }}</td>
+                  <td><strong>{{ v.remainingDaysToBuffer }}</strong></td>
+                  <td>
+                    @if (v.requiredPagesPerDayToBuffer !== null) {
+                      {{ v.requiredPagesPerDayToBuffer }} {{ 'books.common.pagesPerDay' | translate }}
+                    } @else {
+                      &mdash;
+                    }
+                  </td>
+                  <td><strong>{{ v.remainingDaysToDeadline }}</strong></td>
+                  <td>
+                    @if (v.requiredPagesPerDayToDeadline !== null) {
+                      {{ v.requiredPagesPerDayToDeadline }} {{ 'books.common.pagesPerDay' | translate }}
+                    } @else {
+                      &mdash;
+                    }
+                  </td>
+                  <td>{{ v.averageTranslatedPerActiveVariantDay }} {{ 'books.common.pagesPerDay' | translate }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- 4. Cumulative Rolling Progress Chart (Planned vs Actual) -->
+  @if (showChartAndMatrix()) {
+    <div class="editorial-chart-section">
+      <div class="chart-caption-row tabular-nums">
+        <span class="chart-caption-title">{{ 'books.stats.chartSectionTitle' | translate }}</span>
+        <div class="chart-legend-inline">
+          <span class="legend-item actual-legend">
+            <span class="legend-dot actual-dot"></span>
+            {{ 'books.stats.chart.actualCumulative' | translate }}
+          </span>
+          <span class="legend-item planned-legend">
+            <span class="legend-line-dash"></span>
+            {{ 'books.stats.chart.plannedCumulative' | translate }}
+          </span>
+        </div>
+      </div>
+
+      @if (activeCumulativeSeries().labels.length > 0) {
+        <div class="chart-canvas-box">
+          <canvas #dailyPagesCanvas></canvas>
+        </div>
+      } @else {
+        <div class="empty-chart-inline">
+          <span>{{ 'books.stats.chartEmpty' | translate }}</span>
+        </div>
+      }
+    </div>
+  }
+</mat-card>

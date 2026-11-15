@@ -1,0 +1,128 @@
+<div class="app-page-container">
+  @if (book() === undefined) {
+    <mat-card class="app-card-wide">
+      <app-skeleton width="100%" height="320px" borderRadius="16px" />
+    </mat-card>
+  } @else if (book(); as currentBook) {
+    <!-- Quiet Editorial Top Bar -->
+    <div class="editorial-workspace-bar app-card-wide">
+      <div class="bar-titles">
+        <h1>{{ 'books.daysEdit.title' | translate }}: {{ currentBook.BookName }}</h1>
+        <p class="tabular-nums">
+          {{ calcService.formatDisplayDate(currentBook.StartDate) }} &mdash;
+          {{ calcService.formatDisplayDate(currentBook.EndDate) }}
+          &middot;
+          {{ 'books.stats.totalPages' | translate }}: <strong>{{ currentBook.NumberOfPages }}</strong>
+          @if (isSaving()) {
+            &middot;
+            <span class="autosave-status">{{ 'books.daysEdit.autoSaving' | translate }}</span>
+          } @else if (showSavedIndicator() && !hasValidationErrors()) {
+            &middot;
+            <span class="autosave-status is-saved">{{ 'books.daysEdit.autoSaved' | translate }}</span>
+          }
+        </p>
+      </div>
+
+      <div class="bar-actions">
+        <button
+          mat-flat-button
+          color="accent"
+          type="button"
+          (click)="scrollToToday()">
+          <mat-icon>today</mat-icon>
+          <span>{{ 'books.daysEdit.scrollToToday' | translate }}</span>
+        </button>
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="back-btn"
+          [routerLink]="['/books', currentBook.id]">
+          <mat-icon>arrow_back</mat-icon>
+          <span>{{ 'books.details.backToDetails' | translate }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Two-Column Days List Card -->
+    <mat-card class="days-table-card app-card-wide">
+      <div class="days-columns-header">
+        <div class="col-date">{{ 'books.daysEdit.columnDate' | translate }}</div>
+        <div class="col-pages">{{ 'books.daysEdit.columnLastPage' | translate }}</div>
+      </div>
+
+      <div class="days-rows-container">
+        @for (row of rows(); track row.date) {
+          <div
+            [id]="'day-row-' + row.date"
+            class="day-row"
+            [class.is-today]="row.isToday"
+            [class.is-excluded]="row.isExcluded"
+            [class.is-weekend]="row.isWeekend"
+            [class.is-just-saved]="justSavedRowIndex() === row.index"
+            [class.has-error]="!!row.error">
+            <!-- Column 1: Non-editable Date + Badges -->
+            <div class="day-date-col tabular-nums">
+              <span class="date-text">{{ row.displayDate }}</span>
+              <span class="weekday-pill">{{ row.weekdayKey | translate }}</span>
+              @if (row.isToday) {
+                <span class="today-badge">{{ 'books.daysEdit.todayBadge' | translate }}</span>
+              }
+              @if (row.isExcluded) {
+                <span class="excluded-badge">{{ 'books.daysEdit.excludedBadge' | translate }}</span>
+              }
+            </div>
+
+            <!-- Column 2: Current Last Page Number Input -->
+            <div class="day-input-col tabular-nums">
+              <div class="input-and-clear">
+                <mat-form-field appearance="outline" class="day-page-field" subscriptSizing="dynamic">
+                  <mat-label>{{ 'books.daysEdit.pageInputPlaceholder' | translate }}</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    inputmode="decimal"
+                    class="tabular-nums"
+                    [ngModel]="row.pagesInput"
+                    (ngModelChange)="onRowInputChange(row.index, $event)" />
+                </mat-form-field>
+
+                @if (row.pagesInput !== '') {
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    class="clear-day-btn"
+                    (click)="clearRow(row.index)"
+                    [title]="'books.daysEdit.clearDay' | translate">
+                    &times;
+                  </button>
+                }
+              </div>
+
+              <div class="day-meta-feedback">
+                @if (row.error) {
+                  <span class="row-error">{{ row.error }}</span>
+                } @else if (row.dailyDelta !== null) {
+                  <span class="row-delta">+{{ row.dailyDelta }} {{ 'books.common.pagesShort' | translate }}</span>
+                } @else {
+                  <span class="row-null-hint">{{ 'books.daysEdit.notEnteredYet' | translate }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div id="days-edit-bottom-actions" class="app-full-width-actions">
+        <button
+          mat-stroked-button
+          type="button"
+          class="app-action-button"
+          [routerLink]="['/books', currentBook.id]">
+          <mat-icon>arrow_back</mat-icon>
+          <span>{{ 'books.details.backToDetails' | translate }}</span>
+        </button>
+      </div>
+    </mat-card>
+  }
+</div>

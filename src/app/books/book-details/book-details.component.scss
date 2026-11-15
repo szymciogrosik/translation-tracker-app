@@ -1,0 +1,214 @@
+:host {
+  width: 100%;
+  min-width: 0;
+  display: block;
+}
+
+app-book-stats-dashboard-card {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.editorial-workspace-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 4px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  .bar-left,
+  .bar-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+
+    .nav-btn {
+      border: 1px solid var(--app-primary-color) !important;
+      height: 40px;
+    }
+
+    button[mat-flat-button] {
+      height: 40px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+
+    .bar-left,
+    .bar-right {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+      gap: 8px;
+
+      .nav-btn,
+      button[mat-flat-button],
+      button[mat-stroked-button] {
+        width: 100%;
+        min-height: 44px;
+        height: auto;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.details-footer-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .vacations-overview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .header-text {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .section-label {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--app-text-primary);
+      }
+    }
+
+    .vacation-count-badge {
+      padding: 4px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--app-primary-color) !important;
+      background-color: var(--app-accent-selected-bg);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--app-accent-color) !important;
+    }
+
+    .edit-vacations-btn {
+      border: 1px solid var(--app-primary-color) !important;
+      height: 40px;
+    }
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .header-text {
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .edit-vacations-btn {
+        width: 100%;
+        min-height: 44px;
+        height: auto;
+        justify-content: center;
+      }
+    }
+  }
+
+  .muted-note {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--app-text-secondary);
+  }
+
+  .chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .mini-date-chip {
+      padding: 6px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--app-primary-color) !important;
+      background-color: var(--app-accent-selected-bg);
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.details-danger-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .danger-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .danger-label {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--app-text-primary);
+    }
+
+    .danger-sub {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--app-text-secondary);
+    }
+  }
+
+  .delete-book-btn {
+    border: 1px solid var(--app-error-color) !important;
+    background-color: var(--app-error-bg) !important;
+    color: var(--app-error-color) !important;
+    height: 42px;
+    padding: 0 20px !important;
+    flex-shrink: 0;
+
+    mat-icon {
+      color: var(--app-error-color) !important;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: var(--app-error-bg-hover) !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .delete-book-btn {
+      width: 100%;
+      min-height: 44px;
+      height: auto;
+      justify-content: center;
+    }
+  }
+}
+
+.not-found-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+
+  @media (max-width: 640px) {
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

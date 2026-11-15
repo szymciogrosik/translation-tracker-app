@@ -18,7 +18,7 @@ This skill defines:
 ### A. Privacy Policy (Polityka Prywatności – GDPR / RODO Art. 13 & 14)
 Every web application processing user data MUST include:
 1. **Administrator / Data Controller Identity**:
-   - Full name or legal entity name, operating country, and direct contact email (`PAGE_OWNER_NAME`, `PAGE_OWNER_EMAIL`).
+   - Full name or legal entity name, operating country, and direct contact email (`Szymon Gross`, `codefromheaven.dev@gmail.com`).
 2. **Exact Scope of Collected Personal Data**:
    - Must mirror actual code models: e.g., email, name, avatar URL, Firebase UID, system roles, login timestamps, IP address.
    - If optional fields are added (phone, company NIP, address), they must be explicitly listed.
@@ -38,7 +38,7 @@ Every web application processing user data MUST include:
    - Security/auth server logs: temporary retention by Google per their policy.
 6. **User Rights**:
    - Access, rectification, erasure ("right to be forgotten"), restriction of processing, objection.
-   - Contact mechanism to exercise rights (`PAGE_OWNER_EMAIL`).
+   - Contact mechanism to exercise rights (`codefromheaven.dev@gmail.com`).
    - Right to file a complaint with the supervisory authority (e.g. UODO in Poland or local EU DPA).
 7. **Profiling & Automated Decisions**:
    - Explicit statement that no automated profiling affecting legal rights takes place.
@@ -70,7 +70,7 @@ Regulates electronic service provision and user obligations:
      - Statutory warranty and complaint procedure (reklamacje, 14-day response time).
    - If free: Keep terms lean without unnecessary consumer ecommerce clauses.
 9. **Complaints (Reklamacje)**:
-   - Address for complaints (`PAGE_OWNER_EMAIL`), statutory response time (14 days).
+   - Address for complaints (`codefromheaven.dev@gmail.com`), statutory response time (14 days).
 10. **Final Provisions & Amendment Notice**:
     - Governing law and update notification via the "Last updated" date.
 
@@ -164,8 +164,8 @@ Search for public forums, comments, file uploads, social sharing:
 ### Step 7: Check Placeholders
 Search `src/assets/i18n/` for:
 ```
-PAGE_OWNER_NAME
-PAGE_OWNER_EMAIL
+Szymon Gross
+codefromheaven.dev@gmail.com
 PAGE_OWNER_USERNAME
 ```
 - If the downstream application has its real owner/company name and email defined, substitute them across `pl.json` and `en.json`.

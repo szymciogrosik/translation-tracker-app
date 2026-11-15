@@ -1,12 +1,6 @@
 <div class="showcase-wrapper">
-  <!-- 1. APPLE-STYLE MONUMENTAL GLASS HERO -->
+  <!-- 1. HERO CARD -->
   <mat-card class="hero-bento-card">
-    <div class="hero-mesh-backdrop" aria-hidden="true">
-      <div class="mesh-orb orb-1"></div>
-      <div class="mesh-orb orb-2"></div>
-      <div class="mesh-orb orb-3"></div>
-    </div>
-
     <div class="hero-inner">
       <div class="hero-top-row">
         <div class="status-pill">
@@ -40,50 +34,48 @@
 
       <div class="hero-cta-row">
         @if (!isLoggedIn()) {
-          <a mat-raised-button color="primary" class="hero-btn-primary" [routerLink]="rp.SEP + rp.LOGIN">
-            <mat-icon>rocket_launch</mat-icon>
+          <a mat-flat-button color="accent" class="hero-btn-primary" [routerLink]="rp.SEP + rp.LOGIN">
+            <mat-icon>login</mat-icon>
             <span>{{ copy().ctaLogin }}</span>
           </a>
         } @else {
-          <a mat-raised-button color="primary" class="hero-btn-primary" [routerLink]="rp.SEP + rp.PROFILE">
+          <a mat-flat-button color="accent" class="hero-btn-primary" [routerLink]="rp.SEP + rp.BOOKS">
+            <mat-icon>menu_book</mat-icon>
+            <span>{{ copy().ctaWorkspace }}</span>
+          </a>
+          <a mat-stroked-button class="hero-btn-secondary" [routerLink]="rp.SEP + rp.PROFILE">
             <mat-icon>account_circle</mat-icon>
             <span>{{ copy().ctaProfile }}</span>
           </a>
-          @if (user()?.roles?.length) {
-            <a mat-stroked-button class="hero-btn-secondary" [routerLink]="rp.SEP + rp.ADMIN">
-              <mat-icon>admin_panel_settings</mat-icon>
-              <span>{{ copy().ctaAdmin }}</span>
-            </a>
-          }
         }
         <button type="button" mat-stroked-button class="hero-btn-secondary" (click)="scrollToPlayground()">
-          <mat-icon>tune</mat-icon>
+          <mat-icon>calculate</mat-icon>
           <span>{{ copy().ctaExplore }}</span>
         </button>
       </div>
 
       <div class="hero-metrics-strip">
         <div class="metric-item">
-          <mat-icon class="metric-icon">bolt</mat-icon>
+          <mat-icon class="metric-icon">date_range</mat-icon>
           <div class="metric-copy">
-            <span class="metric-label">{{ copy().metricZonelessLabel }}</span>
-            <strong class="metric-value">{{ copy().metricZonelessValue }}</strong>
+            <span class="metric-label">{{ copy().pillar1Label }}</span>
+            <strong class="metric-value">{{ copy().pillar1Value }}</strong>
           </div>
         </div>
 
         <div class="metric-item">
-          <mat-icon class="metric-icon">shield_lock</mat-icon>
+          <mat-icon class="metric-icon">event_available</mat-icon>
           <div class="metric-copy">
-            <span class="metric-label">{{ copy().metricAuthLabel }}</span>
-            <strong class="metric-value">{{ copy().metricAuthValue }}</strong>
+            <span class="metric-label">{{ copy().pillar2Label }}</span>
+            <strong class="metric-value">{{ copy().pillar2Value }}</strong>
           </div>
         </div>
 
         <div class="metric-item">
-          <mat-icon class="metric-icon">cloud_done</mat-icon>
+          <mat-icon class="metric-icon">trending_up</mat-icon>
           <div class="metric-copy">
-            <span class="metric-label">{{ copy().metricCdnLabel }}</span>
-            <strong class="metric-value">{{ copy().metricCdnValue }}</strong>
+            <span class="metric-label">{{ copy().pillar3Label }}</span>
+            <strong class="metric-value">{{ copy().pillar3Value }}</strong>
           </div>
         </div>
       </div>
@@ -93,23 +85,77 @@
   <!-- 2. INTERACTIVE BENTO PLAYGROUND -->
   <div id="bento-playground" class="bento-grid">
 
-    <!-- TILE 1 (SPAN 2): INTERACTIVE ARCHITECTURE PIPELINE -->
+    <!-- TILE 1 (SPAN 3): GUEST VS LOGGED-IN COMPARISON -->
+    <mat-card class="bento-card bento-span-3">
+      <div class="bento-header">
+        <span class="bento-eyebrow">{{ copy().compareTag }}</span>
+        <h2>{{ copy().compareTitle }}</h2>
+        <p>{{ copy().compareSubtitle }}</p>
+      </div>
+
+      <div class="comparison-columns">
+        <!-- Without Login (Guest) -->
+        <div class="comparison-box">
+          <div class="comparison-box-top">
+            <span class="comparison-tag">{{ copy().guestBoxTag }}</span>
+            <h3>{{ copy().guestBoxTitle }}</h3>
+          </div>
+          <ul class="comparison-list">
+            @for (item of copy().guestBoxItems; track item) {
+              <li>
+                <mat-icon>check_circle</mat-icon>
+                <span>{{ item }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- With Login (Standard User Account) -->
+        <div class="comparison-box is-highlighted">
+          <div class="comparison-box-top">
+            <span class="comparison-tag">{{ copy().memberBoxTag }}</span>
+            <h3>{{ copy().memberBoxTitle }}</h3>
+          </div>
+          <ul class="comparison-list">
+            @for (item of copy().memberBoxItems; track item) {
+              <li>
+                <mat-icon>verified</mat-icon>
+                <span>{{ item }}</span>
+              </li>
+            }
+          </ul>
+          @if (!isLoggedIn()) {
+            <div class="comparison-cta">
+              <a mat-flat-button color="accent" class="app-action-button" [routerLink]="rp.SEP + rp.LOGIN">
+                <mat-icon>person_add</mat-icon>
+                <span>{{ copy().memberCtaBtn }}</span>
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- TILE 2 (SPAN 2): INTERACTIVE CORE BUSINESS WORKFLOW PREVIEW -->
     <mat-card class="bento-card bento-span-2">
       <div class="bento-header">
-        <span class="bento-eyebrow">{{ copy().archTag }}</span>
-        <h2>{{ copy().archTitle }}</h2>
-        <p>{{ copy().archSubtitle }}</p>
+        <span class="bento-eyebrow">{{ copy().workflowTag }}</span>
+        <h2>{{ copy().workflowTitle }}</h2>
+        <p>{{ copy().workflowSubtitle }}</p>
       </div>
 
       <div class="pipeline-selector" role="tablist">
-        <button type="button" class="pipeline-node" [class.active]="activeNode() === 'angular'"
-                (click)="selectNode('angular')">
+        <button
+          type="button"
+          class="pipeline-node"
+          [class.active]="activeStep() === 'plan'"
+          (click)="selectStep('plan')">
           <div class="node-icon-box">
-            <mat-icon>memory</mat-icon>
+            <mat-icon>{{ copy().workflowSteps.plan.icon }}</mat-icon>
           </div>
           <div class="node-meta">
-            <span class="node-step">01 • FRONTEND</span>
-            <strong>Angular 21 Signals</strong>
+            <span class="node-step">{{ copy().workflowSteps.plan.step }}</span>
+            <strong>{{ copy().workflowSteps.plan.navTitle }}</strong>
           </div>
         </button>
 
@@ -117,14 +163,17 @@
           <mat-icon>east</mat-icon>
         </div>
 
-        <button type="button" class="pipeline-node" [class.active]="activeNode() === 'firebase'"
-                (click)="selectNode('firebase')">
+        <button
+          type="button"
+          class="pipeline-node"
+          [class.active]="activeStep() === 'daily'"
+          (click)="selectStep('daily')">
           <div class="node-icon-box">
-            <mat-icon>local_fire_department</mat-icon>
+            <mat-icon>{{ copy().workflowSteps.daily.icon }}</mat-icon>
           </div>
           <div class="node-meta">
-            <span class="node-step">02 • BACKEND-AS-A-SERVICE</span>
-            <strong>Firebase Auth &amp; DB</strong>
+            <span class="node-step">{{ copy().workflowSteps.daily.step }}</span>
+            <strong>{{ copy().workflowSteps.daily.navTitle }}</strong>
           </div>
         </button>
 
@@ -132,14 +181,17 @@
           <mat-icon>east</mat-icon>
         </div>
 
-        <button type="button" class="pipeline-node" [class.active]="activeNode() === 'cloudinary'"
-                (click)="selectNode('cloudinary')">
+        <button
+          type="button"
+          class="pipeline-node"
+          [class.active]="activeStep() === 'analytics'"
+          (click)="selectStep('analytics')">
           <div class="node-icon-box">
-            <mat-icon>perm_media</mat-icon>
+            <mat-icon>{{ copy().workflowSteps.analytics.icon }}</mat-icon>
           </div>
           <div class="node-meta">
-            <span class="node-step">03 • EDGE MEDIA CDN</span>
-            <strong>Cloudinary WebP</strong>
+            <span class="node-step">{{ copy().workflowSteps.analytics.step }}</span>
+            <strong>{{ copy().workflowSteps.analytics.navTitle }}</strong>
           </div>
         </button>
       </div>
@@ -147,15 +199,15 @@
       <div class="pipeline-inspector">
         <div class="inspector-top">
           <div>
-            <span class="inspector-badge">{{ currentNodeDetails().step }}</span>
-            <h3>{{ currentNodeDetails().title }}</h3>
-            <span class="inspector-sub">{{ currentNodeDetails().subtitle }}</span>
+            <span class="inspector-badge">{{ currentStepDetails().step }}</span>
+            <h3>{{ currentStepDetails().title }}</h3>
+            <span class="inspector-sub">{{ currentStepDetails().subtitle }}</span>
           </div>
         </div>
-        <p class="inspector-desc">{{ currentNodeDetails().description }}</p>
+        <p class="inspector-desc">{{ currentStepDetails().description }}</p>
 
         <div class="inspector-specs">
-          @for (spec of currentNodeDetails().specs; track spec.label) {
+          @for (spec of currentStepDetails().specs; track spec.label) {
             <div class="spec-pill">
               <span class="spec-label">{{ spec.label }}</span>
               <code class="spec-value">{{ spec.value }}</code>
@@ -165,172 +217,167 @@
       </div>
     </mat-card>
 
-    <!-- TILE 2: LIVE THEME & LOCALE STUDIO -->
+    <!-- TILE 3 (SPAN 1): POST-LOGIN WORKSPACE LEDGER PREVIEW -->
     <mat-card class="bento-card">
       <div class="bento-header">
-        <span class="bento-eyebrow">{{ copy().studioTag }}</span>
-        <h2>{{ copy().studioTitle }}</h2>
-        <p>{{ copy().studioSubtitle }}</p>
+        <span class="bento-eyebrow">{{ copy().workspaceTag }}</span>
+        <h2>{{ copy().workspaceTitle }}</h2>
+        <p>{{ copy().workspaceSubtitle }}</p>
       </div>
 
-      <div class="studio-controls">
-        <div class="control-block">
-          <span class="control-label">
-            <mat-icon>palette</mat-icon>
-            <span>{{ copy().themeLabel }}</span>
-          </span>
-          <div class="segmented-switch">
-            <button type="button" class="seg-btn" [class.active]="!isDarkTheme()"
-                    (click)="setTheme(false)">
-              <mat-icon>light_mode</mat-icon>
-              <span>{{ copy().themeLight }}</span>
-            </button>
-            <button type="button" class="seg-btn" [class.active]="isDarkTheme()"
-                    [disabled]="!allowDarkMode()"
-                    (click)="setTheme(true)">
-              <mat-icon>dark_mode</mat-icon>
-              <span>{{ copy().themeDark }}</span>
-            </button>
-          </div>
-          @if (!allowDarkMode()) {
-            <span class="control-hint">{{ copy().themeDisabledHint }}</span>
-          }
-        </div>
-
-        <div class="control-block">
-          <span class="control-label">
-            <mat-icon>translate</mat-icon>
-            <span>{{ copy().langLabel }}</span>
-          </span>
-          <div class="segmented-switch">
-            <button type="button" class="seg-btn" [class.active]="currentLang() === 'pl'"
-                    (click)="setLanguage(LanguageEnum.POLISH)">
-              <span>🇵🇱 Polski</span>
-            </button>
-            <button type="button" class="seg-btn" [class.active]="currentLang() === 'en'"
-                    (click)="setLanguage(LanguageEnum.ENGLISH)">
-              <span>🇬🇧 English</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </mat-card>
-
-    <!-- TILE 3: LIVE SESSION & FEATURE FLAGS INSPECTOR -->
-    <mat-card class="bento-card">
-      <div class="bento-header">
-        <span class="bento-eyebrow">{{ copy().sessionTag }}</span>
-        <h2>{{ copy().sessionTitle }}</h2>
-      </div>
-
-      @if (user(); as currentUser) {
-        <div class="live-user-box">
-          @if (currentUser.photoUrl) {
-            <img [src]="currentUser.photoUrl" alt="Avatar" class="live-user-avatar">
-          } @else {
-            <div class="live-user-initials">
-              {{ currentUser.firstName.charAt(0) }}{{ currentUser.lastName.charAt(0) }}
+      <div class="workspace-preview-list tabular-nums">
+        @for (sample of copy().workspaceSampleBooks; track sample.title) {
+          <div class="preview-book-row" [class.is-completed]="sample.completed">
+            <div class="preview-row-top">
+              <strong>{{ sample.title }}</strong>
+              <span class="preview-status-pill" [class.done]="sample.completed">
+                {{ sample.completed ? copy().workspaceStatusDone : copy().workspaceStatusActive }}
+              </span>
             </div>
-          }
-          <div class="live-user-info">
-            <span class="live-user-tag">{{ copy().sessionLoggedAs }}</span>
-            <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong>
-            <span class="live-user-email">{{ currentUser.email }}</span>
+
+            <div class="preview-row-meta">
+              <span>{{ sample.startDate }} &mdash; {{ sample.endDate }}</span>
+              <span>{{ copy().workspaceLedgerHeaderBuffer }}: <strong>{{ sample.daysToBuffer }} {{ copy().sandboxDaysUnit }}</strong></span>
+            </div>
+
+            <div class="preview-row-progress">
+              <div class="preview-progress-labels">
+                <span>{{ sample.currentPages }} / {{ sample.totalPages }} {{ copy().sandboxPagesUnit }}</span>
+                <strong>{{ sample.percent }}%</strong>
+              </div>
+              <div class="preview-progress-track">
+                <div class="preview-progress-fill" [style.width.%]="sample.percent"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-card>
+
+    <!-- TILE 4 (SPAN 3): LIVE PACING & DAILY ENTRY SANDBOX -->
+    <mat-card class="bento-card bento-span-3">
+      <div class="bento-header">
+        <span class="bento-eyebrow">{{ copy().sandboxTag }}</span>
+        <h2>{{ copy().sandboxTitle }}</h2>
+        <p>{{ copy().sandboxSubtitle }}</p>
+      </div>
+
+      <div class="sandbox-simulator-grid tabular-nums">
+        <!-- Left column: Interactive Daily Page Stepper & Progress -->
+        <div class="sandbox-control-panel">
+          <div class="sandbox-book-header">
+            <div>
+              <h3>{{ copy().sandboxBookTitle }}</h3>
+              <span class="sandbox-book-sub">{{ copy().sandboxBookMeta }}</span>
+            </div>
+            <span class="sandbox-delta-pill">
+              {{ copy().sandboxDeltaPrefix }} <strong>+{{ sandboxDailyDelta() }} {{ copy().sandboxPagesUnit }}</strong>
+            </span>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="sandbox-progress-box">
+            <div class="sandbox-progress-top">
+              <span>{{ copy().sandboxProgressLabel }}: <strong>{{ demoStats().currentTranslatedPages }} / {{ demoStats().totalPages }} {{ copy().sandboxPagesUnit }}</strong></span>
+              <strong>{{ demoStats().progressPercent }}%</strong>
+            </div>
+            <div class="sandbox-progress-track">
+              <div class="sandbox-progress-fill" [style.width.%]="demoStats().progressPercent"></div>
+            </div>
+          </div>
+
+          <!-- Stepper Control (+0.5 / +1 / +5) -->
+          <div class="sandbox-stepper-box">
+            <span class="stepper-label">{{ copy().sandboxTodayInputLabel }}</span>
+            <div class="stepper-buttons-row">
+              <button type="button" class="step-adjust-btn" (click)="adjustSandboxPages(-5)">-5</button>
+              <button type="button" class="step-adjust-btn" (click)="adjustSandboxPages(-1)">-1</button>
+              <button type="button" class="step-adjust-btn" (click)="adjustSandboxPages(-0.5)">-0,5</button>
+              <div class="current-page-readout">
+                <strong>{{ sandboxTodayPages() }}</strong>
+                <span>{{ copy().sandboxPagesUnit }}</span>
+              </div>
+              <button type="button" class="step-adjust-btn" (click)="adjustSandboxPages(0.5)">+0,5</button>
+              <button type="button" class="step-adjust-btn" (click)="adjustSandboxPages(1)">+1</button>
+              <button type="button" class="step-adjust-btn" (click)="adjustSandboxPages(5)">+5</button>
+            </div>
+          </div>
+
+          <!-- Variant Selector -->
+          <div class="sandbox-variants-box">
+            <span class="stepper-label">{{ copy().sandboxVariantLabel }}</span>
+            <div class="variant-pills-grid">
+              @for (vid of variantIds; track vid) {
+                <button
+                  type="button"
+                  class="seg-btn"
+                  [class.active]="sandboxVariant() === vid"
+                  (click)="selectSandboxVariant(vid)">
+                  <span>{{ copy().sandboxVariantNames[vid] }}</span>
+                </button>
+              }
+            </div>
           </div>
         </div>
-      } @else {
-        <div class="live-guest-box">
-          <mat-icon>person_outline</mat-icon>
-          <div>
-            <strong>{{ copy().sessionGuestTitle }}</strong>
-            <p>{{ copy().sessionGuestDesc }}</p>
+
+        <!-- Right column: Live Computed Pacing Cards & Actions -->
+        <div class="sandbox-results-panel">
+          <div class="sandbox-kpi-cards">
+            <!-- Buffer Pace KPI -->
+            <div class="sandbox-kpi-tile">
+              <span class="kpi-label">{{ copy().sandboxPaceBufferLabel }}</span>
+              <strong class="kpi-big-value">
+                {{ activeSandboxVariantStats().requiredPagesPerDayToBuffer ?? 0 }} {{ copy().sandboxPagesPerDayUnit }}
+              </strong>
+              <span class="kpi-sub-value">
+                {{ copy().sandboxRemainingBufferPrefix }} {{ activeSandboxVariantStats().remainingDaysToBuffer }} {{ copy().sandboxDaysUnit }}
+              </span>
+            </div>
+
+            <!-- Deadline Pace KPI -->
+            <div class="sandbox-kpi-tile">
+              <span class="kpi-label">{{ copy().sandboxPaceDeadlineLabel }}</span>
+              <strong class="kpi-big-value">
+                {{ activeSandboxVariantStats().requiredPagesPerDayToDeadline ?? 0 }} {{ copy().sandboxPagesPerDayUnit }}
+              </strong>
+              <span class="kpi-sub-value">
+                {{ copy().sandboxRemainingDeadlinePrefix }} {{ activeSandboxVariantStats().remainingDaysToDeadline }} {{ copy().sandboxDaysUnit }}
+              </span>
+            </div>
+
+            <!-- Average Pace KPI -->
+            <div class="sandbox-kpi-tile">
+              <span class="kpi-label">{{ copy().sandboxAvgPaceLabel }}</span>
+              <strong class="kpi-big-value">
+                {{ activeSandboxVariantStats().averageTranslatedPerActiveVariantDay }} {{ copy().sandboxPagesPerDayUnit }}
+              </strong>
+              <span class="kpi-sub-value">
+                {{ demoStats().remainingPages }} {{ copy().sandboxPagesUnit }} &middot; {{ demoStats().progressPercent }}%
+              </span>
+            </div>
+          </div>
+
+          <div class="sandbox-actions-row">
+            <button type="button" mat-flat-button color="accent" class="sandbox-btn" (click)="simulateSaveEntry()">
+              <mat-icon>check</mat-icon>
+              <span>{{ copy().sandboxSaveBtn }}</span>
+            </button>
+
+            <button type="button" mat-stroked-button class="sandbox-btn" (click)="triggerDateShiftWarningModal()">
+              <mat-icon>event_busy</mat-icon>
+              <span>{{ copy().sandboxShiftTestBtn }}</span>
+            </button>
+
+            <button type="button" mat-stroked-button class="sandbox-btn" (click)="resetSandbox()">
+              <mat-icon>restart_alt</mat-icon>
+              <span>{{ copy().sandboxResetBtn }}</span>
+            </button>
           </div>
         </div>
-      }
-
-      <div class="flags-list">
-        <div class="flag-row">
-          <span class="flag-name">{{ copy().flagRegister }}</span>
-          <span class="flag-badge" [class.enabled]="allowForRegistering()">
-            {{ allowForRegistering() ? copy().stateEnabled : copy().stateLocked }}
-          </span>
-        </div>
-        <div class="flag-row">
-          <span class="flag-name">{{ copy().flagAvatar }}</span>
-          <span class="flag-badge" [class.enabled]="allowForProfilePictureChange()">
-            {{ allowForProfilePictureChange() ? copy().stateEnabled : copy().stateLocked }}
-          </span>
-        </div>
-        <div class="flag-row">
-          <span class="flag-name">{{ copy().flagDark }}</span>
-          <span class="flag-badge" [class.enabled]="allowDarkMode()">
-            {{ allowDarkMode() ? copy().stateEnabled : copy().stateLocked }}
-          </span>
-        </div>
       </div>
     </mat-card>
 
-    <!-- TILE 4: MICRO-INTERACTIONS & DIALOG SANDBOX -->
-    <mat-card class="bento-card">
-      <div class="bento-header">
-        <span class="bento-eyebrow">{{ copy().labTag }}</span>
-        <h2>{{ copy().labTitle }}</h2>
-        <p>{{ copy().labSubtitle }}</p>
-      </div>
-
-      <div class="sandbox-actions">
-        <button type="button" mat-raised-button color="primary" class="sandbox-btn" (click)="triggerDemoToast()">
-          <mat-icon>notifications_active</mat-icon>
-          <span>{{ copy().btnToast }}</span>
-        </button>
-
-        <button type="button" mat-stroked-button class="sandbox-btn" (click)="triggerInfoModal()">
-          <mat-icon>auto_awesome</mat-icon>
-          <span>{{ copy().btnModal }}</span>
-        </button>
-
-        <button type="button" mat-stroked-button class="sandbox-btn" (click)="triggerWarningModal()">
-          <mat-icon>verified_user</mat-icon>
-          <span>{{ copy().btnWarnModal }}</span>
-        </button>
-      </div>
-    </mat-card>
-
-    <!-- TILE 5: CLOUDINARY OPTIMIZATION SIMULATOR -->
-    <mat-card class="bento-card">
-      <div class="bento-header">
-        <span class="bento-eyebrow">{{ copy().mediaTag }}</span>
-        <h2>{{ copy().mediaTitle }}</h2>
-        <p>{{ copy().mediaSubtitle }}</p>
-      </div>
-
-      <div class="stage-tabs">
-        <button type="button" class="stage-tab" [class.active]="activeStage() === 'raw'" (click)="selectStage('raw')">
-          1. RAW
-        </button>
-        <button type="button" class="stage-tab" [class.active]="activeStage() === 'cropped'" (click)="selectStage('cropped')">
-          2. WebP
-        </button>
-        <button type="button" class="stage-tab" [class.active]="activeStage() === 'cdn'" (click)="selectStage('cdn')">
-          3. CDN Edge
-        </button>
-      </div>
-
-      <div class="stage-display">
-        <div class="stage-main-metric">
-          <span class="stage-size">{{ currentStageDetails().size }}</span>
-          <span class="stage-savings">{{ currentStageDetails().savings }}</span>
-        </div>
-        <div class="stage-meta-row">
-          <span>{{ currentStageDetails().format }}</span>
-          <span>•</span>
-          <span>{{ currentStageDetails().dimensions }}</span>
-        </div>
-        <p class="stage-detail">{{ currentStageDetails().detail }}</p>
-      </div>
-    </mat-card>
-
-    <!-- TILE 6 (FULL WIDTH): COMPLIANCE & DEPLOYMENT BAR -->
+    <!-- TILE 5 (SPAN 3): LEGAL & TRUST FOOTER BAR -->
     <mat-card class="bento-card bento-span-3 compliance-bar">
       <div class="compliance-info">
         <div class="compliance-icon-wrap">
@@ -354,10 +401,6 @@
         <a mat-stroked-button [routerLink]="rp.SEP + rp.COOKIES">
           <mat-icon>cookie</mat-icon>
           <span>{{ copy().linkCookies }}</span>
-        </a>
-        <a mat-stroked-button [routerLink]="rp.SEP + rp.STATUS">
-          <mat-icon>dns</mat-icon>
-          <span>{{ copy().linkStatus }}</span>
         </a>
       </div>
     </mat-card>

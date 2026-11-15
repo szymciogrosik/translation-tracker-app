@@ -1,0 +1,60 @@
+<div class="dashboard-wrapper">
+  <!-- Quiet Editorial Top Bar (no double nested hero cards) -->
+  <div class="editorial-workspace-bar app-card-wide">
+    <div class="bar-titles">
+      <h1>{{ 'books.dashboard.title' | translate }}</h1>
+    </div>
+    <div class="bar-actions">
+      <button mat-stroked-button type="button" class="nav-btn" [routerLink]="['/' + rp.BOOKS_HISTORY]">
+        <mat-icon>history</mat-icon>
+        <span>{{ 'books.nav.previousBooks' | translate }}</span>
+      </button>
+      <button mat-flat-button color="accent" type="button" [routerLink]="['/' + rp.BOOKS]">
+        <mat-icon>menu_book</mat-icon>
+        <span>{{ 'books.nav.manageBooks' | translate }}</span>
+      </button>
+    </div>
+  </div>
+
+  @if (bookFacade.isLoading()) {
+    <mat-card class="app-card-wide skeleton-card">
+      <app-skeleton width="45%" height="32px" borderRadius="8px" />
+      <app-skeleton width="100%" height="56px" borderRadius="14px" />
+      <div class="skeleton-grid">
+        <app-skeleton width="100%" height="84px" borderRadius="14px" />
+        <app-skeleton width="100%" height="84px" borderRadius="14px" />
+        <app-skeleton width="100%" height="84px" borderRadius="14px" />
+      </div>
+      <app-skeleton width="100%" height="200px" borderRadius="14px" />
+    </mat-card>
+  } @else if (bookFacade.activeBooks(); as activeList) {
+    @if (activeList.length === 0) {
+      <mat-card class="empty-dashboard-card app-card-wide">
+        <div class="empty-state-inner">
+          <h2>{{ 'books.dashboard.emptyTitle' | translate }}</h2>
+          <p>{{ 'books.dashboard.emptySubtitle' | translate }}</p>
+          <div class="empty-actions">
+            <button mat-flat-button color="accent" type="button" [routerLink]="['/' + rp.BOOKS]">
+              <mat-icon>add</mat-icon>
+              <span>{{ 'books.list.addNewBook' | translate }}</span>
+            </button>
+            @if ((bookFacade.completedBooks()?.length ?? 0) > 0) {
+              <button mat-stroked-button type="button" class="secondary-btn" [routerLink]="['/' + rp.BOOKS_HISTORY]">
+                <mat-icon>history</mat-icon>
+                <span>{{ 'books.nav.previousBooks' | translate }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      </mat-card>
+    } @else {
+      @for (book of activeList; track book.id) {
+        <app-book-stats-dashboard-card
+          [book]="book"
+          [showDailyEntryBox]="true"
+          [isClickableHeader]="true"
+          [showChartAndMatrix]="false" />
+      }
+    }
+  }
+</div>

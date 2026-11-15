@@ -1,0 +1,192 @@
+<div class="app-page-container">
+  <!-- Editorial Workspace Bar -->
+  <div class="editorial-workspace-bar app-card-wide">
+    <div class="bar-titles">
+      <h1>{{ 'books.list.title' | translate }}</h1>
+    </div>
+    <div class="bar-actions">
+      <button
+        mat-flat-button
+        color="accent"
+        type="button"
+        (click)="toggleCreateForm()">
+        <mat-icon>{{ showCreateForm() ? 'close' : 'add' }}</mat-icon>
+        <span>{{ (showCreateForm() ? 'registeredUsers.details.cancel' : 'books.list.addNewBook') | translate }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Add New Book Form Card -->
+  @if (showCreateForm()) {
+    <mat-card class="create-book-card app-card-wide">
+      <h2>{{ 'books.list.addNewBook' | translate }}</h2>
+      <form [formGroup]="createBookForm" (ngSubmit)="submitNewBook()" class="book-form-grid">
+        <div class="form-row-two">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.form.bookName' | translate }}</mat-label>
+            <input matInput formControlName="BookName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.form.numberOfPages' | translate }}</mat-label>
+            <input matInput type="number" min="1" class="tabular-nums" formControlName="NumberOfPages" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row-three">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.common.startDate' | translate }}</mat-label>
+            <input matInput [matDatepicker]="startPicker" class="tabular-nums" formControlName="StartDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker [dateClass]="dateClass()"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.common.deadline' | translate }}</mat-label>
+            <input matInput [matDatepicker]="endPicker" class="tabular-nums" formControlName="EndDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker [dateClass]="dateClass()"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.common.bufferDays' | translate }}</mat-label>
+            <input matInput type="number" min="0" class="tabular-nums" formControlName="BufforDayNumber" />
+          </mat-form-field>
+        </div>
+
+        <!-- Excluded Days Picker Section -->
+        <div class="excluded-days-builder">
+          <div class="excluded-header">
+            <h4>{{ 'books.form.excludedDaysTitle' | translate }}</h4>
+            <p>{{ 'books.form.excludedDaysSubtitle' | translate }}</p>
+          </div>
+          <div class="excluded-picker-row">
+            <button
+              mat-stroked-button
+              type="button"
+              class="add-excl-btn"
+              [matMenuTriggerFor]="vacationCalendarMenu"
+              (menuOpened)="prepareVacationCalendarOpen()">
+              <mat-icon>calendar_month</mat-icon>
+              <span>{{ 'books.form.pickExcludedDate' | translate }}</span>
+            </button>
+
+            <mat-menu #vacationCalendarMenu="matMenu" class="vacation-calendar-menu-panel" xPosition="after">
+              <div class="vacation-calendar-popup-inner" (click)="$event.stopPropagation()">
+                @for (calKey of [excludedDaysDraft().join(',')]; track calKey) {
+                  <mat-calendar
+                    [startAt]="vacationCalendarActiveDate()"
+                    [dateClass]="dateClass()"
+                    (selectedChange)="onExcludedDateChange($event)">
+                </mat-calendar>
+                }
+              </div>
+            </mat-menu>
+          </div>
+
+          @if (excludedDaysDraft().length > 0) {
+            <div class="excluded-chips-list tabular-nums">
+              @for (d of excludedDaysDraft(); track d) {
+                <span class="excluded-chip">
+                  <span>{{ formatDisplayDate(d) }}</span>
+                  <button type="button" class="chip-remove-btn" (click)="removeExcludedDay(d)" aria-label="Remove date">
+                    &times;
+                  </button>
+                </span>
+              }
+            </div>
+          }
+        </div>
+
+        @if (dateRangeError()) {
+          <p class="form-error-banner">{{ dateRangeError() }}</p>
+        }
+
+        <div class="app-full-width-actions">
+          <button
+            mat-stroked-button
+            type="button"
+            class="app-action-button"
+            (click)="toggleCreateForm()">
+            {{ 'registeredUsers.details.cancel' | translate }}
+          </button>
+          <button
+            mat-flat-button
+            color="accent"
+            type="submit"
+            class="app-action-button"
+            [disabled]="isSubmitting()">
+            <mat-icon>check</mat-icon>
+            <span>{{ 'registeredUsers.details.create' | translate }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  }
+
+  <!-- Editorial Ledger List of Books -->
+  @if (bookFacade.isLoading()) {
+    <mat-card class="app-card-wide">
+      <app-skeleton width="100%" height="120px" borderRadius="14px" />
+    </mat-card>
+  } @else if (sortedBooks(); as books) {
+    @if (books.length === 0) {
+      <mat-card class="empty-books-card app-card-wide">
+        <div class="empty-inner">
+          <h3>{{ 'books.list.emptyTitle' | translate }}</h3>
+          <p>{{ 'books.list.emptySubtitle' | translate }}</p>
+        </div>
+      </mat-card>
+    } @else {
+      <mat-card class="books-ledger-card app-card-wide">
+        <div class="ledger-header tabular-nums">
+          <span>{{ 'books.form.bookName' | translate }}</span>
+          <span>{{ 'books.common.startDate' | translate }}</span>
+          <span>{{ 'books.common.deadline' | translate }}</span>
+          <span>{{ 'books.common.daysToBuffer' | translate }}</span>
+          <span>{{ 'books.stats.translatedPages' | translate }}</span>
+        </div>
+
+        <div class="ledger-rows">
+          @for (book of books; track book.id) {
+            <a class="ledger-row tabular-nums" [routerLink]="['/books', book.id]">
+              <div class="cell-title">
+                <strong>{{ book.BookName }}</strong>
+                <span class="row-status-tag">
+                  {{ (calcService.isBookCompleted(book) ? 'books.status.completed' : 'books.status.inProgress') | translate }}
+                </span>
+              </div>
+
+              <div class="cell-meta-group">
+                <div class="cell-meta">
+                  <span class="mobile-label">{{ 'books.common.startDate' | translate }}</span>
+                  <span class="meta-value">{{ formatDisplayDate(book.StartDate) }}</span>
+                </div>
+
+                <div class="cell-meta">
+                  <span class="mobile-label">{{ 'books.common.deadline' | translate }}</span>
+                  <span class="meta-value">{{ formatDisplayDate(book.EndDate) }}</span>
+                </div>
+
+                <div class="cell-meta">
+                  <span class="mobile-label">{{ 'books.common.daysToBuffer' | translate }}</span>
+                  <span class="meta-value">{{ getRemainingDaysToBuffer(book) }} {{ 'books.common.daysShort' | translate }}</span>
+                </div>
+              </div>
+
+              <div class="cell-progress">
+                <div class="progress-numbers">
+                  <strong>{{ calcService.getCurrentTranslatedPages(book) }} / {{ book.NumberOfPages }} {{ 'books.common.pagesShort' | translate }}</strong>
+                  <span>{{ getBookProgressPercent(book) }}%</span>
+                </div>
+                <div class="mini-progress-track">
+                  <div class="mini-progress-fill" [style.width.%]="getBookProgressPercent(book)"></div>
+                </div>
+              </div>
+            </a>
+          }
+        </div>
+      </mat-card>
+    }
+  }
+</div>

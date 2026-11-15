@@ -1,0 +1,45 @@
+<div class="app-page-container">
+  <!-- Quiet Editorial Top Bar with inline summary -->
+  <div class="editorial-workspace-bar app-card-wide">
+    <div class="bar-titles">
+      <h1>{{ 'books.history.title' | translate }}</h1>
+      @if ((bookFacade.completedBooks()?.length ?? 0) > 0) {
+        <p class="inline-summary tabular-nums">
+          {{ 'books.history.completedCount' | translate }}: <strong>{{ aggregateSummary().totalBooks }}</strong>
+          &middot;
+          {{ 'books.history.totalTranslatedPages' | translate }}: <strong>{{ aggregateSummary().totalTranslatedPages }}</strong>
+          &middot;
+          {{ 'books.history.avgPaceWorkdays' | translate }}: <strong>{{ aggregateSummary().avgPagesPerActiveDay }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+        </p>
+      }
+    </div>
+    <div class="bar-actions">
+      <button mat-flat-button color="accent" type="button" [routerLink]="['/' + rp.BOOKS]">
+        <mat-icon>menu_book</mat-icon>
+        <span>{{ 'books.nav.booksList' | translate }}</span>
+      </button>
+    </div>
+  </div>
+
+  @if (bookFacade.isLoading()) {
+    <mat-card class="app-card-wide">
+      <app-skeleton width="100%" height="240px" borderRadius="14px" />
+    </mat-card>
+  } @else if (bookFacade.completedBooks(); as completedList) {
+    @if (completedList.length === 0) {
+      <mat-card class="empty-history-card app-card-wide">
+        <div class="empty-inner">
+          <h2>{{ 'books.history.emptyTitle' | translate }}</h2>
+          <p>{{ 'books.history.emptySubtitle' | translate }}</p>
+        </div>
+      </mat-card>
+    } @else {
+      @for (book of completedList; track book.id) {
+        <app-book-stats-dashboard-card
+          [book]="book"
+          [showDailyEntryBox]="false"
+          [isClickableHeader]="true" />
+      }
+    }
+  }
+</div>

@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function hasRole(role) {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && role in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles;
+    }
+
+    function isAdmin() {
+      return hasRole('ADMIN_PAGE_ACCESS') || hasRole('ADMIN_CORE_SETTINGS');
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(userId) || isAdmin();
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Public settings collection
+    match /public_settings/{settingId} {
+      allow read: if true;
+      allow write: if hasRole('ADMIN_CORE_SETTINGS');
+    }
+
+    // Books collection (supports single owner + future sharing via SharedWithUids)
+    match /books/{bookId} {
+      function canAccessBook(bookData) {
+        return isSignedIn() && (
+          bookData.OwnerUid == request.auth.uid ||
+          ('SharedWithUids' in bookData && request.auth.uid in bookData.SharedWithUids)
+        );
+      }
+
+      allow read: if canAccessBook(resource.data);
+      allow create: if isSignedIn() && request.resource.data.OwnerUid == request.auth.uid;
+      allow update: if canAccessBook(resource.data)
+                    && request.resource.data.OwnerUid == resource.data.OwnerUid;
+      allow delete: if isSignedIn() && resource.data.OwnerUid == request.auth.uid;
+    }
+  }
+}

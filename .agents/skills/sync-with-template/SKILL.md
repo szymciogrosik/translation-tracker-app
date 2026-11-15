@@ -58,7 +58,7 @@ Inspect conflicted and modified files using `git status`. Resolve conflicts by f
 - **Adopt Template Values**:
   - New base feature keys (e.g. `privacy.*`, `terms.*`, `cookies.*`, `legal.*`, `footer.*`, `home.*`, `theme.*`).
 - **Placeholder Substitution**:
-  - If the application has designated owner/company details, replace `PAGE_OWNER_NAME`, `PAGE_OWNER_EMAIL`, and `PAGE_OWNER_USERNAME` accordingly.
+  - If the application has designated owner/company details, replace `Szymon Gross`, `codefromheaven.dev@gmail.com`, and `PAGE_OWNER_USERNAME` accordingly.
   - If not yet specified, retain the uppercase placeholders for future global search & replace.
 - **Rule 10 Compliance**: Ensure no text is left hardcoded in templates; all displayed text must pass through `TranslatePipe`.
 

@@ -6,93 +6,110 @@
 $app-red-color: #ef4444;
 $app-green-color: #10b981;
 
-$app-primary-color: #123836;
+// Apple / Cupertino Sapphire Blue Brand Identity (Zero Green, Zero Purple)
+$app-primary-color: #0b2545;
 $app-on-primary-color: #ffffff;
-$app-accent-color: #4f46e5;
+$app-accent-color: #0071e3;
 $app-on-accent-color: #ffffff;
-$app-warn-color: #f43f5e;
+$app-warn-color: #e11d48;
 $app-on-warn-color: #ffffff;
 
-// Light Theme Backgrounds
-$app-background-color: #f8fafc;
+// Light Theme Backgrounds & Surfaces
+$app-background-color: #f5f8fc;
 $app-surface-color: #ffffff;
-$app-on-background-color: #0f172a;
-$app-text-secondary: #64748b;
-$app-border-color: rgba(15, 23, 42, 0.05);
-$app-mobile-border-color: rgba(79, 70, 229, 0.35);
+$app-on-background-color: #0a192f;
+$app-text-secondary: #526580;
+$app-border-color: rgba(11, 37, 69, 0.08);
+$app-mobile-border-color: rgba(0, 113, 227, 0.35);
+$app-accent-selected-light-bg: rgba(0, 113, 227, 0.08);
+$app-accent-halo-shadow: rgba(0, 113, 227, 0.25);
 
 $navbar-element-color: $app-on-primary-color;
 $footer-element-color: $app-on-primary-color;
 $main-font-color: $app-on-background-color;
 
-// --- DARK THEME VARIABLES ---
-$dark-background: #141e1e;
-$dark-surface: #1a2727;
-$dark-text-primary: #f8fafc;
+// --- DARK THEME VARIABLES (Harmonized with Deep Sapphire Navy hue) ---
+$dark-background: #081221;
+$dark-surface: #0f1e36;
+$dark-text-primary: #f1f5f9;
 $dark-text-secondary: #94a3b8;
-$dark-border-primary: rgba(255,255,255,0.08);
-$dark-border-secondary: rgba(255,255,255,0.12);
-$dark-border-hover: rgba(255,255,255,0.2);
-$dark-mobile-border: rgba(129, 140, 248, 0.45);
+$dark-border-primary: rgba(148, 163, 184, 0.16);
+$dark-border-secondary: rgba(148, 163, 184, 0.24);
+$dark-border-hover: rgba(148, 163, 184, 0.36);
+$dark-mobile-border: rgba(56, 189, 248, 0.45);
+$dark-primary-border-color: #26548c;
+$dark-accent-selected-bg: rgba(10, 132, 255, 0.18);
 $dark-error: #fb7185;
-$dark-tab-background: #233535;
-$dark-input-bg: #233535;
+$dark-tab-background: #162a47;
+$dark-input-bg: #162a47;
 
-// Skeletons
-$skeleton-light-1: #e2e8f0;
-$skeleton-light-2: #f1f5f9;
-$skeleton-light-3: #e2e8f0;
+// Skeletons (Tinted to match Sapphire Light & Dark surfaces)
+$skeleton-light-1: #e1eaf5;
+$skeleton-light-2: #eff4fa;
+$skeleton-light-3: #e1eaf5;
 
-$dark-skeleton-1: #233535;
-$dark-skeleton-2: #2a4040;
+$dark-skeleton-1: #162a47;
+$dark-skeleton-2: #1e375c;
 
 // Alerts
 $alert-warning-bg: #fef3c7;
 $alert-warning-text: #92400e;
 $alert-warning-accent: #f59e0b;
 $alert-warning-border: #fde68a;
-$dark-alert-warning-bg: #1c1917; // Neutral dark zinc/stone background
-$dark-alert-warning-text: #fef9c3; // Crisp high-contrast light warm yellow
+$dark-alert-warning-bg: #1c1917;
+$dark-alert-warning-text: #fef9c3;
 $dark-alert-warning-border: rgba(245, 158, 11, 0.5);
 $dark-alert-warning-accent: #f59e0b;
 
-$navbar-font-size: clamp(1rem, 5cqi, 1.1rem);
-$footer-font-size: 14px; // Matches mat-button size in navbar
+// Google Button & Mesh Tokens
+$google-btn-text-light: #0a192f;
+$google-btn-hover-light: #f0f6fc;
+$google-btn-border-light: #cbd5e1;
+$google-btn-bg-dark: #162a47;
+$google-btn-hover-dark: #1e375c;
+$google-btn-border-dark: rgba(255, 255, 255, 0.2);
 
-// Palettes
+$mesh-blob-1-color: rgba(56, 189, 248, 0.35);
+$mesh-blob-2-color: rgba(11, 37, 69, 0.55);
+$mesh-blob-3-color: rgba(0, 113, 227, 0.3);
+
+$navbar-font-size: clamp(1rem, 5cqi, 1.1rem);
+$footer-font-size: 14px;
+
+// Palettes (Derived from Deep Sapphire Navy #0b2545 & Apple System Blue #0071e3)
 $main-palette: (
-  50: #e6ebeb,
-  100: #c0cfce,
-  200: #97b0ae,
-  300: #6d908d,
-  400: #4e7975,
+  50: #e7edf4,
+  100: #c3d2e4,
+  200: #9bb4d2,
+  300: #7396c0,
+  400: #5580b2,
   500: $app-primary-color,
-  600: #103230,
-  700: #0d2a29,
-  800: #0a2322,
-  900: #051615,
-  A100: #97b0ae,
-  A200: #6d908d,
-  A400: #4e7975,
-  A700: #103230,
+  600: #09203d,
+  700: #071a33,
+  800: #051429,
+  900: #030b19,
+  A100: #82b1ff,
+  A200: #448aff,
+  A400: #2979ff,
+  A700: #2962ff,
   contrast: (500: $app-on-primary-color)
 );
 
 $accent-palette: (
-  50: #eef2ff,
-  100: #e0e7ff,
-  200: #c7d2fe,
-  300: #a5b4fc,
-  400: #818cf8,
+  50: #e5f2ff,
+  100: #badeff,
+  200: #8cc9ff,
+  300: #5eb3ff,
+  400: #3aa2ff,
   500: $app-accent-color,
-  600: #4f46e5,
-  700: #4338ca,
-  800: #3730a3,
-  900: #312e81,
-  A100: #c7d2fe,
-  A200: #818cf8,
-  A400: #4f46e5,
-  A700: #4338ca,
+  600: #0066cc,
+  700: #0057b3,
+  800: #004999,
+  900: #003370,
+  A100: #8cc9ff,
+  A200: #3aa2ff,
+  A400: #0071e3,
+  A700: #0057b3,
   contrast: (500: $app-on-accent-color)
 );
 
@@ -142,31 +159,40 @@ $dark-theme: mat.m2-define-dark-theme((
 :root {
   --app-primary-color: #{$app-primary-color};
   --app-accent-color: #{$app-accent-color};
+  --app-warn-color: #{$app-warn-color};
+  --app-background-color: #{$app-background-color};
   --app-surface-color: #{$app-surface-color};
+  --app-nested-surface-color: #{$app-background-color};
   --app-text-primary: #{$app-on-background-color};
   --app-text-secondary: #{$app-text-secondary};
   --separator-color: #{$app-text-secondary};
   --separator-line: #{$app-border-color};
   --mobile-card-border: #{$app-mobile-border-color};
-  --app-accent-selected-bg: rgba(79, 70, 229, 0.08);
+  --app-accent-selected-bg: #{$app-accent-selected-light-bg};
   --app-accent-selected-border: var(--app-accent-color);
+  --app-accent-halo: #{$app-accent-halo-shadow};
   --google-btn-bg: #{$app-surface-color};
-  --google-btn-text: #1f2937;
-  --google-btn-hover: #f8fafd;
-  --google-btn-border: #dadce0;
-  --mesh-blob-1: rgba(45, 212, 191, 0.4);
-  --mesh-blob-2: rgba(15, 95, 89, 0.6);
-  --mesh-blob-3: rgba(79, 70, 229, 0.3);
+  --google-btn-text: #{$google-btn-text-light};
+  --google-btn-hover: #{$google-btn-hover-light};
+  --google-btn-border: #{$google-btn-border-light};
+  --mesh-blob-1: #{$mesh-blob-1-color};
+  --mesh-blob-2: #{$mesh-blob-2-color};
+  --mesh-blob-3: #{$mesh-blob-3-color};
   --alert-warning-bg: #{$alert-warning-bg};
   --alert-warning-text: #{$alert-warning-text};
   --alert-warning-border: #{$alert-warning-border};
   --alert-warning-accent: #{$alert-warning-accent};
+  --app-error-color: #{$app-red-color};
+  --app-error-bg: rgba(217, 45, 32, 0.1);
+  --app-error-bg-hover: rgba(217, 45, 32, 0.18);
+  --app-success-color: #{$app-green-color};
+  --app-btn-radius: 12px;
 }
 
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.02);
+  scrollbar-color: rgba(11, 37, 69, 0.22) rgba(11, 37, 69, 0.03);
 }
 html, body {
   height: 100%;
@@ -178,17 +204,17 @@ html, body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(11, 37, 69, 0.03);
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(11, 37, 69, 0.22);
   border-radius: 8px;
-  border: 2px solid transparent; // Creates padding effect
+  border: 2px solid transparent;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(11, 37, 69, 0.35);
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-corner {
@@ -208,20 +234,41 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:not(input):not(textarea):focus-visible {
+  outline: 2px solid var(--app-accent-color) !important;
+  outline-offset: 2px !important;
+}
+
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+.mat-mdc-input-element:focus,
+.mat-mdc-input-element:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 // --- MICRO-INTERACTIONS & PREMIUM OVERRIDES ---
 
-// Soft UI Cards
+// Soft UI Bento Cards (ui-guidelines §1, §3, §5: permanent 1px border, NO translateY bounce)
 mat-card {
   margin: clamp(5px, 5cqi, 20px);
   padding: clamp(1rem, 5cqi, 2rem) clamp(0.5rem, 5cqi, 2rem);
-  background-color: $app-surface-color !important;
-  border-radius: 20px !important; // Bento style
+  background-color: var(--app-surface-color) !important;
+  border-radius: 20px !important;
   border: 1px solid var(--app-primary-color) !important;
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.02) !important;
+  box-shadow: 0 10px 40px -10px rgba(11, 37, 69, 0.06), 0 1px 3px rgba(11, 37, 69, 0.03) !important;
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 15px 35px -5px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.02) !important;
+    box-shadow: 0 15px 35px -5px rgba(11, 37, 69, 0.12), 0 1px 3px rgba(11, 37, 69, 0.04) !important;
   }
 }
 
@@ -233,11 +280,11 @@ mat-card-title {
   > h1 {
     margin-bottom: 16px;
     font-size: 2rem;
-    color: $app-primary-color;
+    color: var(--app-primary-color);
   }
   > p {
     font-size: clamp(1rem, 5cqi, 1.1rem);
-    color: $app-text-secondary;
+    color: var(--app-text-secondary);
     font-weight: 400;
   }
 }
@@ -245,25 +292,61 @@ mat-card-content {
   padding-top: 16px !important;
 }
 
-// Buttons
-.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-unelevated-button, .mat-mdc-stroked-button {
+// Apple-Style Buttons (ui-guidelines §5 & §9: uniform rounded 12px, clean icon alignment, scale(0.98) active, no translateY bounce)
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.mat-mdc-stroked-button,
+.mdc-button {
+  --mdc-filled-button-container-shape: 12px;
+  --mdc-outlined-button-container-shape: 12px;
+  --mdc-text-button-container-shape: 12px;
+  --mdc-protected-button-container-shape: 12px;
   border-radius: 12px !important;
   font-weight: 600 !important;
-  letter-spacing: 0.3px !important;
-  transition: all 0.2s ease !important;
-}
-.mat-mdc-raised-button, .mat-mdc-unelevated-button {
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1) !important;
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  letter-spacing: -0.01em !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease !important;
+
+  .mat-mdc-button-persistent-ripple,
+  .mat-mdc-button-persistent-ripple::before,
+  .mat-mdc-button-ripple,
+  .mdc-button__ripple {
+    border-radius: 12px !important;
   }
-  &:active {
-    transform: scale(0.98);
+
+  .mat-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 6px !important;
+    vertical-align: middle;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98) !important;
   }
 }
 
-// Button Toggles
+.mat-mdc-outlined-button:not(:disabled),
+.mat-mdc-stroked-button:not(:disabled) {
+  background-color: var(--app-accent-selected-bg) !important;
+  color: var(--app-text-primary) !important;
+  border-color: var(--app-primary-color) !important;
+
+  &:hover {
+    background-color: var(--app-nested-surface-color) !important;
+  }
+}
+
+.mat-mdc-raised-button, .mat-mdc-unelevated-button {
+  box-shadow: 0 4px 14px -2px rgba(0, 113, 227, 0.24) !important;
+  &:hover:not(:disabled) {
+    box-shadow: 0 8px 22px -3px rgba(0, 113, 227, 0.34) !important;
+  }
+}
+
+// Button Toggles (ui-guidelines §5)
 .mat-button-toggle-checked,
 .mat-button-toggle-checked .mat-button-toggle-label-content {
   font-weight: 800 !important;
@@ -273,25 +356,97 @@ mat-card-content {
 mat-form-field {
   width: 100%;
 
-  // Customizing Outline styling for a cleaner look
   .mdc-text-field--outlined {
     --mdc-outlined-text-field-container-shape: 12px;
   }
-  .mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
-    border-width: 1.5px !important;
-    border-color: rgba(0,0,0,0.1) !important;
+
+  .mdc-text-field--outlined:not(.mdc-text-field--focused):not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-width: 1.5px !important;
+      border-color: rgba(11, 37, 69, 0.22) !important;
+      transition: border-color 0.2s ease, border-width 0.15s ease;
+    }
+
+    &:hover {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: rgba(11, 37, 69, 0.45) !important;
+      }
+    }
   }
 
-  // Fix for vertical line glitch (subpixel rendering / CSS conflict)
+  .mdc-text-field--outlined.mdc-text-field--focused:not(.mdc-text-field--invalid) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-width: 2px !important;
+      border-color: var(--app-accent-color) !important;
+    }
+
+    .mdc-floating-label {
+      color: var(--app-accent-color) !important;
+    }
+  }
+
   .mdc-notched-outline__leading {
     border-right: none !important;
   }
   .mdc-notched-outline__notch {
     border-left: none !important;
     border-right: none !important;
+    max-width: calc(100% - 28px) !important;
   }
   .mdc-notched-outline__trailing {
     border-left: none !important;
+  }
+
+  .mdc-floating-label,
+  .mat-mdc-floating-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mat-mdc-input-element {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Highlighting Excluded Days inside mat-datepicker / mat-calendar
+.mat-calendar-body-cell.is-excluded-calendar-date {
+  .mat-calendar-body-cell-content {
+    background-color: var(--app-accent-selected-bg) !important;
+    border: 2px solid var(--app-accent-color) !important;
+    color: var(--app-accent-color) !important;
+    font-weight: 800 !important;
+    border-radius: 50% !important;
+  }
+}
+
+// Vacation multi-select calendar popup menu panel (matches native mat-datepicker popup)
+.mat-mdc-menu-panel.vacation-calendar-menu-panel {
+  max-width: calc(100vw - 24px) !important;
+  width: min(312px, calc(100vw - 24px)) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--app-primary-color) !important;
+  background-color: var(--app-surface-color) !important;
+  box-shadow: 0 16px 40px -8px rgba(11, 37, 69, 0.22), 0 4px 12px rgba(11, 37, 69, 0.08) !important;
+  overflow: hidden !important;
+
+  .mat-mdc-menu-content {
+    padding: 4px 8px 8px 8px !important;
+  }
+
+  .mat-calendar {
+    width: 100% !important;
+    height: auto !important;
+    font-family: 'Inter', sans-serif;
   }
 }
 mat-spinner { margin: 0 auto; }
@@ -304,15 +459,14 @@ mat-hint, mat-error { font-size: 0.85rem; }
   margin-right: auto;
   width: 100%;
 }
+
 // --- PAGE LAYOUT SPACING SYSTEM (single source of truth, see ui-guidelines §14) ---
-// 8pt grid. Every routed page wraps its content in `.app-page-container`, so the distance
-// between navbar/footer and the main element, and the side gutters, are identical everywhere.
 :root {
-  --app-page-gutter: clamp(16px, 4vw, 32px);       // left/right edge of the page
-  --app-page-block: clamp(24px, 4vw, 48px);        // top/bottom gap to navbar & footer
-  --app-section-gap: clamp(16px, 2.5vw, 24px);     // vertical gap between stacked sections/cards
-  --app-card-padding: clamp(20px, 3vw, 32px);      // inner padding of main page cards
-  --app-tab-content-gap: 24px;                     // gap between a tab header and its content
+  --app-page-gutter: clamp(12px, 3.5vw, 32px);
+  --app-page-block: clamp(16px, 3.5vw, 48px);
+  --app-section-gap: clamp(14px, 2.5vw, 24px);
+  --app-card-padding: clamp(16px, 3vw, 32px);
+  --app-tab-content-gap: 24px;
 }
 
 .app-page-container {
@@ -323,9 +477,11 @@ mat-hint, mat-error { font-size: 0.85rem; }
   padding: var(--app-page-block) var(--app-page-gutter);
   box-sizing: border-box;
   width: 100%;
+  min-width: 0;
 }
 .app-card-wide, .app-card-medium, .app-card-narrow {
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   margin: 0 !important;
   padding: var(--app-card-padding) !important;
@@ -348,8 +504,8 @@ mat-hint, mat-error { font-size: 0.85rem; }
   border-radius: 16px;
   padding: var(--app-card-padding);
   margin-top: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 20px -5px rgba(0,0,0,0.04);
+  background-color: var(--app-surface-color);
+  box-shadow: 0 4px 20px -5px rgba(11, 37, 69, 0.04);
 }
 
 // Dialogs
@@ -361,15 +517,15 @@ mat-hint, mat-error { font-size: 0.85rem; }
   letter-spacing: -0.02em;
 }
 
-// Action Groups
+// Action Groups & Alert Exceptions (ui-guidelines §3)
 .app-alert-warning {
   background-color: var(--alert-warning-bg) !important;
   color: var(--alert-warning-text) !important;
   border-radius: 12px !important;
-  border: 1px solid var(--alert-warning-border) !important;
+  border: 2px solid var(--alert-warning-border) !important;
   border-left: 6px solid var(--alert-warning-accent) !important;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   padding: 0;
 
   mat-card-content {
@@ -407,11 +563,11 @@ mat-hint, mat-error { font-size: 0.85rem; }
   box-sizing: border-box;
 }
 
-@media (max-width: 450px) {
+@media (max-width: 640px) {
   .app-full-width-actions, .app-popup-full-width-actions {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 12px;
     height: auto;
   }
 }
@@ -450,23 +606,32 @@ mat-hint, mat-error { font-size: 0.85rem; }
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
 
-  // CSS Variable Overrides
+  // CSS Variable Overrides (Harmonized with Sapphire Navy Dark Theme)
+  --app-primary-color: #{$dark-primary-border-color};
+  --app-accent-color: #38bdf8;
+  --app-background-color: #{$dark-background};
   --app-surface-color: #{$dark-surface};
+  --app-nested-surface-color: #{$dark-tab-background};
   --app-text-primary: #{$dark-text-primary};
   --app-text-secondary: #{$dark-text-secondary};
   --separator-color: #{$dark-text-secondary};
   --separator-line: #{$dark-border-primary};
   --mobile-card-border: #{$dark-mobile-border};
-  --app-accent-selected-bg: rgba(129, 140, 248, 0.16);
+  --app-accent-selected-bg: #{$dark-accent-selected-bg};
   --app-accent-selected-border: #{$dark-mobile-border};
-  --google-btn-bg: #2a3b3b;
+  --app-accent-halo: rgba(56, 189, 248, 0.25);
+  --google-btn-bg: #{$google-btn-bg-dark};
   --google-btn-text: #{$dark-text-primary};
-  --google-btn-hover: #344848;
-  --google-btn-border: rgba(255, 255, 255, 0.2);
+  --google-btn-hover: #{$google-btn-hover-dark};
+  --google-btn-border: #{$google-btn-border-dark};
   --alert-warning-bg: #{$dark-alert-warning-bg};
   --alert-warning-text: #{$dark-alert-warning-text};
   --alert-warning-border: #{$dark-alert-warning-border};
   --alert-warning-accent: #{$dark-alert-warning-accent};
+  --app-error-color: #{$dark-error};
+  --app-error-bg: rgba(248, 113, 113, 0.15);
+  --app-error-bg-hover: rgba(248, 113, 113, 0.26);
+  --app-success-color: #{$app-green-color};
 
   // MDC Checkbox & Radio Fixes for Dark Mode
   --mdc-checkbox-unselected-icon-color: #{$dark-text-secondary};
@@ -474,7 +639,6 @@ mat-hint, mat-error { font-size: 0.85rem; }
   --mdc-radio-unselected-icon-color: #{$dark-text-secondary};
   --mdc-radio-unselected-hover-icon-color: #{$dark-text-primary};
 
-  // Explicit pseudo-checkbox override for mat-select (multiple) in dark mode
   .mat-pseudo-checkbox-checked,
   .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
   .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full {
@@ -492,23 +656,23 @@ mat-hint, mat-error { font-size: 0.85rem; }
   }
 
   mat-card-title > h1 {
-    color: #ffffff;
+    color: $dark-text-primary;
   }
   mat-card-title > p {
     color: $dark-text-secondary;
   }
 
   /* Custom Scrollbar */
-  scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.02);
+  scrollbar-color: rgba(255, 255, 255, 0.18) rgba(255, 255, 255, 0.02);
   ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.02);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.18);
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.28);
     background-clip: padding-box;
   }
 
@@ -516,8 +680,8 @@ mat-hint, mat-error { font-size: 0.85rem; }
   mat-card, .mat-mdc-card, .mdc-dialog__surface, .mat-mdc-menu-panel, .mat-mdc-select-panel, .mat-mdc-table, .mat-mdc-paginator {
     background-color: $dark-surface !important;
     color: $dark-text-primary !important;
-    border-color: $dark-border-primary !important;
-    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.1) !important;
+    border-color: var(--app-primary-color) !important;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.15) !important;
   }
 
   mat-card, .mat-mdc-card {
@@ -529,20 +693,37 @@ mat-hint, mat-error { font-size: 0.85rem; }
     border-bottom-color: $dark-border-primary !important;
   }
   .smart-table-border-wrapper {
-    border: 1px solid $dark-border-primary !important;
+    border: 1px solid var(--app-primary-color) !important;
     border-radius: 12px;
   }
 
   /* Inputs */
-  .mdc-text-field--outlined .mdc-notched-outline__leading,
-  .mdc-text-field--outlined .mdc-notched-outline__notch,
-  .mdc-text-field--outlined .mdc-notched-outline__trailing {
-    border-color: $dark-border-secondary !important;
+  .mdc-text-field--outlined:not(.mdc-text-field--focused):not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $dark-border-secondary !important;
+    }
+
+    &:hover {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $dark-border-hover !important;
+      }
+    }
   }
-  .mdc-text-field--outlined:hover .mdc-notched-outline__leading,
-  .mdc-text-field--outlined:hover .mdc-notched-outline__notch,
-  .mdc-text-field--outlined:hover .mdc-notched-outline__trailing {
-    border-color: $dark-border-hover !important;
+  .mdc-text-field--outlined.mdc-text-field--focused:not(.mdc-text-field--invalid) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-width: 2px !important;
+      border-color: var(--app-accent-color) !important;
+    }
+
+    .mdc-floating-label {
+      color: var(--app-accent-color) !important;
+    }
   }
   .mat-mdc-input-element, .mat-mdc-select-value-text {
     color: $dark-text-primary !important;
@@ -583,7 +764,7 @@ mat-hint, mat-error { font-size: 0.85rem; }
   mat-card.app-alert-warning {
     background-color: var(--alert-warning-bg) !important;
     color: var(--alert-warning-text) !important;
-    border: 1px solid var(--alert-warning-border) !important;
+    border: 2px solid var(--alert-warning-border) !important;
     border-left: 6px solid var(--alert-warning-accent) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
 
@@ -598,18 +779,18 @@ mat-hint, mat-error { font-size: 0.85rem; }
   }
 
   .mat-mdc-snack-bar-container .mdc-snackbar__surface {
-    background-color: #1e293b !important;
+    background-color: $dark-tab-background !important;
     color: $dark-text-primary !important;
   }
 
   .highlight-tab-content {
-    border-color: $dark-border-primary !important;
+    border-color: var(--app-primary-color) !important;
     background-color: $dark-tab-background !important;
     box-shadow: none !important;
   }
   .mat-mdc-tab .mdc-tab__text-label { color: $dark-text-secondary !important; }
   .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label { color: $dark-text-primary !important; }
-  .mat-mdc-tab .mdc-tab-indicator__content--underline { border-color: $app-accent-color !important; }
+  .mat-mdc-tab .mdc-tab-indicator__content--underline { border-color: var(--app-accent-color) !important; }
 
   .mat-toolbar.mat-primary, .footer {
     background-color: $dark-surface !important;

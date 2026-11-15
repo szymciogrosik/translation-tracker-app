@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Deep Sapphire Rounded Badge -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0b2545" stroke="#0071e3" stroke-width="3" />
+  <!-- Subtle Top Sapphire Glow -->
+  <path d="M 16 5 H 48 A 11 11 0 0 1 59 16 V 26 Q 32 32 5 26 V 16 A 11 11 0 0 1 16 5 Z" fill="#133b6e" opacity="0.55" />
+
+  <!-- Open Book Left Page -->
+  <path d="M 31 20 C 25 16.5, 16 16.5, 11 19.5 L 11 45.5 C 16 42.5, 25 42.5, 31 46 Z" fill="#ffffff" />
+  <!-- Open Book Right Page (Bright Sapphire Accent) -->
+  <path d="M 33 20 C 39 16.5, 48 16.5, 53 19.5 L 53 45.5 C 48 42.5, 39 42.5, 33 46 Z" fill="#e8f2ff" />
+
+  <!-- Text Lines on Left Page (Source Language) -->
+  <rect x="15" y="24.5" width="12" height="2.4" rx="1.2" fill="#0b2545" />
+  <rect x="15" y="30" width="10" height="2.4" rx="1.2" fill="#0071e3" />
+  <rect x="15" y="35.5" width="11" height="2.4" rx="1.2" fill="#0b2545" />
+
+  <!-- Translated Lines / Checkmark Accent on Right Page -->
+  <rect x="37" y="24.5" width="12" height="2.4" rx="1.2" fill="#0071e3" />
+  <rect x="37" y="30" width="9" height="2.4" rx="1.2" fill="#0b2545" />
+  <path d="M 37.5 36.5 L 40.5 39.5 L 47.5 33" fill="none" stroke="#0071e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Bookmark Ribbon -->
+  <path d="M 29.5 45 L 34.5 45 L 34.5 55 L 32 52.5 L 29.5 55 Z" fill="#38bdf8" />
+</svg>

@@ -10,11 +10,41 @@ import {ProfileComponent} from "./profile/profile.component";
 import {PrivacyPolicyComponent} from "./legal/privacy-policy/privacy-policy.component";
 import {TermsOfServiceComponent} from "./legal/terms-of-service/terms-of-service.component";
 import {CookiePolicyComponent} from "./legal/cookie-policy/cookie-policy.component";
+import {BooksListComponent} from "./books/books-list/books-list.component";
+import {PreviousBooksComponent} from "./books/previous-books/previous-books.component";
+import {BookDetailsComponent} from "./books/book-details/book-details.component";
+import {BookDaysEditComponent} from "./books/book-days-edit/book-days-edit.component";
+import {BookSettingsEditComponent} from "./books/book-settings-edit/book-settings-edit.component";
 
 const appRoutes: Routes = [
   {
     path: RedirectionEnum.HOME,
     component: HomeComponent
+  },
+  {
+    path: RedirectionEnum.BOOKS,
+    component: BooksListComponent,
+    canActivate: [authenticatedGuard]
+  },
+  {
+    path: RedirectionEnum.BOOKS_HISTORY,
+    component: PreviousBooksComponent,
+    canActivate: [authenticatedGuard]
+  },
+  {
+    path: RedirectionEnum.BOOK_DETAILS,
+    component: BookDetailsComponent,
+    canActivate: [authenticatedGuard]
+  },
+  {
+    path: RedirectionEnum.BOOK_DAYS_EDIT,
+    component: BookDaysEditComponent,
+    canActivate: [authenticatedGuard]
+  },
+  {
+    path: RedirectionEnum.BOOK_SETTINGS_EDIT,
+    component: BookSettingsEditComponent,
+    canActivate: [authenticatedGuard]
   },
   {
     path: RedirectionEnum.STATUS,
@@ -54,4 +84,3 @@ export const routing = RouterModule.forRoot(appRoutes, {
   scrollPositionRestoration: 'top',
   anchorScrolling: 'enabled'
 });
-

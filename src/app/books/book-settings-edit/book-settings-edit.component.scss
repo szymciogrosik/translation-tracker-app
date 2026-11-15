@@ -1,0 +1,200 @@
+:host {
+  width: 100%;
+  min-width: 0;
+  display: block;
+}
+
+.editorial-workspace-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 4px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  .bar-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      word-break: break-word;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--app-text-secondary);
+    }
+  }
+
+  .back-btn {
+    border: 1px solid var(--app-primary-color) !important;
+    height: 40px;
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+
+    .back-btn {
+      width: 100%;
+      min-height: 44px;
+      height: auto;
+      justify-content: center;
+    }
+  }
+}
+
+.settings-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .form-row-two {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+
+    @media (max-width: 700px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-row-three {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.date-shift-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--app-primary-color) !important;
+  background-color: var(--app-accent-selected-bg);
+
+  mat-icon {
+    color: var(--app-accent-color) !important;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--app-text-primary);
+  }
+}
+
+.excluded-days-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--app-primary-color) !important;
+  background-color: var(--app-surface-color);
+
+  .excluded-heading {
+    h3 {
+      margin: 0 0 4px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--app-text-secondary);
+    }
+  }
+
+  .excluded-picker-row {
+    display: flex;
+    width: 100%;
+
+    .add-excl-btn {
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--app-primary-color) !important;
+    }
+  }
+
+  .excluded-chips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .excluded-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--app-primary-color) !important;
+      background-color: var(--app-accent-selected-bg);
+      font-size: 0.88rem;
+      font-weight: 600;
+
+      .chip-remove-btn {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        border: 1px solid var(--app-primary-color) !important;
+        background-color: var(--app-surface-color) !important;
+        color: var(--app-text-secondary) !important;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+          color: var(--app-text-secondary) !important;
+        }
+
+        &:hover {
+          background-color: var(--app-nested-surface-color) !important;
+          color: var(--app-text-primary) !important;
+
+          mat-icon {
+            color: var(--app-text-primary) !important;
+          }
+        }
+      }
+    }
+  }
+
+  .empty-excluded-hint {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--app-text-secondary);
+    font-style: italic;
+  }
+}
+
+.form-error-text {
+  margin: 0;
+  font-weight: 700;
+  color: var(--app-error-color) !important;
+}

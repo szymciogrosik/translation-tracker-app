@@ -1,7 +1,7 @@
 <mat-toolbar class="navbar-style navbar-home-page navbar-shadow" color="primary">
 
   <button mat-button routerLink="{{ rp.SEP + rp.HOME }}">
-    <mat-icon>beach_access</mat-icon>&nbsp;{{ 'navbar.tab.applicationName' | translate }}
+    <mat-icon>menu_book</mat-icon>&nbsp;{{ 'navbar.tab.applicationName' | translate }}
   </button>
   <!--   This fills the remaining space of the current row-->
   <span class="fill-remaining-space"></span>
@@ -9,6 +9,17 @@
   <!-- Full menu navbar -->
   <div class="full-menu">
     <!-- Add new link here part 1/2 -->
+    @if (isAuthenticated()) {
+      <button mat-button class="navbar-button" (click)="navigateToDashboard()">
+        {{ 'books.nav.dashboard' | translate }}
+      </button>
+      <button mat-button class="navbar-button" (click)="navigateToBooks()">
+        {{ 'books.nav.booksList' | translate }}
+      </button>
+      <button mat-button class="navbar-button" (click)="navigateToPreviousBooks()">
+        {{ 'books.nav.previousBooks' | translate }}
+      </button>
+    }
     @if (isAdmin()) {
       <button mat-button class="navbar-button" (click)="navigateToAdminPanel()">
         {{ 'navbar.tab.button.adminPanel' | translate }}
@@ -66,6 +77,20 @@
 
 <mat-menu xPosition="before" #menu="matMenu">
   <!-- Add new link here part 2/2 -->
+  @if (isAuthenticated()) {
+    <button mat-menu-item class="navbar-button-burger-menu" (click)="navigateToDashboard()">
+      <mat-icon>dashboard</mat-icon>
+      <span>{{ 'books.nav.dashboard' | translate }}</span>
+    </button>
+    <button mat-menu-item class="navbar-button-burger-menu" (click)="navigateToBooks()">
+      <mat-icon>menu_book</mat-icon>
+      <span>{{ 'books.nav.booksList' | translate }}</span>
+    </button>
+    <button mat-menu-item class="navbar-button-burger-menu" (click)="navigateToPreviousBooks()">
+      <mat-icon>history</mat-icon>
+      <span>{{ 'books.nav.previousBooks' | translate }}</span>
+    </button>
+  }
   @if (isAdmin()) {
     <button mat-menu-item class="navbar-button-burger-menu" (click)="navigateToAdminPanel()">
       {{ 'navbar.tab.button.adminPanel' | translate }}

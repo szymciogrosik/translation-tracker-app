@@ -2,7 +2,8 @@ name: CD - gh-pages - Step 2 - Build and deploy to gh-pages
 
 on:
   push:
-    branches: [release/gh-pages]
+#    branches: [release/gh-pages]
+    branches: [DISABLED/DISABLED_DISABLED_DISABLED]
 
 jobs:
   build:

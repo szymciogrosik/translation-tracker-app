@@ -55,6 +55,18 @@ export class NavbarComponent {
     this.router.navigate(['/' + RedirectionEnum.ADMIN]);
   }
 
+  navigateToDashboard(): void {
+    this.router.navigate(['/' + RedirectionEnum.HOME]);
+  }
+
+  navigateToBooks(): void {
+    this.router.navigate(['/' + RedirectionEnum.BOOKS]);
+  }
+
+  navigateToPreviousBooks(): void {
+    this.router.navigate(['/' + RedirectionEnum.BOOKS_HISTORY]);
+  }
+
   navigateToProfile(): void {
     this.router.navigate(['/' + RedirectionEnum.PROFILE]);
   }

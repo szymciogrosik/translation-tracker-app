@@ -16,7 +16,7 @@
   height: auto !important;
   min-height: 56px;
   padding: 8px 0 !important;
-  border-top: 1px solid rgba($footer-element-color, 0.08);
+  border-top: 1px solid var(--separator-line);
 }
 
 .footer-content {
@@ -41,7 +41,7 @@
 }
 
 .footer-shadow {
-  box-shadow: 0 -3px 5px -1px #0003, 0 -6px 10px #00000024, 0 -1px 18px #0000001f;
+  box-shadow: 0 -4px 16px var(--separator-line);
 }
 
 .icons-container {
@@ -72,20 +72,22 @@
 
 .legal-link {
   font-size: 0.75rem;
-  color: rgba($footer-element-color, 0.75);
+  color: $footer-element-color;
+  opacity: 0.8;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
   white-space: nowrap;
 
   &:hover {
-    color: $footer-element-color;
+    opacity: 1;
     text-decoration: underline;
   }
 }
 
 .legal-sep {
-  color: rgba($footer-element-color, 0.4);
+  color: $footer-element-color;
+  opacity: 0.45;
   font-size: 0.75rem;
   user-select: none;
 }

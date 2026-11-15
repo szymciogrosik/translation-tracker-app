@@ -1,22 +1,21 @@
 import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {toSignal} from '@angular/core/rxjs-interop';
 import {AuthService} from '../../_services/auth/auth.service';
-import {ThemeService} from '../../_services/util/theme.service';
 import {CustomTranslateService} from '../../_services/translate/custom-translate.service';
-import {PublicSettingsFacade} from '../../_database/settings/public-settings.facade';
+import {BookCalculationService} from '../../_services/book/book-calculation.service';
 import {SnackbarService} from '../../_services/util/snackbar.service';
 import {DialogService} from '../../_services/util/dialog.service';
 import {DialogType} from '../../_models/dialog/dialog-type';
+import {Book, BookComputedStatistics, DayCountingVariantId} from '../../_models/book/book';
 import {RedirectionEnum} from '../../../utils/redirection.enum';
 import {LanguageEnum} from '../../_services/translate/language-enum';
 import {APP_CONFIG} from '../../app.config.token';
 
-export type ArchitectureNodeId = 'angular' | 'firebase' | 'cloudinary';
-export type CompressionStage = 'raw' | 'cropped' | 'cdn';
+export type WorkflowStepId = 'plan' | 'daily' | 'analytics';
 
 interface ShowcaseCopy {
   readonly badge: string;
@@ -24,25 +23,39 @@ interface ShowcaseCopy {
   readonly heroTitleAccent: string;
   readonly heroSubtitle: string;
   readonly ctaLogin: string;
+  readonly ctaWorkspace: string;
   readonly ctaProfile: string;
-  readonly ctaAdmin: string;
   readonly ctaExplore: string;
   readonly welcomeBack: string;
   readonly guestMode: string;
-  readonly metricZonelessLabel: string;
-  readonly metricZonelessValue: string;
-  readonly metricAuthLabel: string;
-  readonly metricAuthValue: string;
-  readonly metricCdnLabel: string;
-  readonly metricCdnValue: string;
+  readonly pillar1Label: string;
+  readonly pillar1Value: string;
+  readonly pillar2Label: string;
+  readonly pillar2Value: string;
+  readonly pillar3Label: string;
+  readonly pillar3Value: string;
 
-  readonly archTag: string;
-  readonly archTitle: string;
-  readonly archSubtitle: string;
-  readonly archNodes: Record<
-    ArchitectureNodeId,
+  readonly compareTag: string;
+  readonly compareTitle: string;
+  readonly compareSubtitle: string;
+  readonly guestBoxTag: string;
+  readonly guestBoxTitle: string;
+  readonly guestBoxItems: ReadonlyArray<string>;
+  readonly memberBoxTag: string;
+  readonly memberBoxTitle: string;
+  readonly memberBoxItems: ReadonlyArray<string>;
+  readonly memberCtaBtn: string;
+
+  readonly workflowTag: string;
+  readonly workflowTitle: string;
+  readonly workflowSubtitle: string;
+  readonly workflowSteps: Record<
+    WorkflowStepId,
     {
       readonly step: string;
+      readonly navTitle: string;
+      readonly navSub: string;
+      readonly icon: string;
       readonly title: string;
       readonly subtitle: string;
       readonly description: string;
@@ -50,366 +63,443 @@ interface ShowcaseCopy {
     }
   >;
 
-  readonly studioTag: string;
-  readonly studioTitle: string;
-  readonly studioSubtitle: string;
-  readonly themeLabel: string;
-  readonly themeLight: string;
-  readonly themeDark: string;
-  readonly themeDisabledHint: string;
-  readonly langLabel: string;
+  readonly sandboxTag: string;
+  readonly sandboxTitle: string;
+  readonly sandboxSubtitle: string;
+  readonly sandboxBookTitle: string;
+  readonly sandboxBookMeta: string;
+  readonly sandboxProgressLabel: string;
+  readonly sandboxTodayInputLabel: string;
+  readonly sandboxDeltaPrefix: string;
+  readonly sandboxVariantLabel: string;
+  readonly sandboxVariantNames: Record<DayCountingVariantId, string>;
+  readonly sandboxPaceBufferLabel: string;
+  readonly sandboxPaceDeadlineLabel: string;
+  readonly sandboxAvgPaceLabel: string;
+  readonly sandboxRemainingBufferPrefix: string;
+  readonly sandboxRemainingDeadlinePrefix: string;
+  readonly sandboxDaysUnit: string;
+  readonly sandboxPagesUnit: string;
+  readonly sandboxPagesPerDayUnit: string;
+  readonly sandboxSaveBtn: string;
+  readonly sandboxResetBtn: string;
+  readonly sandboxShiftTestBtn: string;
+  readonly sandboxSavedToast: string;
+  readonly sandboxShiftModalTitle: string;
+  readonly sandboxShiftModalMsg: string;
+  readonly sandboxModalConfirm: string;
+  readonly sandboxModalCancel: string;
 
-  readonly sessionTag: string;
-  readonly sessionTitle: string;
-  readonly sessionLoggedAs: string;
-  readonly sessionGuestTitle: string;
-  readonly sessionGuestDesc: string;
-  readonly flagRegister: string;
-  readonly flagAvatar: string;
-  readonly flagDark: string;
-  readonly stateEnabled: string;
-  readonly stateLocked: string;
-
-  readonly labTag: string;
-  readonly labTitle: string;
-  readonly labSubtitle: string;
-  readonly btnToast: string;
-  readonly btnModal: string;
-  readonly btnWarnModal: string;
-  readonly toastDemoMsg: string;
-  readonly modalDemoTitle: string;
-  readonly modalDemoMsg: string;
-  readonly modalWarnTitle: string;
-  readonly modalWarnMsg: string;
-  readonly modalConfirmBtn: string;
-  readonly modalCancelBtn: string;
-
-  readonly mediaTag: string;
-  readonly mediaTitle: string;
-  readonly mediaSubtitle: string;
-  readonly stages: Record<
-    CompressionStage,
-    {
-      readonly label: string;
-      readonly size: string;
-      readonly format: string;
-      readonly dimensions: string;
-      readonly savings: string;
-      readonly detail: string;
-    }
-  >;
+  readonly workspaceTag: string;
+  readonly workspaceTitle: string;
+  readonly workspaceSubtitle: string;
+  readonly workspaceLedgerHeaderBook: string;
+  readonly workspaceLedgerHeaderBuffer: string;
+  readonly workspaceLedgerHeaderProgress: string;
+  readonly workspaceStatusActive: string;
+  readonly workspaceStatusDone: string;
+  readonly workspaceSampleBooks: ReadonlyArray<{
+    readonly title: string;
+    readonly startDate: string;
+    readonly endDate: string;
+    readonly daysToBuffer: number;
+    readonly currentPages: number;
+    readonly totalPages: number;
+    readonly percent: number;
+    readonly completed: boolean;
+  }>;
 
   readonly footerBarTitle: string;
   readonly footerBarSubtitle: string;
   readonly linkPrivacy: string;
   readonly linkTerms: string;
   readonly linkCookies: string;
-  readonly linkStatus: string;
 }
 
 const SHOWCASE_DICTIONARY: Record<'pl' | 'en', ShowcaseCopy> = {
   pl: {
-    badge: 'Angular 21 Zoneless • Firebase • Cloudinary CDN',
-    heroTitlePrefix: 'Fundament nowej generacji dla',
-    heroTitleAccent: 'aplikacji SaaS.',
+    badge: 'Translation Tracker • Planowanie i kontrola tempa tłumaczenia książek',
+    heroTitlePrefix: 'Pilnuj dziennego tempa, zapasu dni i terminu oddania',
+    heroTitleAccent: 'przy każdym tłumaczeniu książki.',
     heroSubtitle:
-      'Kompletny akcelerator produkcyjny łączący reaktywność Angular Signals bez Zone.js, autoryzację i bazę Cloud Firestore oraz darmową optymalizację obrazów WebP/AVIF na brzegu sieci.',
-    ctaLogin: 'Zaloguj lub utwórz konto',
-    ctaProfile: 'Twój profil',
-    ctaAdmin: 'Panel administratora',
-    ctaExplore: 'Przetestuj interaktywne moduły',
-    welcomeBack: 'Aktywna sesja:',
+      'Translation Tracker pomaga tłumaczom literatury rozplanować pracę nad książką, zapisywać numer ostatniej przetłumaczonej strony każdego dnia (także z dokładnością do pół strony, np. 142,5) i na bieżąco liczyć, ile stron dziennie trzeba przełożyć, żeby zdążyć przed buforem i ostatecznym deadline’em.',
+    ctaLogin: 'Zaloguj się lub załóż konto',
+    ctaWorkspace: 'Przejdź do swoich książek',
+    ctaProfile: 'Mój profil',
+    ctaExplore: 'Zobacz, jak to działa',
+    welcomeBack: 'Zalogowano jako:',
     guestMode: 'Tryb podglądu (Gość)',
-    metricZonelessLabel: 'Silnik renderowania',
-    metricZonelessValue: '100% Zoneless Signals',
-    metricAuthLabel: 'Bezpieczeństwo danych',
-    metricAuthValue: 'RBAC + Firestore Rules',
-    metricCdnLabel: 'Optymalizacja mediów',
-    metricCdnValue: 'WebP 512px • f_auto,q_auto',
+    pillar1Label: '4 warianty liczenia dni',
+    pillar1Value: 'Dni robocze, z sobotami lub pełny kalendarz',
+    pillar2Label: 'Zapas czasu przed oddaniem',
+    pillar2Value: 'Osobne wyliczanie tempa do buforu i do deadline’u',
+    pillar3Label: 'Wygodny zapis i wykres postępu',
+    pillar3Value: 'Wpisujesz tylko końcową stronę dnia (np. 142,5)',
 
-    archTag: '01 / ARCHITEKTURA',
-    archTitle: 'Interaktywny potok danych',
-    archSubtitle: 'Kliknij dowolny warstwowy węzeł, aby zbadać przepływ żądań i zabezpieczeń w czasie rzeczywistym.',
-    archNodes: {
-      angular: {
-        step: 'WARSTWA 01',
-        title: 'Angular 21 Zoneless UI',
-        subtitle: 'Signals • OnPush • Material 3 Bento',
+    compareTag: '01 / TRYB GOŚCIA A KONTO TŁUMACZA',
+    compareTitle: 'Co możesz sprawdzić od razu, a co zyskujesz po zalogowaniu',
+    compareSubtitle:
+      'Wypróbuj kalkulator tempa na przykładowej książce poniżej, a po zalogowaniu prowadź własne projekty zapisywane w chmurze.',
+    guestBoxTag: 'BEZ LOGOWANIA (TRYB GOŚCIA)',
+    guestBoxTitle: 'Interaktywne demo na tej stronie',
+    guestBoxItems: [
+      'Sprawdzenie kalkulatora dziennego tempa na przykładowej książce (320 stron)',
+      'Przełączanie 4 wariantów dni pracy (bez weekendów, z sobotami, z weekendami, wszystkie dni)',
+      'Symulacja dopisywania stron (+0,5 / +1 str.) z przeliczeniem postępu i tempa na żywo',
+      'Podgląd komunikatu ostrzegającego przed utratą wpisów przy skracaniu dat'
+    ],
+    memberBoxTag: 'PO ZALOGOWANIU (KONTO UŻYTKOWNIKA)',
+    memberBoxTitle: 'Twoje książki i statystyki w chmurze',
+    memberBoxItems: [
+      'Dodawanie własnych książek z indywidualnym kalendarzem wakacji i dni wolnych',
+      'Główny Dashboard z szybkim wpisem dzisiejszej strony i wykresem: plan a wykonanie',
+      'Tabela wszystkich dni z automatycznym zapisem i przyciskiem „Przewiń do dzisiaj”',
+      'Historia ukończonych książek z podsumowaniem średniego dziennego tempa'
+    ],
+    memberCtaBtn: 'Załóż konto lub zaloguj się',
+
+    workflowTag: '02 / JAK DZIAŁA TRANSLATION TRACKER',
+    workflowTitle: 'Trzy kroki od podpisania umowy do oddania przekładu',
+    workflowSubtitle:
+      'Kliknij wybrany etap, aby zobaczyć, jak aplikacja pomaga utrzymać równe tempo pracy nad książką.',
+    workflowSteps: {
+      plan: {
+        step: 'KROK 01',
+        navTitle: 'Terminy, bufor i wakacje',
+        navSub: 'Strony • Deadline • Urlop',
+        icon: 'menu_book',
+        title: '1. Podajesz liczbę stron, termin oddania, dni buforu i wakacje',
+        subtitle: 'StartDate • EndDate • BufforDayNumber • ExcludedDays',
         description:
-          'Aplikacja działa całkowicie bez narzutu biblioteki Zone.js. Każda zmiana stanu opiera się na precyzyjnych sygnałach (Signals), zapewniając natychmiastowe odświeżanie DOM i brak zbędnych cykli detekcji zmian.',
+          'Wpisujesz tytuł książki, łączną liczbę stron, datę rozpoczęcia oraz termin oddania przekładu. Możesz też ustawić kilka dni buforu (np. 4 dni zapasu przed ostatecznym deadline’em na spokojne sczytanie tekstu) oraz zaznaczyć w kalendarzu dni urlopu, które zostaną wyłączone z dni pracy.',
         specs: [
-          {label: 'Detekcja zmian', value: 'provideZonelessChangeDetection()'},
-          {label: 'Strategia komponentów', value: 'ChangeDetectionStrategy.OnPush'},
-          {label: 'System wizualny', value: 'Bento CSS Variables + Dark Mode'}
+          {label: 'Przykładowa książka', value: '„Cień Wiatru” • 320 stron'},
+          {label: 'Dni buforu', value: '4 dni zapasu przed terminem wydawnictwa'},
+          {label: 'Dni wakacji', value: 'Pomijane również wtedy, gdy wypadają w weekend'}
         ]
       },
-      firebase: {
-        step: 'WARSTWA 02',
-        title: 'Firebase Auth & Firestore',
-        subtitle: 'SSO Google • Role RBAC • Real-time Sync',
+      daily: {
+        step: 'KROK 02',
+        navTitle: 'Codzienny wpis strony',
+        navSub: 'Numer ostatniej strony',
+        icon: 'edit_note',
+        title: '2. Na koniec dnia wpisujesz numer strony, na której skończyłeś',
+        subtitle: 'Obsługa połówek stron (np. 128,5) • Automatyczny zapis zmian',
         description:
-          'Tożsamość użytkownika jest weryfikowana przez Firebase Authentication i synchronizowana strumieniowo z kolekcją users w Cloud Firestore. Reguły bezpieczeństwa blokują eskalację uprawnień po stronie klienta.',
+          'Nie musisz codziennie odejmować stron w pamięci — wpisujesz po prostu numer ostatniej przetłumaczonej strony. Aplikacja sama wylicza, ile stron przybyło danego dnia (+X str.), przesuwa pasek postępu i przelicza wymagane tempo na pozostałe dni.',
         specs: [
-          {label: 'Dostawcy tożsamości', value: 'Email/Hasło + Google OAuth 2.0'},
-          {label: 'Kontrola dostępu', value: 'ADMIN_PAGE_ACCESS / CORE_SETTINGS'},
-          {label: 'Konfiguracja na żywo', value: 'PublicSettingsFacade (Signals)'}
+          {label: 'Dokładność wpisu', value: 'Liczby całkowite i połówki (np. 11,5)'},
+          {label: 'Kontrola błędów', value: 'Pilnuje, by strona nie była mniejsza niż wczoraj'},
+          {label: 'Pełna tabela dni', value: 'Edycja dowolnego dnia z natychmiastowym zapisem'}
         ]
       },
-      cloudinary: {
-        step: 'WARSTWA 03',
-        title: 'Cloudinary Edge Media CDN',
-        subtitle: 'Unsigned Preset • 512px WebP • f_auto,q_auto',
+      analytics: {
+        step: 'KROK 03',
+        navTitle: 'Wykres i 4 warianty dni',
+        navSub: 'Plan a rzeczywisty postęp',
+        icon: 'insights',
+        title: '3. Sprawdzasz na wykresie, czy idziesz zgodnie z planem',
+        subtitle: 'Wykres narastający • 4 warianty liczenia dni pracy',
         description:
-          'Zdjęcia profilowe są walidowane (MIME + limit 5 MB), przycinane w przeglądarce do formatu WebP 512×512 i wysyłane bezpośrednio do Cloudinary z automatyczną transformacją f_auto,q_auto.',
+          'Wykres zestawia planowaną ścieżkę tłumaczenia (uwzględniającą wolne weekendy, wakacje oraz dni buforu) z Twoim faktycznym postępem. W każdej chwili możesz przełączyć wariant i sprawdzić, o ile spadnie dzienna norma, jeśli włączysz do pracy soboty.',
         specs: [
-          {label: 'Tryb wysyłania', value: 'Unsigned Upload + Disallow Public ID'},
-          {label: 'Transformacja wejściowa', value: 'c_limit,w_512,h_512/f_webp,q_auto'},
-          {label: 'Koszt utrzymania', value: '0 PLN (100% Free Tier CDN)'}
+          {label: 'Wariant podstawowy', value: 'Bez weekendów i bez wakacji'},
+          {label: 'Pozostałe warianty', value: 'Z sobotami / Z weekendami / Wszystkie dni'},
+          {label: 'Ukończone książki', value: 'Automatycznie trafiają do historii po 100%'}
         ]
       }
     },
 
-    studioTag: '02 / PERSONALIZACJA NA ŻYWO',
-    studioTitle: 'Ustawienia motywu i języka',
-    studioSubtitle: 'Przełączaj motyw oraz język interfejsu bezpośrednio z karty — cały starter reaguje natychmiast.',
-    themeLabel: 'Motyw kolorystyczny',
-    themeLight: 'Jasny',
-    themeDark: 'Ciemny',
-    themeDisabledHint: 'Tryb ciemny jest obecnie wyłączony w ustawieniach globalnych Firestore.',
-    langLabel: 'Język aplikacji (i18n)',
-
-    sessionTag: '03 / TELEMETRIA SESJI',
-    sessionTitle: 'Inspektor autoryzacji i flag',
-    sessionLoggedAs: 'Zalogowany użytkownik',
-    sessionGuestTitle: 'Brak aktywnej sesji',
-    sessionGuestDesc: 'Zaloguj się, aby zobaczyć swój profil, role RBAC oraz awatar serwowany z Cloudinary CDN.',
-    flagRegister: 'Otwarta rejestracja',
-    flagAvatar: 'Zmiana zdjęcia profilowego',
-    flagDark: 'Obsługa trybu ciemnego',
-    stateEnabled: 'AKTYWNE',
-    stateLocked: 'ZABLOKOWANE',
-
-    labTag: '04 / PIASKOWNICA UI',
-    labTitle: 'Mikro-interakcje i powiadomienia',
-    labSubtitle: 'Przetestuj wbudowane serwisy dialogów potwierdzających oraz pasków powiadomień (Snackbar).',
-    btnToast: 'Wywołaj Snackbar',
-    btnModal: 'Otwórz modal info',
-    btnWarnModal: 'Modal ostrzegawczy',
-    toastDemoMsg: '⚡ Powiadomienie Snackbar działa! Architektura Zoneless odświeża widok w mniej niż 1 ms.',
-    modalDemoTitle: 'Generyczny System Dialogów',
-    modalDemoMsg:
-      'Ten popup korzysta z pojedynczego, reużywalnego komponentu DialogComponent z dynamiczną ikoną, kolorami motywu i pełną responsywnością.',
-    modalWarnTitle: 'Symulacja ostrzeżenia bezpieczeństwa',
-    modalWarnMsg:
-      'W ten sposób aplikacja prosi o potwierdzenie przed wrażliwymi operacjami (np. archiwizacją konta lub usunięciem zdjęcia profilowego).',
-    modalConfirmBtn: 'Rozumiem',
-    modalCancelBtn: 'Zamknij',
-
-    mediaTag: '05 / SYMULATOR KOMPRESJI',
-    mediaTitle: 'Potok optymalizacji zdjęć',
-    mediaSubtitle: 'Zobacz, jak surowe zdjęcie z telefonu jest odchudzane o 99% przed zapisem w chmurze.',
-    stages: {
-      raw: {
-        label: '1. Plik wejściowy',
-        size: '4.80 MB',
-        format: 'JPEG / PNG (Z aparatu)',
-        dimensions: '4032 × 3024 px',
-        savings: 'Walidacja: max 5 MB',
-        detail: 'Wstępny filtr w ProfileComponent odrzuca nieobsługiwane formaty MIME oraz pliki przekraczające 5 MB.'
-      },
-      cropped: {
-        label: '2. Cropper WebP',
-        size: '42 KB',
-        format: 'WebP (w przeglądarce)',
-        dimensions: '512 × 512 px (1:1)',
-        savings: '-99.1% rozmiaru',
-        detail: 'Komponent ngx-image-cropper skaluje wycinek 1:1 i kompresuje go lokalnie do lekkiego kontenera WebP.'
-      },
-      cdn: {
-        label: '3. Cloudinary CDN',
-        size: '24 KB',
-        format: 'AVIF / WebP (f_auto,q_auto)',
-        dimensions: '512 × 512 px (Edge)',
-        savings: '-99.5% + Globalny Cache',
-        detail: 'Cloudinary zapisuje plik pod nieodgadnionym public_id i serwuje go w locie z parametrami f_auto,q_auto.'
-      }
+    sandboxTag: '03 / INTERAKTYWNY KALKULATOR NA ŻYWO',
+    sandboxTitle: 'Wypróbuj wyliczanie dziennego tempa i buforu',
+    sandboxSubtitle:
+      'Zmień dzisiejszy numer strony przyciskami - / + albo przełącz wariant dni pracy — wszystkie liczby przeliczają się na żywo.',
+    sandboxBookTitle: 'Przykładowa książka: „Archipelag Czasu”',
+    sandboxBookMeta: '320 stron • Bufor: 3 dni • 2 dni wakacji w kalendarzu',
+    sandboxProgressLabel: 'Przetłumaczone strony',
+    sandboxTodayInputLabel: 'Numer ostatniej przetłumaczonej strony dzisiaj:',
+    sandboxDeltaPrefix: 'Dzisiaj przetłumaczono:',
+    sandboxVariantLabel: 'Jak liczyć pozostałe dni pracy:',
+    sandboxVariantNames: {
+      noWeekendsNoExcluded: 'Bez weekendów i bez wakacji',
+      withSaturdaysNoSundaysNoExcluded: 'Z sobotami (bez niedziel i wakacji)',
+      withWeekendsNoExcluded: 'Z weekendami (bez wakacji)',
+      allDaysWithExcluded: 'Wszystkie dni kalendarzowe'
     },
+    sandboxPaceBufferLabel: 'Wymagane tempo do buforu',
+    sandboxPaceDeadlineLabel: 'Wymagane tempo do deadline’u',
+    sandboxAvgPaceLabel: 'Dotychczasowe średnie tempo',
+    sandboxRemainingBufferPrefix: 'Pozostało do buforu:',
+    sandboxRemainingDeadlinePrefix: 'Pozostało do deadline’u:',
+    sandboxDaysUnit: 'dni',
+    sandboxPagesUnit: 'str.',
+    sandboxPagesPerDayUnit: 'str./dzień',
+    sandboxSaveBtn: 'Zasymuluj zapis dnia',
+    sandboxResetBtn: 'Przywróć wartości',
+    sandboxShiftTestBtn: 'Zobacz ostrzeżenie przy skracaniu dat',
+    sandboxSavedToast: 'Zapisano dzienny postęp w symulatorze! Wymagane tempo zostało przeliczone.',
+    sandboxShiftModalTitle: 'Skrócenie czasu tłumaczenia',
+    sandboxShiftModalMsg:
+      'Tak wygląda okno ostrzegawcze w aplikacji, gdy skracasz termin oddania książki, a w wycinanych dniach znajdują się już wpisane strony.',
+    sandboxModalConfirm: 'Rozumiem',
+    sandboxModalCancel: 'Zamknij',
 
-    footerBarTitle: 'Gotowość produkcyjna, RODO i potoki CI/CD',
+    workspaceTag: '04 / PODGLĄD LISTY KSIĄŻEK PO ZALOGOWANIU',
+    workspaceTitle: 'Twoje aktualne przekłady i ukończone książki',
+    workspaceSubtitle:
+      'Po zalogowaniu wszystkie książki masz w jednym miejscu — na górze projekty w trakcie tłumaczenia, a niżej ukończone przekłady posortowane od najnowszych.',
+    workspaceLedgerHeaderBook: 'Tytuł książki',
+    workspaceLedgerHeaderBuffer: 'Dni do buforu',
+    workspaceLedgerHeaderProgress: 'Postęp tłumaczenia',
+    workspaceStatusActive: 'W tłumaczeniu',
+    workspaceStatusDone: 'Ukończona',
+    workspaceSampleBooks: [
+      {
+        title: 'Archipelag Czasu (Tom II)',
+        startDate: '01.11.2026',
+        endDate: '28.11.2026',
+        daysToBuffer: 7,
+        currentPages: 185.5,
+        totalPages: 320,
+        percent: 58,
+        completed: false
+      },
+      {
+        title: 'Listy z Północy',
+        startDate: '15.10.2026',
+        endDate: '10.12.2026',
+        daysToBuffer: 16,
+        currentPages: 94,
+        totalPages: 260,
+        percent: 36.2,
+        completed: false
+      },
+      {
+        title: 'Szkice o Architekturze Światła',
+        startDate: '01.09.2026',
+        endDate: '20.10.2026',
+        daysToBuffer: 0,
+        currentPages: 240,
+        totalPages: 240,
+        percent: 100,
+        completed: true
+      }
+    ],
+
+    footerBarTitle: 'Prywatność danych i zasady korzystania z serwisu',
     footerBarSubtitle:
-      'Wbudowane dokumenty prawne (Polityka Prywatności, Regulamin, Cookies) oraz automatyczne wdrożenia GitHub Actions na Firebase Hosting i GitHub Pages.',
+      'Twoje książki i statystyki są widoczne wyłącznie na Twoim koncie. Poniżej znajdziesz dokumenty prawne aplikacji.',
     linkPrivacy: 'Polityka prywatności',
-    linkTerms: 'Regulamin',
-    linkCookies: 'Polityka cookies',
-    linkStatus: 'Status wdrożenia'
+    linkTerms: 'Regulamin serwisu',
+    linkCookies: 'Polityka cookies'
   },
   en: {
-    badge: 'Angular 21 Zoneless • Firebase • Cloudinary CDN',
-    heroTitlePrefix: 'Next-generation foundation for',
-    heroTitleAccent: 'SaaS applications.',
+    badge: 'Translation Tracker • Daily Pacing & Buffer Calculator for Translators',
+    heroTitlePrefix: 'Stay ahead of your buffer and deadline',
+    heroTitleAccent: 'on every book translation.',
     heroSubtitle:
-      'A production-ready accelerator combining Zone-free Angular Signals reactivity, Firebase Authentication & Cloud Firestore, and zero-cost WebP/AVIF edge image optimization.',
+      'Translation Tracker helps literary translators plan book schedules, log the last translated page each day (including half-pages like 142.5), and automatically calculate the daily pace required to hit both your safety buffer and final publisher deadline.',
     ctaLogin: 'Sign in or create account',
+    ctaWorkspace: 'Open your books dashboard',
     ctaProfile: 'Your profile',
-    ctaAdmin: 'Admin panel',
-    ctaExplore: 'Explore interactive modules',
-    welcomeBack: 'Active session:',
+    ctaExplore: 'See how it works',
+    welcomeBack: 'Signed in as:',
     guestMode: 'Preview mode (Guest)',
-    metricZonelessLabel: 'Rendering engine',
-    metricZonelessValue: '100% Zoneless Signals',
-    metricAuthLabel: 'Data security',
-    metricAuthValue: 'RBAC + Firestore Rules',
-    metricCdnLabel: 'Media optimization',
-    metricCdnValue: 'WebP 512px • f_auto,q_auto',
+    pillar1Label: '4 Working-Day Variants',
+    pillar1Value: 'Weekdays only, with Saturdays, or full calendar',
+    pillar2Label: 'Safety Buffer Before Deadline',
+    pillar2Value: 'Separate pace targets for buffer and final due date',
+    pillar3Label: 'Decimal Page Logging & Charts',
+    pillar3Value: 'Log e.g. 142.5 pages with live cumulative line chart',
 
-    archTag: '01 / ARCHITECTURE',
-    archTitle: 'Interactive data pipeline',
-    archSubtitle: 'Click any architectural node below to inspect how requests and security rules flow in real time.',
-    archNodes: {
-      angular: {
-        step: 'LAYER 01',
-        title: 'Angular 21 Zoneless UI',
-        subtitle: 'Signals • OnPush • Material 3 Bento',
+    compareTag: '01 / GUEST PREVIEW VS TRANSLATOR ACCOUNT',
+    compareTitle: 'What you can try right now vs. what unlocks after signing in',
+    compareSubtitle:
+      'Test the live pacing engine and daily page entry right on this page, then sign in to manage and save your own book projects in the cloud.',
+    guestBoxTag: 'WITHOUT LOGIN (GUEST MODE)',
+    guestBoxTitle: 'Interactive live demo',
+    guestBoxItems: [
+      'Test the live daily pacing calculator on a sample 320-page book project',
+      'Switch between all 4 working-day counting variants in real time',
+      'Simulate adding pages (+0.5 / +1 p.) and watch required pace update',
+      'Preview the date-range data-loss protection dialog'
+    ],
+    memberBoxTag: 'WITH LOGIN (TRANSLATOR ACCOUNT)',
+    memberBoxTitle: 'Full cloud translation workspace',
+    memberBoxItems: [
+      'Create unlimited book projects with custom vacation/excluded days calendars',
+      'Main Dashboard with one-click daily page entry and cumulative Planned vs. Actual chart',
+      'All Translated Pages table with instant auto-save and "Scroll to today"',
+      'Completed books history archive with average daily pace statistics'
+    ],
+    memberCtaBtn: 'Sign in or create account',
+
+    workflowTag: '02 / HOW TRANSLATION TRACKER WORKS',
+    workflowTitle: 'Three steps from publishing contract to completed manuscript',
+    workflowSubtitle:
+      'Click any step below to see how the application supports your daily translation workflow.',
+    workflowSteps: {
+      plan: {
+        step: 'STEP 01',
+        navTitle: 'Set book schedule & buffer',
+        navSub: 'Pages • Deadline • Vacations',
+        icon: 'menu_book',
+        title: '1. Define contract dates, safety buffer, and vacation days',
+        subtitle: 'StartDate • EndDate • BufforDayNumber • ExcludedDays',
         description:
-          'Runs completely free of Zone.js overhead. Every state transition is driven by fine-grained Angular Signals, guaranteeing surgical DOM updates and zero unnecessary change-detection cycles.',
+          'Enter the book title, total page count, start date, and publisher deadline. Set your safety buffer days (e.g. 4 days reserved for final proofreading before the deadline) and mark planned vacation days on the calendar so they are excluded from working-day calculations.',
         specs: [
-          {label: 'Change detection', value: 'provideZonelessChangeDetection()'},
-          {label: 'Component strategy', value: 'ChangeDetectionStrategy.OnPush'},
-          {label: 'Design system', value: 'Bento CSS Variables + Dark Mode'}
+          {label: 'Sample book', value: '"The Shadow of the Wind" • 320 pages'},
+          {label: 'Safety buffer', value: '4 days before publisher deadline'},
+          {label: 'Vacation priority', value: 'Excluded even when falling on a weekend'}
         ]
       },
-      firebase: {
-        step: 'LAYER 02',
-        title: 'Firebase Auth & Firestore',
-        subtitle: 'Google SSO • RBAC Roles • Real-time Sync',
+      daily: {
+        step: 'STEP 02',
+        navTitle: 'Log daily last page',
+        navSub: 'Cumulative page number',
+        icon: 'edit_note',
+        title: '2. Enter the page number where you stopped today',
+        subtitle: 'Supports 1 decimal place (e.g. 128.5) • Instant auto-save table',
         description:
-          'User identity is verified by Firebase Authentication and streamed live from the Cloud Firestore users collection. Strict security rules prevent client-side privilege escalation.',
+          'Instead of calculating daily differences yourself, simply enter the last translated page number at the end of the day. The app computes your daily delta (+X p.), animates your progress bar, and recalculates the exact pace needed for the remaining working days.',
         specs: [
-          {label: 'Identity providers', value: 'Email/Password + Google OAuth 2.0'},
-          {label: 'Access control', value: 'ADMIN_PAGE_ACCESS / CORE_SETTINGS'},
-          {label: 'Live configuration', value: 'PublicSettingsFacade (Signals)'}
+          {label: 'Input precision', value: 'Whole or decimal pages (e.g. 11.5)'},
+          {label: 'Continuity guard', value: 'Prevents entering less than previous day'},
+          {label: 'Full history editor', value: 'All-days view with instant auto-save'}
         ]
       },
-      cloudinary: {
-        step: 'LAYER 03',
-        title: 'Cloudinary Edge Media CDN',
-        subtitle: 'Unsigned Preset • 512px WebP • f_auto,q_auto',
+      analytics: {
+        step: 'STEP 03',
+        navTitle: 'Cumulative chart & 4 variants',
+        navSub: 'Planned vs Actual line',
+        icon: 'insights',
+        title: '3. Track Planned vs. Actual cumulative progress',
+        subtitle: 'Cumulative chart • 4 working-day counting variants',
         description:
-          'Profile pictures are validated client-side (MIME + 5 MB cap), cropped in-browser to 512×512 WebP, and uploaded directly to Cloudinary with automatic f_auto,q_auto edge transformations.',
+          'Compare the planned trajectory (which stays flat on weekends, vacations, and buffer days) against your actual translated pages. Switch between 4 day-counting variants at any time to see how working Saturdays or weekends affects your required daily pace.',
         specs: [
-          {label: 'Upload mode', value: 'Unsigned Upload + Disallow Public ID'},
-          {label: 'Incoming transform', value: 'c_limit,w_512,h_512/f_webp,q_auto'},
-          {label: 'Hosting cost', value: '$0 / month (100% Free Tier CDN)'}
+          {label: 'Default variant', value: 'No weekends & no vacations'},
+          {label: 'Alternative variants', value: 'With Saturdays / With weekends / All days'},
+          {label: 'Completed archive', value: 'Automatically archived upon reaching 100%'}
         ]
       }
     },
 
-    studioTag: '02 / LIVE CUSTOMIZATION',
-    studioTitle: 'Theme & locale settings',
-    studioSubtitle: 'Switch the color theme and interface language right from this card — the entire starter reacts immediately.',
-    themeLabel: 'Color theme',
-    themeLight: 'Light',
-    themeDark: 'Dark',
-    themeDisabledHint: 'Dark mode is currently disabled in global Firestore public settings.',
-    langLabel: 'Application language (i18n)',
-
-    sessionTag: '03 / SESSION TELEMETRY',
-    sessionTitle: 'Auth & feature flags inspector',
-    sessionLoggedAs: 'Authenticated user',
-    sessionGuestTitle: 'No active session',
-    sessionGuestDesc: 'Sign in to inspect your live profile data, RBAC roles, and Cloudinary CDN avatar.',
-    flagRegister: 'Open registration',
-    flagAvatar: 'Profile photo upload',
-    flagDark: 'Dark mode support',
-    stateEnabled: 'ACTIVE',
-    stateLocked: 'LOCKED',
-
-    labTag: '04 / UI SANDBOX',
-    labTitle: 'Micro-interactions & dialogs',
-    labSubtitle: 'Trigger the built-in confirmation dialog service and snackbar notifications with a single click.',
-    btnToast: 'Trigger Snackbar',
-    btnModal: 'Open info modal',
-    btnWarnModal: 'Warning modal',
-    toastDemoMsg: '⚡ Snackbar notification triggered! Zoneless Signals keep the UI responsive in under 1 ms.',
-    modalDemoTitle: 'Unified Dialog System',
-    modalDemoMsg:
-      'This modal uses the single reusable DialogComponent with custom Material icons, theme-aware colors, and mobile-first sizing.',
-    modalWarnTitle: 'Security Confirmation Simulation',
-    modalWarnMsg:
-      'This is how the application asks for confirmation before sensitive operations (such as archiving a user or removing a profile picture).',
-    modalConfirmBtn: 'Got it',
-    modalCancelBtn: 'Close',
-
-    mediaTag: '05 / COMPRESSION SIMULATOR',
-    mediaTitle: 'Image optimization pipeline',
-    mediaSubtitle: 'See how a raw smartphone photo is reduced by over 99% before being stored and served.',
-    stages: {
-      raw: {
-        label: '1. Raw Input',
-        size: '4.80 MB',
-        format: 'JPEG / PNG (Camera)',
-        dimensions: '4032 × 3024 px',
-        savings: 'Guard: max 5 MB',
-        detail: 'The entry guard in ProfileComponent rejects unsupported MIME types and files exceeding 5 MB.'
-      },
-      cropped: {
-        label: '2. WebP Cropper',
-        size: '42 KB',
-        format: 'WebP (In-browser)',
-        dimensions: '512 × 512 px (1:1)',
-        savings: '-99.1% file size',
-        detail: 'ngx-image-cropper scales the 1:1 square selection and encodes it locally into a compact WebP Blob.'
-      },
-      cdn: {
-        label: '3. Cloudinary CDN',
-        size: '24 KB',
-        format: 'AVIF / WebP (f_auto,q_auto)',
-        dimensions: '512 × 512 px (Edge)',
-        savings: '-99.5% + Global Cache',
-        detail: 'Cloudinary stores the file under an unguessable public_id and delivers it with f_auto,q_auto transformations.'
-      }
+    sandboxTag: '03 / LIVE INTERACTIVE SIMULATOR',
+    sandboxTitle: 'Try the daily pacing & buffer calculator live',
+    sandboxSubtitle:
+      'Adjust today’s page number with - / + or switch working-day variants — powered live by the real BookCalculationService.',
+    sandboxBookTitle: 'Sample project: "Archipelago of Time"',
+    sandboxBookMeta: '320 pages • Buffer: 3 days • 2 vacation days scheduled',
+    sandboxProgressLabel: 'Translated pages',
+    sandboxTodayInputLabel: 'Last translated page today:',
+    sandboxDeltaPrefix: 'Today’s increment:',
+    sandboxVariantLabel: 'Remaining days counting variant:',
+    sandboxVariantNames: {
+      noWeekendsNoExcluded: 'No weekends (no vacations)',
+      withSaturdaysNoSundaysNoExcluded: 'With Saturdays (no Sundays/vacations)',
+      withWeekendsNoExcluded: 'With weekends (no vacations)',
+      allDaysWithExcluded: 'All calendar days'
     },
+    sandboxPaceBufferLabel: 'Required pace to buffer',
+    sandboxPaceDeadlineLabel: 'Required pace to deadline',
+    sandboxAvgPaceLabel: 'Average pace on active days',
+    sandboxRemainingBufferPrefix: 'Remaining to buffer:',
+    sandboxRemainingDeadlinePrefix: 'Remaining to deadline:',
+    sandboxDaysUnit: 'days',
+    sandboxPagesUnit: 'p.',
+    sandboxPagesPerDayUnit: 'p./day',
+    sandboxSaveBtn: 'Simulate saving today',
+    sandboxResetBtn: 'Reset simulation',
+    sandboxShiftTestBtn: 'Preview date warning modal',
+    sandboxSavedToast: 'Simulated daily entry saved! Required pace has been recalculated.',
+    sandboxShiftModalTitle: 'Date change will remove entered pages',
+    sandboxShiftModalMsg:
+      'This warning dialog appears when you shorten a book’s date range and existing translated page entries would fall outside the new dates.',
+    sandboxModalConfirm: 'Got it',
+    sandboxModalCancel: 'Close',
 
-    footerBarTitle: 'Production readiness, GDPR compliance & CI/CD pipelines',
+    workspaceTag: '04 / POST-LOGIN WORKSPACE PREVIEW',
+    workspaceTitle: 'Your books ledger and completed archive',
+    workspaceSubtitle:
+      'After signing in, all your translation projects are organized in a clean ledger — active books first, followed by completed translations sorted from newest to oldest.',
+    workspaceLedgerHeaderBook: 'Book title',
+    workspaceLedgerHeaderBuffer: 'Days to buffer',
+    workspaceLedgerHeaderProgress: 'Page progress',
+    workspaceStatusActive: 'In progress',
+    workspaceStatusDone: 'Completed',
+    workspaceSampleBooks: [
+      {
+        title: 'Archipelago of Time (Vol. II)',
+        startDate: '01.11.2026',
+        endDate: '28.11.2026',
+        daysToBuffer: 7,
+        currentPages: 185.5,
+        totalPages: 320,
+        percent: 58,
+        completed: false
+      },
+      {
+        title: 'Letters from the North',
+        startDate: '15.10.2026',
+        endDate: '10.12.2026',
+        daysToBuffer: 16,
+        currentPages: 94,
+        totalPages: 260,
+        percent: 36.2,
+        completed: false
+      },
+      {
+        title: 'Essays on Architecture of Light',
+        startDate: '01.09.2026',
+        endDate: '20.10.2026',
+        daysToBuffer: 0,
+        currentPages: 240,
+        totalPages: 240,
+        percent: 100,
+        completed: true
+      }
+    ],
+
+    footerBarTitle: 'Data privacy and transparent terms of use',
     footerBarSubtitle:
-      'Built-in legal pages (Privacy Policy, Terms of Service, Cookie Policy) and automated GitHub Actions deployment to Firebase Hosting & GitHub Pages.',
+      'Every book translation project is private to your account. Review our legal documents below.',
     linkPrivacy: 'Privacy Policy',
     linkTerms: 'Terms of Service',
-    linkCookies: 'Cookie Policy',
-    linkStatus: 'Deployment Status'
+    linkCookies: 'Cookie Policy'
   }
 };
+
+const DEMO_TODAY_ISO = '2026-11-15';
+const DEMO_PREVIOUS_PAGES = 172;
+const DEMO_DEFAULT_TODAY_PAGES = 185.5;
 
 @Component({
   selector: 'app-starter-showcase',
   standalone: true,
-  imports: [RouterLink, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './starter-showcase.component.html',
   styleUrls: ['./starter-showcase.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StarterShowcaseComponent {
   private readonly authService = inject(AuthService);
-  private readonly themeService = inject(ThemeService);
   private readonly translateService = inject(CustomTranslateService);
-  private readonly publicSettings = inject(PublicSettingsFacade);
+  private readonly calcService = inject(BookCalculationService);
   private readonly snackbarService = inject(SnackbarService);
   private readonly dialogService = inject(DialogService);
   private readonly appConfig = inject(APP_CONFIG);
 
   protected readonly rp = RedirectionEnum;
-  protected readonly LanguageEnum = LanguageEnum;
+  protected readonly variantIds = BookCalculationService.VARIANT_IDS;
 
   protected readonly user = this.authService.currentUser;
   protected readonly isLoggedIn = this.authService.isLoggedIn;
-  protected readonly allowForRegistering = this.publicSettings.allowForRegistering;
-  protected readonly allowForProfilePictureChange = this.publicSettings.allowForProfilePictureChange;
-  protected readonly allowDarkMode = this.publicSettings.allowDarkMode;
 
-  protected readonly isDarkTheme = toSignal(this.themeService.isDarkTheme$, {initialValue: false});
-
-  protected readonly activeNode = signal<ArchitectureNodeId>('angular');
-  protected readonly activeStage = signal<CompressionStage>('cdn');
+  protected readonly activeStep = signal<WorkflowStepId>('plan');
+  protected readonly sandboxVariant = signal<DayCountingVariantId>('noWeekendsNoExcluded');
+  protected readonly sandboxTodayPages = signal<number>(DEMO_DEFAULT_TODAY_PAGES);
 
   protected readonly currentLang = computed<'pl' | 'en'>(() => {
     const selected = this.translateService.selectedLanguage() || this.appConfig.default_language;
@@ -418,67 +508,92 @@ export class StarterShowcaseComponent {
 
   protected readonly copy = computed<ShowcaseCopy>(() => SHOWCASE_DICTIONARY[this.currentLang()]);
 
-  protected readonly currentNodeDetails = computed(() => {
-    return this.copy().archNodes[this.activeNode()];
+  protected readonly currentStepDetails = computed(() => {
+    return this.copy().workflowSteps[this.activeStep()];
   });
 
-  protected readonly currentStageDetails = computed(() => {
-    return this.copy().stages[this.activeStage()];
+  protected readonly demoBook = computed<Book>(() => {
+    const todayVal = this.sandboxTodayPages();
+    const baseEntries = this.calcService.generateInitialTranslatedPages('2026-11-02', '2026-11-28');
+    const populated = baseEntries.map(entry => {
+      if (entry.date === '2026-11-02') return {date: entry.date, pages: 18};
+      if (entry.date === '2026-11-03') return {date: entry.date, pages: 36};
+      if (entry.date === '2026-11-04') return {date: entry.date, pages: 55};
+      if (entry.date === '2026-11-05') return {date: entry.date, pages: 74};
+      if (entry.date === '2026-11-06') return {date: entry.date, pages: 92};
+      if (entry.date === '2026-11-09') return {date: entry.date, pages: 112};
+      if (entry.date === '2026-11-10') return {date: entry.date, pages: 132};
+      if (entry.date === '2026-11-12') return {date: entry.date, pages: 152};
+      if (entry.date === '2026-11-13') return {date: entry.date, pages: DEMO_PREVIOUS_PAGES};
+      if (entry.date === DEMO_TODAY_ISO) return {date: entry.date, pages: todayVal};
+      return entry;
+    });
+
+    return {
+      id: 'demo-book-showcase',
+      OwnerUid: 'guest-preview',
+      SharedWithUids: [],
+      BookName: 'Archipelag Czasu',
+      StartDate: '2026-11-02',
+      EndDate: '2026-11-28',
+      BufforDayNumber: 3,
+      NumberOfPages: 320,
+      TranslatedPages: populated,
+      ExcludedDays: ['2026-11-11', '2026-11-20'],
+      IsArchived: false
+    };
   });
 
-  protected selectNode(node: ArchitectureNodeId): void {
-    this.activeNode.set(node);
+  protected readonly demoStats = computed<BookComputedStatistics>(() =>
+    this.calcService.computeBookStatistics(this.demoBook(), DEMO_TODAY_ISO)
+  );
+
+  protected readonly activeSandboxVariantStats = computed(() => {
+    return this.demoStats().variants[this.sandboxVariant()];
+  });
+
+  protected readonly sandboxDailyDelta = computed<number>(() => {
+    return Math.max(0, Math.round((this.sandboxTodayPages() - DEMO_PREVIOUS_PAGES) * 10) / 10);
+  });
+
+  protected selectStep(step: WorkflowStepId): void {
+    this.activeStep.set(step);
   }
 
-  protected selectStage(stage: CompressionStage): void {
-    this.activeStage.set(stage);
+  protected selectSandboxVariant(variant: DayCountingVariantId): void {
+    this.sandboxVariant.set(variant);
   }
 
-  protected setTheme(wantDark: boolean): void {
-    if (!this.allowDarkMode()) return;
-    if (this.isDarkTheme() !== wantDark) {
-      this.themeService.toggleTheme();
-    }
+  protected adjustSandboxPages(delta: number): void {
+    const next = Math.round((this.sandboxTodayPages() + delta) * 10) / 10;
+    const clamped = Math.max(DEMO_PREVIOUS_PAGES, Math.min(320, next));
+    this.sandboxTodayPages.set(clamped);
   }
 
-  protected setLanguage(lang: LanguageEnum): void {
-    if (this.currentLang() !== lang) {
-      this.translateService.setLanguage(lang);
-    }
+  protected resetSandbox(): void {
+    this.sandboxTodayPages.set(DEMO_DEFAULT_TODAY_PAGES);
+    this.sandboxVariant.set('noWeekendsNoExcluded');
+  }
+
+  protected simulateSaveEntry(): void {
+    this.snackbarService.openCustomSnackBar(this.copy().sandboxSavedToast, '', 2200);
+  }
+
+  protected triggerDateShiftWarningModal(): void {
+    const c = this.copy();
+    this.dialogService.openConfirmDialogWithData({
+      title: c.sandboxShiftModalTitle,
+      popupType: DialogType.WARNING,
+      message: c.sandboxShiftModalMsg,
+      cancelButtonText: c.sandboxModalCancel,
+      confirmButtonText: c.sandboxModalConfirm,
+      icon: 'event_busy',
+      iconColor: 'accent'
+    });
   }
 
   protected scrollToPlayground(): void {
     const el = document.getElementById('bento-playground');
     el?.scrollIntoView({behavior: 'smooth', block: 'start'});
-  }
-
-  protected triggerDemoToast(): void {
-    this.snackbarService.openSnackBar(this.copy().toastDemoMsg);
-  }
-
-  protected triggerInfoModal(): void {
-    const c = this.copy();
-    this.dialogService.openConfirmDialogWithData({
-      title: c.modalDemoTitle,
-      popupType: DialogType.CONFIRMATION,
-      message: c.modalDemoMsg,
-      cancelButtonText: null,
-      confirmButtonText: c.modalConfirmBtn,
-      icon: 'auto_awesome',
-      iconColor: 'primary'
-    });
-  }
-
-  protected triggerWarningModal(): void {
-    const c = this.copy();
-    this.dialogService.openConfirmDialogWithData({
-      title: c.modalWarnTitle,
-      popupType: DialogType.WARNING,
-      message: c.modalWarnMsg,
-      cancelButtonText: c.modalCancelBtn,
-      confirmButtonText: c.modalConfirmBtn,
-      icon: 'verified_user',
-      iconColor: 'accent'
-    });
   }
 }
