@@ -82,8 +82,11 @@ export class BookDaysEditComponent implements OnDestroy {
   protected readonly rawInputs = signal<string[]>([]);
   protected readonly isSaving = signal(false);
   protected readonly showSavedIndicator = signal(false);
+  protected readonly lastEditedRowIndex = signal<number | null>(null);
+  protected readonly justSavedRowIndex = signal<number | null>(null);
   private loadedBookId: string | null = null;
   private autoSaveTimer: ReturnType<typeof setTimeout> | null = null;
+  private savedPulseTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     effect(() => {
@@ -106,6 +109,10 @@ export class BookDaysEditComponent implements OnDestroy {
     if (this.autoSaveTimer) {
       clearTimeout(this.autoSaveTimer);
       this.autoSaveTimer = null;
+    }
+    if (this.savedPulseTimer) {
+      clearTimeout(this.savedPulseTimer);
+      this.savedPulseTimer = null;
     }
   }
 
@@ -184,6 +191,7 @@ export class BookDaysEditComponent implements OnDestroy {
 
   protected onRowInputChange(index: number, rawValue: string | number | null): void {
     const rawStr = rawValue === null || rawValue === undefined ? '' : String(rawValue);
+    this.lastEditedRowIndex.set(index);
     this.rawInputs.update(list => list.map((item, idx) => (idx === index ? rawStr : item)));
 
     const normalized = rawStr.trim().replace(',', '.');
@@ -220,10 +228,23 @@ export class BookDaysEditComponent implements OnDestroy {
       return;
     }
 
+    const editedIndex = this.lastEditedRowIndex();
     this.isSaving.set(true);
     try {
       await this.bookFacade.updateAllDayEntries(currentBook.id, this.draftEntries());
       this.showSavedIndicator.set(true);
+      if (editedIndex !== null) {
+        if (this.savedPulseTimer) {
+          clearTimeout(this.savedPulseTimer);
+        }
+        this.justSavedRowIndex.set(null);
+        setTimeout(() => {
+          this.justSavedRowIndex.set(editedIndex);
+          this.savedPulseTimer = setTimeout(() => {
+            this.justSavedRowIndex.set(null);
+          }, 1100);
+        }, 15);
+      }
       this.snackbar.openCustomSnackBar(
         this.translateService.get('books.dailyEntry.savedSuccess'),
         '',

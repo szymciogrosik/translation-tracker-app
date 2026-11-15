@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  WritableSignal,
   computed,
   effect,
   inject,
@@ -79,7 +80,45 @@ export class BookStatsDashboardCardComponent implements OnDestroy {
   private readonly canvasRef = viewChild<ElementRef<HTMLCanvasElement>>('dailyPagesCanvas');
   private chartInstance: Chart | null = null;
 
+  protected readonly isCelebratingProgress = signal(false);
+  protected readonly animatedCurrentPages = signal<number>(0);
+  protected readonly animatedRemainingPages = signal<number>(0);
+  protected readonly animatedProgressPercent = signal<number>(0);
+  protected readonly animatedTodayPages = signal<number>(0);
+  protected readonly animatedPaceToBuffer = signal<number | null>(null);
+  protected readonly animatedPaceToDeadline = signal<number | null>(null);
+  protected readonly animatedAvgPace = signal<number>(0);
+
+  private animFrameIds: number[] = [];
+  private celebrationTimer: ReturnType<typeof setTimeout> | null = null;
+  private initializedCounters = false;
+
   constructor() {
+    effect(() => {
+      const s = this.stats();
+      const v = this.activeVariantStat();
+      if (!this.initializedCounters) {
+        this.initializedCounters = true;
+        this.animatedCurrentPages.set(s.currentTranslatedPages);
+        this.animatedRemainingPages.set(s.remainingPages);
+        this.animatedProgressPercent.set(s.progressPercent);
+        this.animatedTodayPages.set(s.todayTranslatedPages);
+        this.animatedPaceToBuffer.set(v.requiredPagesPerDayToBuffer);
+        this.animatedPaceToDeadline.set(v.requiredPagesPerDayToDeadline);
+        this.animatedAvgPace.set(v.averageTranslatedPerActiveVariantDay);
+        return;
+      }
+
+      this.cancelActiveAnimations();
+      this.animateNumberSignal(this.animatedCurrentPages, s.currentTranslatedPages, 520);
+      this.animateNumberSignal(this.animatedRemainingPages, s.remainingPages, 520);
+      this.animateNumberSignal(this.animatedProgressPercent, s.progressPercent, 520);
+      this.animateNumberSignal(this.animatedTodayPages, s.todayTranslatedPages, 520);
+      this.animateNullableNumberSignal(this.animatedPaceToBuffer, v.requiredPagesPerDayToBuffer, 520);
+      this.animateNullableNumberSignal(this.animatedPaceToDeadline, v.requiredPagesPerDayToDeadline, 520);
+      this.animateNumberSignal(this.animatedAvgPace, v.averageTranslatedPerActiveVariantDay, 520);
+    });
+
     effect(() => {
       const showChart = this.showChartAndMatrix();
       const canvasEl = this.canvasRef()?.nativeElement;
@@ -95,10 +134,98 @@ export class BookStatsDashboardCardComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.cancelActiveAnimations();
+    if (this.celebrationTimer) {
+      clearTimeout(this.celebrationTimer);
+    }
     if (this.chartInstance) {
       this.chartInstance.destroy();
       this.chartInstance = null;
     }
+  }
+
+  protected onPagesAddedCelebration(): void {
+    if (this.celebrationTimer) {
+      clearTimeout(this.celebrationTimer);
+    }
+    this.isCelebratingProgress.set(false);
+    setTimeout(() => {
+      this.isCelebratingProgress.set(true);
+      this.celebrationTimer = setTimeout(() => {
+        this.isCelebratingProgress.set(false);
+      }, 1100);
+    }, 15);
+  }
+
+  private cancelActiveAnimations(): void {
+    if (typeof cancelAnimationFrame !== 'undefined') {
+      for (const id of this.animFrameIds) {
+        cancelAnimationFrame(id);
+      }
+    }
+    this.animFrameIds = [];
+  }
+
+  private animateNullableNumberSignal(
+    targetSignal: WritableSignal<number | null>,
+    toValue: number | null,
+    durationMs: number
+  ): void {
+    if (toValue === null) {
+      targetSignal.set(null);
+      return;
+    }
+    const fromValue = targetSignal() ?? toValue;
+    if (
+      typeof requestAnimationFrame === 'undefined' ||
+      typeof performance === 'undefined' ||
+      Math.abs(toValue - fromValue) < 0.05
+    ) {
+      targetSignal.set(toValue);
+      return;
+    }
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - startTime) / durationMs);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round((fromValue + (toValue - fromValue) * eased) * 10) / 10;
+      targetSignal.set(current);
+      if (t < 1) {
+        this.animFrameIds.push(requestAnimationFrame(step));
+      } else {
+        targetSignal.set(toValue);
+      }
+    };
+    this.animFrameIds.push(requestAnimationFrame(step));
+  }
+
+  private animateNumberSignal(
+    targetSignal: WritableSignal<number>,
+    toValue: number,
+    durationMs: number
+  ): void {
+    const fromValue = targetSignal();
+    if (
+      typeof requestAnimationFrame === 'undefined' ||
+      typeof performance === 'undefined' ||
+      Math.abs(toValue - fromValue) < 0.05
+    ) {
+      targetSignal.set(toValue);
+      return;
+    }
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - startTime) / durationMs);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round((fromValue + (toValue - fromValue) * eased) * 10) / 10;
+      targetSignal.set(current);
+      if (t < 1) {
+        this.animFrameIds.push(requestAnimationFrame(step));
+      } else {
+        targetSignal.set(toValue);
+      }
+    };
+    this.animFrameIds.push(requestAnimationFrame(step));
   }
 
   protected selectVariant(variant: DayCountingVariantId): void {

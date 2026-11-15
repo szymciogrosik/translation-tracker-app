@@ -28,19 +28,19 @@
       <div class="timeline-inline">
         <span>{{ formatDisplayDate(stats().startDate) }} &mdash; {{ formatDisplayDate(stats().endDate) }}</span>
         <span class="meta-dot">&middot;</span>
-        <span class="today-translated-pill">
+        <span class="today-translated-pill" [class.is-celebrating]="isCelebratingProgress()">
           {{ 'books.stats.todayTranslated' | translate }}:
-          <strong>+{{ stats().todayTranslatedPages }} {{ 'books.common.pagesShort' | translate }}</strong>
+          <strong>+{{ animatedTodayPages() }} {{ 'books.common.pagesShort' | translate }}</strong>
         </span>
       </div>
 
-      <div class="pages-summary-inline">
-        <strong>{{ stats().currentTranslatedPages }} / {{ stats().totalPages }} {{ 'books.common.pagesShort' | translate }}</strong>
-        <span class="remaining-muted">({{ 'books.stats.remainingPages' | translate }}: {{ stats().remainingPages }} &middot; {{ stats().progressPercent }}%)</span>
+      <div class="pages-summary-inline" [class.is-celebrating]="isCelebratingProgress()">
+        <strong>{{ animatedCurrentPages() }} / {{ stats().totalPages }} {{ 'books.common.pagesShort' | translate }}</strong>
+        <span class="remaining-muted">({{ 'books.stats.remainingPages' | translate }}: {{ animatedRemainingPages() }} &middot; {{ animatedProgressPercent() }}%)</span>
       </div>
     </div>
 
-    <div class="editorial-progress-track">
+    <div class="editorial-progress-track" [class.is-celebrating]="isCelebratingProgress()">
       <div class="editorial-progress-fill" [style.width.%]="stats().progressPercent"></div>
     </div>
   </div>
@@ -49,7 +49,8 @@
   @if (showDailyEntryBox()) {
     <app-daily-entry-box
       [book]="book()"
-      [pendingInfo]="stats().nextPendingDay" />
+      [pendingInfo]="stats().nextPendingDay"
+      (pagesAddedCelebration)="onPagesAddedCelebration()" />
   }
 
   <!-- 3. Unified 4-Variant Segmented Switcher + 3 Focused Pacing Columns -->
@@ -70,11 +71,11 @@
 
     <!-- 3 Calm Pacing Columns driven by the active variant lens -->
     <div class="lens-metrics-row tabular-nums">
-      <div class="lens-metric-col">
+      <div class="lens-metric-col" [class.is-celebrating]="isCelebratingProgress()">
         <span class="col-label">{{ 'books.stats.table.paceToBuffer' | translate }}</span>
         <div class="col-primary-line">
-          @if (activeVariantStat().requiredPagesPerDayToBuffer !== null) {
-            <strong>{{ activeVariantStat().requiredPagesPerDayToBuffer }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+          @if (animatedPaceToBuffer() !== null) {
+            <strong>{{ animatedPaceToBuffer() }} {{ 'books.common.pagesPerDay' | translate }}</strong>
           } @else {
             <strong>{{ 'books.stats.noDaysLeft' | translate }}</strong>
           }
@@ -86,11 +87,11 @@
         </span>
       </div>
 
-      <div class="lens-metric-col">
+      <div class="lens-metric-col" [class.is-celebrating]="isCelebratingProgress()">
         <span class="col-label">{{ 'books.stats.table.paceToDeadline' | translate }}</span>
         <div class="col-primary-line">
-          @if (activeVariantStat().requiredPagesPerDayToDeadline !== null) {
-            <strong>{{ activeVariantStat().requiredPagesPerDayToDeadline }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+          @if (animatedPaceToDeadline() !== null) {
+            <strong>{{ animatedPaceToDeadline() }} {{ 'books.common.pagesPerDay' | translate }}</strong>
           } @else {
             <strong>{{ 'books.stats.noDaysLeft' | translate }}</strong>
           }
@@ -102,10 +103,10 @@
         </span>
       </div>
 
-      <div class="lens-metric-col">
+      <div class="lens-metric-col" [class.is-celebrating]="isCelebratingProgress()">
         <span class="col-label">{{ 'books.stats.table.avgTranslated' | translate }}</span>
         <div class="col-primary-line">
-          <strong>{{ activeVariantStat().averageTranslatedPerActiveVariantDay }} {{ 'books.common.pagesPerDay' | translate }}</strong>
+          <strong>{{ animatedAvgPace() }} {{ 'books.common.pagesPerDay' | translate }}</strong>
         </div>
         <span class="col-pace-line">
           {{ 'books.stats.avgTranslatedHint' | translate }} ({{ activeVariantStat().translatedDaysInVariantCount }} {{ 'books.common.daysShort' | translate }})

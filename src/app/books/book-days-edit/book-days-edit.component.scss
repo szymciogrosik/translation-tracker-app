@@ -134,6 +134,43 @@
     border: 2px solid var(--app-accent-color) !important;
     background-color: var(--app-accent-selected-bg);
   }
+
+  &.is-just-saved {
+    animation: dayRowSavePulse 950ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    .row-delta {
+      display: inline-block;
+      animation: rowDeltaPop 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+}
+
+@keyframes dayRowSavePulse {
+  0% {
+    border-color: var(--app-primary-color);
+    box-shadow: 0 0 0 0 var(--app-accent-halo);
+  }
+  30% {
+    border-color: var(--app-accent-color);
+    background-color: var(--app-accent-selected-bg);
+    box-shadow: 0 0 0 4px var(--app-accent-halo);
+  }
+  100% {
+    border-color: var(--app-primary-color);
+    box-shadow: 0 0 0 0 var(--app-accent-halo);
+  }
+}
+
+@keyframes rowDeltaPop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .day-date-col {

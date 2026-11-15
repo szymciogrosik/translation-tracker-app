@@ -10,14 +10,14 @@
       <span class="quiet-sub">{{ 'books.dailyEntry.comeBackTomorrow' | translate }}</span>
     </div>
   } @else {
-    <div class="checkin-bar">
+    <div class="checkin-bar" [class.has-positive-delta]="dailyDeltaPreview() > 0">
       <div class="checkin-left">
         <span class="checkin-date-label">
           {{ 'books.dailyEntry.dateToFill' | translate }}:
           <strong class="tabular-nums">{{ pendingInfo().displayDate }}</strong>
         </span>
         @if (dailyDeltaPreview() > 0) {
-          <span class="checkin-delta tabular-nums">
+          <span class="checkin-delta tabular-nums" [class.is-bumping]="isDeltaBumping()">
             +{{ dailyDeltaPreview() }} {{ 'books.common.pagesShort' | translate }}
           </span>
         } @else {
@@ -56,16 +56,45 @@
           </button>
         </div>
 
-        <button
-          mat-flat-button
-          color="accent"
-          type="button"
-          class="checkin-submit-btn"
-          [disabled]="isSaving() || !!validationError()"
-          (click)="saveCurrentValue()">
-          <mat-icon>check</mat-icon>
-          <span>{{ 'books.dailyEntry.confirmSuggested' | translate }}</span>
-        </button>
+        <div class="submit-celebration-anchor">
+          @if (celebrationBurstDelta() !== null) {
+            <div class="floating-xp-badge tabular-nums" aria-hidden="true">
+              @if ((celebrationBurstDelta() ?? 0) > 0) {
+                +{{ celebrationBurstDelta() }} {{ 'books.common.pagesShort' | translate }}
+              } @else {
+                &#10003;
+              }
+            </div>
+          }
+
+          @if (confettiSparks().length > 0) {
+            <div class="confetti-burst-layer" aria-hidden="true">
+              @for (spark of confettiSparks(); track spark.id) {
+                <span
+                  class="confetti-spark"
+                  [class.is-primary]="spark.isPrimary"
+                  [style.--tx]="spark.tx"
+                  [style.--ty]="spark.ty"
+                  [style.--rot]="spark.rot"
+                  [style.--sz]="spark.size"
+                  [style.animation-delay]="spark.delay">
+                </span>
+              }
+            </div>
+          }
+
+          <button
+            mat-flat-button
+            color="accent"
+            type="button"
+            class="checkin-submit-btn"
+            [class.is-ready-glow]="dailyDeltaPreview() > 0 && !validationError()"
+            [disabled]="isSaving() || !!validationError()"
+            (click)="saveCurrentValue()">
+            <mat-icon>check</mat-icon>
+            <span>{{ 'books.dailyEntry.confirmSuggested' | translate }}</span>
+          </button>
+        </div>
       </div>
     </div>
 

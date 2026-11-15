@@ -52,6 +52,19 @@ export class BooksListComponent {
   protected readonly excludedDaysDraft = signal<string[]>([]);
   protected readonly dateRangeError = signal<string | null>(null);
 
+  protected readonly sortedBooks = computed<Book[] | undefined>(() => {
+    const books = this.bookFacade.allBooks();
+    if (!books) return undefined;
+    return [...books].sort((a, b) => {
+      const aCompleted = this.calcService.isBookCompleted(a);
+      const bCompleted = this.calcService.isBookCompleted(b);
+      if (aCompleted !== bCompleted) {
+        return aCompleted ? 1 : -1;
+      }
+      return b.StartDate.localeCompare(a.StartDate);
+    });
+  });
+
   protected readonly createBookForm: FormGroup = this.fb.group({
     BookName: ['', [Validators.required, Validators.maxLength(160)]],
     NumberOfPages: [200, [Validators.required, Validators.min(1), Validators.max(20000)]],

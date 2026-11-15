@@ -129,7 +129,7 @@
     <mat-card class="app-card-wide">
       <app-skeleton width="100%" height="120px" borderRadius="14px" />
     </mat-card>
-  } @else if (bookFacade.allBooks(); as books) {
+  } @else if (sortedBooks(); as books) {
     @if (books.length === 0) {
       <mat-card class="empty-books-card app-card-wide">
         <div class="empty-inner">

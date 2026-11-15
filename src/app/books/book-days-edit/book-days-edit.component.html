@@ -59,6 +59,7 @@
             [class.is-today]="row.isToday"
             [class.is-excluded]="row.isExcluded"
             [class.is-weekend]="row.isWeekend"
+            [class.is-just-saved]="justSavedRowIndex() === row.index"
             [class.has-error]="!!row.error">
             <!-- Column 1: Non-editable Date + Badges -->
             <div class="day-date-col tabular-nums">
