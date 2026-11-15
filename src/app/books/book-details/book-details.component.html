@@ -1,0 +1,102 @@
+<div class="app-page-container">
+  @if (book() === undefined) {
+    <mat-card class="app-card-wide">
+      <app-skeleton width="100%" height="260px" borderRadius="14px" />
+    </mat-card>
+  } @else if (book() === null) {
+    <mat-card class="not-found-card app-card-wide">
+      <h2>{{ 'books.details.notFoundTitle' | translate }}</h2>
+      <p>{{ 'books.details.notFoundSubtitle' | translate }}</p>
+      <button mat-flat-button color="accent" type="button" [routerLink]="['/' + rp.BOOKS]">
+        <span>{{ 'books.nav.backToBooks' | translate }}</span>
+      </button>
+    </mat-card>
+  } @else if (book(); as currentBook) {
+    <!-- Unified Top Navigation Bar (Single place for actions, no duplicate links) -->
+    <div class="editorial-workspace-bar app-card-wide">
+      <div class="bar-left">
+        <button
+          mat-stroked-button
+          type="button"
+          class="nav-btn"
+          [routerLink]="['/' + rp.BOOKS]">
+          <mat-icon>menu_book</mat-icon>
+          <span>{{ 'books.nav.booksList' | translate }}</span>
+        </button>
+      </div>
+
+      <div class="bar-right">
+        <button
+          mat-stroked-button
+          type="button"
+          class="nav-btn"
+          [routerLink]="['/books', currentBook.id, 'settings']">
+          <mat-icon>tune</mat-icon>
+          <span>{{ 'books.details.editSettingsLink' | translate }}</span>
+        </button>
+        <button
+          mat-flat-button
+          color="accent"
+          type="button"
+          [routerLink]="['/books', currentBook.id, 'days']">
+          <mat-icon>edit_calendar</mat-icon>
+          <span>{{ 'books.details.editDaysLink' | translate }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 1:1 Statistics & Cumulative Chart Card -->
+    <app-book-stats-dashboard-card
+      [book]="currentBook"
+      [showDailyEntryBox]="true"
+      [isClickableHeader]="false"
+      [showChartAndMatrix]="true" />
+
+    <!-- Clean Vacations & Schedule Overview Card -->
+    <mat-card class="details-footer-card app-card-wide">
+      <div class="vacations-overview-header">
+        <div class="header-text">
+          <span class="section-label">{{ 'books.form.excludedDaysTitle' | translate }}</span>
+          <span class="vacation-count-badge tabular-nums">
+            {{ currentBook.ExcludedDays.length }} {{ 'books.common.daysShort' | translate }}
+          </span>
+        </div>
+        <button
+          mat-stroked-button
+          type="button"
+          class="edit-vacations-btn"
+          [routerLink]="['/books', currentBook.id, 'settings']">
+          <mat-icon>calendar_month</mat-icon>
+          <span>{{ 'books.details.editVacations' | translate }}</span>
+        </button>
+      </div>
+
+      @if (currentBook.ExcludedDays.length > 0) {
+        <div class="chips-wrap tabular-nums">
+          @for (d of currentBook.ExcludedDays; track d) {
+            <span class="mini-date-chip">{{ formatDisplayDate(d) }}</span>
+          }
+        </div>
+      } @else {
+        <p class="muted-note">{{ 'books.details.noExcludedDays' | translate }}</p>
+      }
+    </mat-card>
+
+    <!-- Dedicated Danger Zone Card -->
+    <mat-card class="details-danger-card app-card-wide">
+      <div class="danger-info">
+        <span class="danger-label">{{ 'books.details.dangerZoneTitle' | translate }}</span>
+        <p class="danger-sub">{{ 'books.details.dangerZoneDesc' | translate }}</p>
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="delete-book-btn"
+        (click)="confirmDeleteBook(currentBook)">
+        <mat-icon>delete_outline</mat-icon>
+        <span>{{ 'books.common.delete' | translate }}</span>
+      </button>
+    </mat-card>
+  }
+</div>

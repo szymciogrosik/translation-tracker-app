@@ -1,0 +1,77 @@
+<div class="daily-checkin-container" [class.is-transitioning]="isTransitioning()">
+  @if (pendingInfo().isBookFinished) {
+    <div class="checkin-quiet-strip">
+      <span class="quiet-title">{{ 'books.dailyEntry.bookCompletedTitle' | translate }}</span>
+      <span class="quiet-sub">{{ 'books.dailyEntry.bookCompletedSubtitle' | translate }}</span>
+    </div>
+  } @else if (pendingInfo().isAllUpToTodayEntered) {
+    <div class="checkin-quiet-strip">
+      <span class="quiet-title">{{ 'books.dailyEntry.allEnteredTitle' | translate }}</span>
+      <span class="quiet-sub">{{ 'books.dailyEntry.comeBackTomorrow' | translate }}</span>
+    </div>
+  } @else {
+    <div class="checkin-bar">
+      <div class="checkin-left">
+        <span class="checkin-date-label">
+          {{ 'books.dailyEntry.dateToFill' | translate }}:
+          <strong class="tabular-nums">{{ pendingInfo().displayDate }}</strong>
+        </span>
+        @if (dailyDeltaPreview() > 0) {
+          <span class="checkin-delta tabular-nums">
+            +{{ dailyDeltaPreview() }} {{ 'books.common.pagesShort' | translate }}
+          </span>
+        } @else {
+          <span class="checkin-hint">
+            {{ 'books.dailyEntry.lastKnownPage' | translate }}:
+            <span class="tabular-nums">{{ pendingInfo().minAllowedPages }}</span>
+          </span>
+        }
+      </div>
+
+      <div class="checkin-right">
+        <div class="segmented-stepper" role="group" aria-label="Page number stepper">
+          <button
+            type="button"
+            class="stepper-btn"
+            [disabled]="isSaving() || customPagesValue() <= pendingInfo().minAllowedPages"
+            (click)="adjustPages(-1)"
+            aria-label="Decrease page">
+            &minus;
+          </button>
+          <input
+            type="number"
+            class="stepper-input tabular-nums"
+            [min]="pendingInfo().minAllowedPages"
+            [max]="pendingInfo().maxAllowedPages"
+            [ngModel]="customPagesValue()"
+            (ngModelChange)="onManualInputChange($event)"
+            (keyup.enter)="saveCurrentValue()"
+            aria-label="Current translated page number" />
+          <button
+            type="button"
+            class="stepper-btn"
+            [disabled]="isSaving() || customPagesValue() >= pendingInfo().maxAllowedPages"
+            (click)="adjustPages(1)"
+            aria-label="Increase page">
+            +
+          </button>
+        </div>
+
+        <button
+          mat-flat-button
+          color="accent"
+          type="button"
+          class="checkin-submit-btn"
+          [disabled]="isSaving() || !!validationError()"
+          (click)="saveCurrentValue()">
+          <mat-icon>check</mat-icon>
+          <span>{{ 'books.dailyEntry.confirmSuggested' | translate }}</span>
+        </button>
+      </div>
+    </div>
+
+    @if (validationError()) {
+      <p class="checkin-validation-error">{{ validationError() }}</p>
+    }
+  }
+</div>

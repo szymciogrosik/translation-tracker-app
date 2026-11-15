@@ -1,0 +1,135 @@
+<div class="app-page-container">
+  @if (book() === undefined) {
+    <mat-card class="app-card-wide">
+      <app-skeleton width="100%" height="320px" borderRadius="16px" />
+    </mat-card>
+  } @else if (book(); as currentBook) {
+    <div class="editorial-workspace-bar app-card-wide">
+      <div class="bar-titles">
+        <h1>{{ 'books.settings.title' | translate }}: {{ currentBook.BookName }}</h1>
+        <p>{{ 'books.settings.subtitle' | translate }}</p>
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="back-btn"
+        [routerLink]="['/books', currentBook.id]">
+        <mat-icon>arrow_back</mat-icon>
+        <span>{{ 'books.details.backToDetails' | translate }}</span>
+      </button>
+    </div>
+
+    <mat-card class="settings-form-card app-card-wide">
+      <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()" class="settings-form-grid">
+        <div class="form-row-two">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.form.bookName' | translate }}</mat-label>
+            <input matInput formControlName="BookName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.form.numberOfPages' | translate }}</mat-label>
+            <input matInput type="number" min="1" formControlName="NumberOfPages" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row-three">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.common.startDate' | translate }}</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="StartDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker [dateClass]="dateClass()"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.common.deadline' | translate }}</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="EndDate" />
+            <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker [dateClass]="dateClass()"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'books.common.bufferDays' | translate }}</mat-label>
+            <input matInput type="number" min="0" formControlName="BufforDayNumber" />
+          </mat-form-field>
+        </div>
+
+        <div class="date-shift-info-box">
+          <mat-icon>info</mat-icon>
+          <p>{{ 'books.settings.shiftHint' | translate }}</p>
+        </div>
+
+        <!-- Excluded Days Editor -->
+        <div class="excluded-days-section">
+          <div class="excluded-heading">
+            <h3>{{ 'books.form.excludedDaysTitle' | translate }}</h3>
+            <p>{{ 'books.form.excludedDaysSubtitle' | translate }}</p>
+          </div>
+
+          <div class="excluded-picker-row">
+            <button
+              mat-stroked-button
+              type="button"
+              class="add-excl-btn"
+              [matMenuTriggerFor]="vacationCalendarMenu"
+              (menuOpened)="prepareVacationCalendarOpen()">
+              <mat-icon>calendar_month</mat-icon>
+              <span>{{ 'books.form.pickExcludedDate' | translate }}</span>
+            </button>
+
+            <mat-menu #vacationCalendarMenu="matMenu" class="vacation-calendar-menu-panel" xPosition="after">
+              <div class="vacation-calendar-popup-inner" (click)="$event.stopPropagation()">
+                @for (calKey of [excludedDaysDraft().join(',')]; track calKey) {
+                  <mat-calendar
+                    [startAt]="vacationCalendarActiveDate()"
+                    [dateClass]="dateClass()"
+                    (selectedChange)="onExcludedDateChange($event)">
+                  </mat-calendar>
+                }
+              </div>
+            </mat-menu>
+          </div>
+
+          @if (excludedDaysDraft().length > 0) {
+            <div class="excluded-chips-list">
+              @for (d of excludedDaysDraft(); track d) {
+                <span class="excluded-chip">
+                  <span>{{ formatDisplayDate(d) }}</span>
+                  <button type="button" class="chip-remove-btn" (click)="removeExcludedDay(d)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </span>
+              }
+            </div>
+          } @else {
+            <p class="empty-excluded-hint">{{ 'books.details.noExcludedDays' | translate }}</p>
+          }
+        </div>
+
+        @if (formError()) {
+          <p class="form-error-text">{{ formError() }}</p>
+        }
+
+        <div class="app-full-width-actions">
+          <button
+            mat-stroked-button
+            type="button"
+            class="app-action-button"
+            [routerLink]="['/books', currentBook.id]">
+            {{ 'registeredUsers.details.cancel' | translate }}
+          </button>
+          <button
+            mat-flat-button
+            color="accent"
+            type="submit"
+            class="app-action-button"
+            [disabled]="isSaving()">
+            <mat-icon>check</mat-icon>
+            <span>{{ 'registeredUsers.details.save' | translate }}</span>
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  }
+</div>

@@ -1,6 +1,11 @@
 export enum RedirectionEnum {
   SEP = '/',
   HOME = '',
+  BOOKS = 'books',
+  BOOKS_HISTORY = 'books/history',
+  BOOK_DETAILS = 'books/:id',
+  BOOK_DAYS_EDIT = 'books/:id/days',
+  BOOK_SETTINGS_EDIT = 'books/:id/settings',
   STATUS = 'status',
   LOGIN = 'login',
   ADMIN = 'admin-panel',
@@ -9,4 +14,3 @@ export enum RedirectionEnum {
   TERMS = 'terms-of-service',
   COOKIES = 'cookie-policy',
 }
-

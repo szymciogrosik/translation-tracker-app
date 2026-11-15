@@ -1,3 +1,7 @@
 <div class="app-page-container">
-  <app-starter-showcase />
+  @if (isAuthenticated()) {
+    <app-books-dashboard />
+  } @else {
+    <app-starter-showcase />
+  }
 </div>

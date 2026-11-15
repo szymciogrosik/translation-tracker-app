@@ -27,7 +27,7 @@
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 15px 35px -5px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.02) !important;
+    box-shadow: 0 15px 35px -5px var(--separator-line) !important;
   }
 }
 
@@ -281,7 +281,7 @@
   transition: box-shadow 0.3s ease;
 
   &:hover {
-    box-shadow: 0 15px 35px -5px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.02) !important;
+    box-shadow: 0 15px 35px -5px var(--separator-line) !important;
   }
 }
 
@@ -386,14 +386,14 @@
   &.active {
     border: 2px solid var(--app-accent-color) !important;
     background-color: var(--app-accent-selected-bg) !important;
-    box-shadow: 0 0 0 1px var(--app-accent-color), 0 8px 20px -6px rgba(79, 70, 229, 0.25) !important;
+    box-shadow: 0 0 0 1px var(--app-accent-color), 0 8px 20px -6px var(--app-accent-halo) !important;
 
     .node-icon-box {
       background-color: var(--app-accent-color);
       border-color: var(--app-accent-color);
 
       mat-icon {
-        color: #ffffff;
+        color: var(--google-btn-bg);
       }
     }
 
@@ -548,7 +548,7 @@
     border: 2px solid var(--app-accent-color) !important;
     background-color: var(--app-accent-selected-bg) !important;
     color: var(--app-accent-color) !important;
-    box-shadow: 0 0 0 1px var(--app-accent-color), 0 8px 20px -6px rgba(79, 70, 229, 0.25) !important;
+    box-shadow: 0 0 0 1px var(--app-accent-color), 0 8px 20px -6px var(--app-accent-halo) !important;
 
     mat-icon {
       color: var(--app-accent-color) !important;
@@ -723,7 +723,7 @@
     border: 2px solid var(--app-accent-color) !important;
     background-color: var(--app-accent-selected-bg) !important;
     color: var(--app-accent-color) !important;
-    box-shadow: 0 0 0 1px var(--app-accent-color), 0 8px 20px -6px rgba(79, 70, 229, 0.25) !important;
+    box-shadow: 0 0 0 1px var(--app-accent-color), 0 8px 20px -6px var(--app-accent-halo) !important;
   }
 }
 

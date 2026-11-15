@@ -154,15 +154,11 @@
   }
 
   code {
-    background: rgba(15, 23, 42, 0.05);
+    background: var(--app-accent-selected-bg);
     color: var(--app-accent-color);
     padding: 3px 7px;
     border-radius: 6px;
     font-size: 0.82rem;
     font-weight: 600;
-
-    .dark-theme & {
-      background: rgba(255, 255, 255, 0.08);
-    }
   }
 }
