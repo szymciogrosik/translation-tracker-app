@@ -39,11 +39,10 @@
             &minus;
           </button>
           <input
-            type="number"
+            type="text"
+            inputmode="decimal"
             class="stepper-input tabular-nums"
-            [min]="pendingInfo().minAllowedPages"
-            [max]="pendingInfo().maxAllowedPages"
-            [ngModel]="customPagesValue()"
+            [ngModel]="customPagesInput()"
             (ngModelChange)="onManualInputChange($event)"
             (keyup.enter)="saveCurrentValue()"
             aria-label="Current translated page number" />

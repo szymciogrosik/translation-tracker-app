@@ -40,19 +40,24 @@ export class DailyEntryBoxComponent {
   private readonly translateService = inject(CustomTranslateService);
 
   protected readonly customPagesValue = signal<number>(0);
+  protected readonly customPagesInput = signal<string>('0');
   protected readonly isTransitioning = signal(false);
   protected readonly isSaving = signal(false);
   protected readonly validationError = signal<string | null>(null);
 
   protected readonly dailyDeltaPreview = computed(() => {
     const info = this.pendingInfo();
-    return Math.max(0, Number(this.customPagesValue()) - info.minAllowedPages);
+    return Math.max(
+      0,
+      Math.round((Number(this.customPagesValue()) - info.minAllowedPages) * 10) / 10
+    );
   });
 
   constructor() {
     effect(() => {
       const info = this.pendingInfo();
       this.customPagesValue.set(info.suggestedCumulativePages);
+      this.customPagesInput.set(String(info.suggestedCumulativePages));
       this.validationError.set(null);
     });
   }
@@ -62,22 +67,36 @@ export class DailyEntryBoxComponent {
     const current = Number(this.customPagesValue() ?? info.suggestedCumulativePages);
     const next = Math.min(
       info.maxAllowedPages,
-      Math.max(info.minAllowedPages, current + delta)
+      Math.max(info.minAllowedPages, Math.round((current + delta) * 10) / 10)
     );
     this.customPagesValue.set(next);
+    this.customPagesInput.set(String(next));
     this.validationError.set(null);
   }
 
   protected onManualInputChange(rawValue: string | number): void {
-    const parsed = Number(rawValue);
-    this.customPagesValue.set(Number.isNaN(parsed) ? 0 : parsed);
+    const rawStr = rawValue === null || rawValue === undefined ? '' : String(rawValue);
+    this.customPagesInput.set(rawStr);
+    const normalized = rawStr.trim().replace(',', '.');
+    const parsed = normalized === '' ? Number.NaN : Number(normalized);
+    this.customPagesValue.set(Number.isNaN(parsed) ? Number.NaN : parsed);
     this.validateCurrentValue();
+  }
+
+  private hasMaxOneDecimal(val: number): boolean {
+    return Number.isFinite(val) && Math.abs(Math.round(val * 10) - val * 10) < 1e-6;
   }
 
   private validateCurrentValue(): boolean {
     const info = this.pendingInfo();
+    const rawTrimmed = this.customPagesInput().trim().replace(',', '.');
     const val = Number(this.customPagesValue());
-    if (Number.isNaN(val) || !Number.isInteger(val)) {
+    if (
+      rawTrimmed === '' ||
+      Number.isNaN(val) ||
+      !/^\d+(\.\d)?$/.test(rawTrimmed) ||
+      !this.hasMaxOneDecimal(val)
+    ) {
       this.validationError.set(this.translateService.get('books.dailyEntry.error.integer'));
       return false;
     }
@@ -105,7 +124,7 @@ export class DailyEntryBoxComponent {
     if (info.entryIndex < 0 || this.isSaving()) {
       return;
     }
-    const pagesToSave = Number(this.customPagesValue());
+    const pagesToSave = Math.round(Number(this.customPagesValue()) * 10) / 10;
     this.isSaving.set(true);
     this.isTransitioning.set(true);
 

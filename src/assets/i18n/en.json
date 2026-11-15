@@ -329,7 +329,7 @@
   "books.dailyEntry.comeBackTomorrow": "All scheduled days up to today already have their translated page numbers recorded.",
   "books.dailyEntry.bookCompletedTitle": "Book translation is complete",
   "books.dailyEntry.bookCompletedSubtitle": "The target page count for this book has been reached.",
-  "books.dailyEntry.error.integer": "Please enter a valid whole number.",
+  "books.dailyEntry.error.integer": "Please enter a number with at most 1 decimal place (e.g., 11.5).",
   "books.dailyEntry.error.minPages": "Page number cannot be smaller than the last known day",
   "books.dailyEntry.error.maxPages": "Page number cannot exceed the total pages of the book",
   "books.dailyEntry.savedSuccess": "Saved progress for the selected day.",
@@ -413,6 +413,8 @@
 
   "books.daysEdit.title": "Edit Daily Progress",
   "books.daysEdit.subtitle": "Every day from start to end date with the cumulative page number where translation finished",
+  "books.daysEdit.scrollToToday": "Scroll to today",
+  "books.daysEdit.todayBadge": "Today",
   "books.daysEdit.columnDate": "Date (non-editable)",
   "books.daysEdit.columnLastPage": "Current last page number",
   "books.daysEdit.excludedBadge": "Vacation",
@@ -421,6 +423,8 @@
   "books.daysEdit.notEnteredYet": "Not entered",
   "books.daysEdit.savedSuccess": "Daily progress table saved successfully.",
   "books.daysEdit.savedError": "Failed to save daily progress changes.",
+  "books.daysEdit.autoSaving": "Saving...",
+  "books.daysEdit.autoSaved": "Saved automatically",
 
   "books.settings.title": "Book Settings",
   "books.settings.subtitle": "Edit book title, page count, start/end dates, buffer days, and vacations.",

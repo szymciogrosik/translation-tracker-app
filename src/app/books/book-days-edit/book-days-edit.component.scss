@@ -32,6 +32,15 @@
       margin: 0;
       font-size: 0.92rem;
       color: var(--app-text-secondary);
+
+      .autosave-status {
+        font-weight: 700;
+        color: var(--app-text-secondary);
+
+        &.is-saved {
+          color: var(--app-accent-color) !important;
+        }
+      }
     }
   }
 
@@ -120,6 +129,11 @@
   &.is-excluded {
     background-color: var(--app-accent-selected-bg);
   }
+
+  &.is-today {
+    border: 2px solid var(--app-accent-color) !important;
+    background-color: var(--app-accent-selected-bg);
+  }
 }
 
 .day-date-col {
@@ -141,6 +155,16 @@
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--app-text-secondary);
+  }
+
+  .today-badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--app-accent-color) !important;
+    background-color: var(--app-surface-color);
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--app-accent-color) !important;
   }
 
   .excluded-badge {

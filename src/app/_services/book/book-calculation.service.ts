@@ -181,8 +181,8 @@ export class BookCalculationService {
     const entries = book.TranslatedPages ?? [];
 
     const totalPages = Math.max(0, Number(book.NumberOfPages ?? 0));
-    const currentTranslatedPages = this.getCurrentTranslatedPages(book);
-    const remainingPages = Math.max(0, totalPages - currentTranslatedPages);
+    const currentTranslatedPages = Math.round(this.getCurrentTranslatedPages(book) * 10) / 10;
+    const remainingPages = Math.max(0, Math.round((totalPages - currentTranslatedPages) * 10) / 10);
     const progressPercent =
       totalPages > 0 ? Math.min(100, Math.round((currentTranslatedPages / totalPages) * 1000) / 10) : 0;
     const isCompleted = this.isBookCompleted(book);
@@ -218,8 +218,8 @@ export class BookCalculationService {
         }
         continue;
       }
-      const currentVal = Number(entry.pages);
-      const dailyDelta = Math.max(0, currentVal - prevCumulative);
+      const currentVal = Math.round(Number(entry.pages) * 10) / 10;
+      const dailyDelta = Math.max(0, Math.round((currentVal - prevCumulative) * 10) / 10);
       prevCumulative = Math.max(prevCumulative, currentVal);
 
       if (entry.date === todayIso) {

@@ -329,7 +329,7 @@
   "books.dailyEntry.comeBackTomorrow": "Wszystkie zaplanowane dni robocze do dzisiaj mają już uzupełniony stan przetłumaczonych stron.",
   "books.dailyEntry.bookCompletedTitle": "Książka została w pełni przetłumaczona",
   "books.dailyEntry.bookCompletedSubtitle": "Osiągnięto docelową liczbę stron książki.",
-  "books.dailyEntry.error.integer": "Podaj pełną liczbę całkowitą.",
+  "books.dailyEntry.error.integer": "Podaj liczbę całkowitą lub z maksymalnie 1 miejscem po przecinku (np. 11,5).",
   "books.dailyEntry.error.minPages": "Liczba stron nie może być mniejsza niż ostatniego znanego dnia",
   "books.dailyEntry.error.maxPages": "Liczba stron nie może przekraczać całkowitej liczby stron książki",
   "books.dailyEntry.savedSuccess": "Zapisano postęp dla wybranego dnia.",
@@ -413,6 +413,8 @@
 
   "books.daysEdit.title": "Edycja dni",
   "books.daysEdit.subtitle": "Lista wszystkich dni w wyznaczonym przedziale wraz z numerem ostatniej przetłumaczonej strony",
+  "books.daysEdit.scrollToToday": "Przewiń do dzisiaj",
+  "books.daysEdit.todayBadge": "Dzisiaj",
   "books.daysEdit.columnDate": "Data (nieedytowalna)",
   "books.daysEdit.columnLastPage": "Aktualny numer ostatniej przetłumaczonej strony",
   "books.daysEdit.excludedBadge": "Wakacje",
@@ -421,6 +423,8 @@
   "books.daysEdit.notEnteredYet": "Brak wpisu",
   "books.daysEdit.savedSuccess": "Zapisano tabelę przetłumaczonych stron.",
   "books.daysEdit.savedError": "Nie udało się zapisać zmian.",
+  "books.daysEdit.autoSaving": "Zapisywanie...",
+  "books.daysEdit.autoSaved": "Zapisano automatycznie",
 
   "books.settings.title": "Ustawienia książki",
   "books.settings.subtitle": "Edycja tytułu, liczby stron, ram czasowych, buforu oraz wakacji.",
